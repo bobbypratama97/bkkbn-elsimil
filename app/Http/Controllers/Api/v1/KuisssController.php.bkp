@@ -1,0 +1,126 @@
+<?php
+
+namespace App\Http\Controllers\Api\v1;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions;
+
+use Carbon\Carbon;
+
+use DB;
+use Helper;
+
+use App\Kuis;
+use App\KuisHeader;
+use App\KuisDetail;
+use App\KuisBobot;
+
+class KuisController extends Controller
+{
+    public function __construct() {
+        //$this->middleware('auth:api', ['except' => ['login', 'register', 'socialiteLogin']]);
+        $this->guard = "member";
+    }
+
+    public function kuislist(Request $request) {
+        try {
+
+            $data = Kuis::whereNull('deleted_by')->where('status', 2)->select(['id', 'title', 'created_at'])->orderBy('id', 'DESC')->get();
+
+            return response()->json([
+                'error' => false, 
+                'code' => 200, 
+                'message' => 'Success', 
+                'data' => $data
+            ], 200);
+        } catch (TokenExpiredException $e) {
+            return response()->json(Helper::apiexpiredResponse($data), 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json(Helper::apiinvalidResponse($data), 401);
+        } catch (JWTException $e) {
+            return response()->json(Helper::apiexceptionResponse($data), 500);
+        }
+    }
+
+    public function kuisintro(Request $request) {
+        try {
+
+            $data = Kuis::where('id', $request->id)->select(['id', 'title', 'deskripsi'])->first();
+
+            return response()->json([
+                'error' => false,
+                'code' => 200,
+                'message' => 'Success',
+                'data' => $data
+            ], 200);
+
+        } catch (TokenExpiredException $e) {
+            return response()->json(Helper::apiexpiredResponse($data), 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json(Helper::apiinvalidResponse($data), 401);
+        } catch (JWTException $e) {
+            return response()->json(Helper::apiexceptionResponse($data), 500);
+        }
+    }
+
+    public function pertanyaan(Request $request) {
+        try {
+
+            $header = KuisHeader::whereNull('deleted_by')->where('kuis_id', $request->id)->select(['kuis_id', 'id as header_id', 'jenis', 'deskripsi', 'caption'])->get();
+
+            $data = [];
+            foreach ($header as $key => $row) {
+                $data[$key] = $row;
+
+                $detail = KuisDetail::whereNull('deleted_by')->where('header_id', $row['header_id'])->get();
+                $datapertanyaan = [];
+                foreach ($detail as $keys => $vals) {
+                    $pertanyaan = [
+                        'kuis_id' => $row['kuis_id'],
+                        'header_id' => $vals['header_id'],
+                        'pertanyaan_id' => $vals['id'],
+                        'title' => $vals['title'],
+                        'tipe' => $vals['pilihan']
+                    ];
+
+                    $element = [];
+                    if ($vals['pilihan'] == 'radio' || $vals['pilihan'] == 'dropdown' || $vals['pilihan'] == 'ganda') {
+                        $label = KuisBobot::where('header_id', $vals['header_id'])->get();
+                        $dataelement = [];
+                        foreach ($label as $keyz => $valz) {
+                            $elements = [
+                                'id' => $valz['id'],
+                                'option' => $valz['label']
+                            ];
+
+                            array_push($dataelement, $elements);
+                        }
+
+                        $pertanyaan['element'] = $dataelement;
+                    }
+
+                    array_push($datapertanyaan, $pertanyaan);
+                }
+                $data[$key]['pertanyaan'] = $datapertanyaan;
+            }
+
+            return response()->json([
+                'error' => false,
+                'code' => 200,
+                'message' => 'Success',
+                'data' => $data
+            ], 200);
+
+        } catch (TokenExpiredException $e) {
+            return response()->json(Helper::apiexpiredResponse($data), 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json(Helper::apiinvalidResponse($data), 401);
+        } catch (JWTException $e) {
+            return response()->json(Helper::apiexceptionResponse($data), 500);
+        }
+    }
+
+}

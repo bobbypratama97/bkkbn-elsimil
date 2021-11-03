@@ -1,0 +1,119 @@
+@font-face {
+    font-family: 'Heebo';
+    font-style: normal;
+    font-weight: 400;
+    src: url("https://fonts.googleapis.com/css2?family=Heebo&display=swap");
+}
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    outline: none;
+    text-decoration: none;
+}
+body {
+    font-size: 16px;
+    font-family: 'Heebo', sans-serif;
+}
+.container {
+    max-width: 95%;
+    margin: 0 auto;
+}
+header {
+    color: #fff;
+    background-color: #fff !important;
+    padding: 4rem 0 .1rem 0;
+}
+header * {
+    color: #fff !important;
+}
+.header__img {
+    text-align: center;
+    /* margin-bottom: 4rem; */
+}
+.header__caption {
+    text-align: center;
+}
+header h1 {
+    font-size: 3rem;
+    font-family: 'Montserrat', sans-serif;
+}
+.header__caption p {
+    margin-top: 0;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+}
+#header__link {
+    display: inline-flex;
+    margin: 0 auto;
+    padding-top: .8rem;
+    padding-bottom: .8rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+    transition: all 200ms;
+    background-color: #106bbb;
+    color: #fff !important;
+}
+
+.info {
+    margin-top: 0.5rem;
+    margin-bottom: 0; 
+    color: #808080 !important;
+    font-size: 12px !important;
+}
+
+.alert {
+    margin-top: 0.5rem;
+    margin-bottom: 0; 
+    color: #C80000 !important;
+    font-size: 12px !important;
+}
+
+main > h1 {
+    color: #474747;
+    font-weight: normal;
+    font-size: 1.4rem;
+    text-align: center;
+    margin: 3rem 0 1rem;
+}
+
+section {
+    text-align: center;
+    padding: 15px 0 40px;
+}
+section img {
+    height: 225px;
+}
+section p {
+    color: #404040;
+}
+section:not(:last-child) {
+    border-bottom: 2px solid #106bbb;
+}
+
+footer {
+    padding: 2rem 0;
+    margin-top: 1rem;
+    text-align: center;
+    border-top: 2px solid #23bbab;
+    font-weight: bold;
+    font-size: 10pt;
+    color: #3e3e3e;
+}
+footer a {
+    color: #106bbb;
+}
+footer small {
+    display: block;
+    margin-top: 10px;
+}
