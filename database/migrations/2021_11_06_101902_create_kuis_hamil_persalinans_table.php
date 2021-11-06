@@ -15,6 +15,8 @@ class CreateKuisHamilPersalinansTable extends Migration
     {
         Schema::create('kuisioner_hamil_persalinan', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('id_user')->unsigned()->index();
+            $table->bigInteger('id_member')->unsigned()->index();
             $table->foreign('id_user')->references('id')->on('users');
             $table->foreign('id_member')->references('id')->on('members');
             $table->date('tanggal_persalinan');
@@ -35,6 +37,6 @@ class CreateKuisHamilPersalinansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kuis_hamil_persalinans');
+        Schema::dropIfExists('kuisioner_hamil_persalinan');
     }
 }

@@ -15,6 +15,8 @@ class CreateKuisHamil12MinggusTable extends Migration
     {
         Schema::create('kuisioner_hamil_12_minggu', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('id_user')->unsigned()->index();
+            $table->bigInteger('id_member')->unsigned()->index();
             $table->foreign('id_user')->references('id')->on('users');
             $table->foreign('id_member')->references('id')->on('members');
             $table->double('berat_badan');
@@ -36,6 +38,6 @@ class CreateKuisHamil12MinggusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kuis_hamil12_minggus');
+        Schema::dropIfExists('kuisioner_hamil_12_minggu');
     }
 }
