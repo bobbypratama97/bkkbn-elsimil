@@ -15,8 +15,8 @@ class CreateKuisHamil16MinggusTable extends Migration
     {
         Schema::create('kuisioner_hamil_16_minggu', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_user');
-            $table->integer('id_member');
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_member')->references('id')->on('members');
             $table->integer('hemoglobin');
             $table->integer('tensi_darah');
             $table->integer('gula_darah_sewaktu');

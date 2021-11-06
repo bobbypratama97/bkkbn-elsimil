@@ -15,8 +15,8 @@ class CreateKuisHamilNifasTable extends Migration
     {
         Schema::create('kuisioner_hamil_nifas', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_user');
-            $table->integer('id_member');
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_member')->references('id')->on('members');
             $table->boolean('komplikasi');
             $table->boolean('asi');
             $table->boolean('kbpp_mkjp');

@@ -15,8 +15,8 @@ class CreateKuisHamilIbuJaninsTable extends Migration
     {
         Schema::create('kuisioner_hamil_ibu_janin', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_user');
-            $table->integer('id_member');
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_member')->references('id')->on('members');
             $table->integer('periode'); #minggu kehamilan
             $table->double('kenaikan_berat_badan');
             $table->integer('hemoglobin');
