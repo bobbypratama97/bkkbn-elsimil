@@ -13,7 +13,7 @@ class CreateKuisHamilKontakAwalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('kuis_hamil_kontak_awals', function (Blueprint $table) {
+        Schema::create('kuisioner_hamil_kontak_awal', function (Blueprint $table) {
             $table->id();
             $table->integer('id_user');
             $table->integer('id_member');
