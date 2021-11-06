@@ -30,7 +30,6 @@ class CreateKuisHamilIbuJaninsTable extends Migration
             $table->integer('jumlah_janin');
             $table->softDeletes();
             $table->timestamps();
-            $table->timestamps();
         });
     }
 

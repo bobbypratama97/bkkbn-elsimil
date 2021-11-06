@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKuisHamil16MinggusTable extends Migration
+class CreateKuisHamilNifasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateKuisHamil16MinggusTable extends Migration
      */
     public function up()
     {
-        Schema::create('kuisioner_hamil_16_minggu', function (Blueprint $table) {
+        Schema::create('kuisioner_hamil_nifas', function (Blueprint $table) {
             $table->id();
             $table->integer('id_user');
             $table->integer('id_member');
-            $table->integer('hemoglobin');
-            $table->integer('tensi_darah');
-            $table->integer('gula_darah_sewaktu');
+            $table->boolean('komplikasi');
+            $table->boolean('asi');
+            $table->boolean('kbpp_mkjp');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +32,6 @@ class CreateKuisHamil16MinggusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kuis_hamil16_minggus');
+        Schema::dropIfExists('kuis_hamil_nifas');
     }
 }
