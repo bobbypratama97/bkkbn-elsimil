@@ -36,7 +36,7 @@ class CreateMembersTable extends Migration
             $table->string('kodepos',5);
             $table->string('profile_code',10);
             $table->tinyInteger('is_active');
-            $table->string('remember_token',100);
+            $table->rememberToken();
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->integer('deleted_by');
