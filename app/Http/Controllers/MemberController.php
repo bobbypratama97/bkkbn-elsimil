@@ -77,6 +77,7 @@ class MemberController extends Controller
             'users.name as petugas'
         ]);
 
+
         if ($role == '2') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id);
         }
@@ -105,9 +106,14 @@ class MemberController extends Controller
             }
         }
 
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $self = $self->where('members.name', 'like', '%' . $request->name . '%');
+        }
 
-        $self = $self->get();
-
+        $paginate = $self->paginate(10);
+        $self = $paginate->items();
         foreach ($self as $key => $val) {
             $couple = MemberCouple::leftJoin('members', function($join) {
                 $join->on('members.id', '=', 'member_couple.couple_id');
@@ -204,12 +210,13 @@ class MemberController extends Controller
             }
         }
 
-        $self = $self->toArray();
+        // $self = $self->toArray();
         $couples = $couples->toArray();
 
         $member = array_merge($self, $couples);
 
-        return view('member.index', compact('member', 'search'));
+
+        return view('member.index', compact('member', 'search', 'paginate', 'name'));
     }
 
     public function result($id) {

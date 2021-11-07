@@ -44,7 +44,7 @@
                             <tbody>
                                 @foreach($user as $key => $row)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
                                     <td>{!! Helper::decryptNik($row->nik) !!}</td>
                                     <td>{{ $row->name }}</td>
                                     <td>{{ $row->email }}</td>
@@ -80,6 +80,16 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="float-left">
+                            @if (count($user) > 1)
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($user) }} dari {{ $paginate->total() }} data
+                            @else
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                            @endif
+                            </div>
+                        <div class="float-right">
+                            {{ $paginate->appends($_GET)->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,33 +101,33 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
-    });
+    // $(document).ready(function() {
+    //     var table = $('#kt_datatable').DataTable({
+    //         "sScrollX": "100%",
+    //         //"sScrollXInner": "110%",
+    //         "bLengthChange": false,
+    //         "ordering": false,
+    //         "iDisplayLength": 10,
+    //         "oLanguage": {
+    //             "sSearch": "Cari : ",
+    //             "oPaginate": {
+    //                 "sFirst": "Hal. Pertama",
+    //                 "sPrevious": "Sebelumnya",
+    //                 "sNext": "Berikutnya",
+    //                 "sLast": "Hal. Terakhir"
+    //             }
+    //         },
+    //         "language": {
+    //             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+    //             "infoEmpty": "Menampilkan 0 dari _MAX_ data",
+    //             "zeroRecords": "Tidak ada data",
+    //             "sInfoFiltered":   "",
+    //         },
+    //         columnDefs: [
+    //             { "width": "50px", "targets": [0] }
+    //         ]
+    //     });
+    // });
 
     $('#kt_datatable tbody').on('click', '.hapus', function () {
         var id = $(this).attr('data-id');
