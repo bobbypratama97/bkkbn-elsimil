@@ -52,7 +52,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\User::class, Auth::user()->role, 'index']);
 
@@ -109,12 +109,16 @@ class UserController extends Controller
             $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id);
         }
 
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $user = $user->where('users.name', 'like', '%' . $request->name . '%');
+        }
+
         $paginate = $user->paginate(10);
         $user = $paginate->items();
         // $user = $user->get();
-
-
-        return view('user.index', compact('user','paginate'));
+        return view('user.index', compact('user','paginate', 'name'));
     }
 
     public function show($id) {

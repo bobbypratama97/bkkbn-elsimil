@@ -26,6 +26,13 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <form class="form-inline mb-7" method="GET" action="{{ route('admin.user.index') }}">
+                            <div class="form-group mr-3">
+                                <label for="name">Nama Admin : </label>
+                                <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="" aria-controls="kt_datatable" _vkenabled="true">
+                            </div>
+                            <button type="submit" class="btn btn-success">Filter </button>
+                        </form>
                         <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
                             <thead>
                                 <tr>
