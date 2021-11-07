@@ -73,14 +73,14 @@ class LoginController extends Controller
             return redirect()->back()
                 ->withInput($request->only($this->username()))
                 ->withErrors([
-                    'error' => 'Login gagal', 
+                    'error' => 'Login gagal',
                     'keterangan' => 'Data yang Anda masukkan salah. Silahkan ulangi kembali.'
                 ]);
         } else if (!Hash::check($password, $user->password, [])) {
             return redirect()->back()
                 ->withInput($request->only($this->username()))
                 ->withErrors([
-                    'error' => 'Login gagal', 
+                    'error' => 'Login gagal',
                     'keterangan' => 'Data yang Anda masukkan salah. Silahkan ulangi kembali.'
                 ]);
         } else {
@@ -88,30 +88,30 @@ class LoginController extends Controller
                 return redirect()->back()
                     ->withInput($request->only($this->username()))
                     ->withErrors([
-                        'error' => 'Akun Anda belum aktif.', 
+                        'error' => 'Akun Anda belum aktif.',
                         'keterangan' => 'Silahkan verifikasi email yang kami kirimkan terlebih dahulu.'
                     ]);
             } else if ($user->is_active == '2') {
                 return redirect()->back()
                     ->withInput($request->only($this->username()))
                     ->withErrors([
-                        'suspend' => 'Akun Anda telah disuspend.', 
+                        'suspend' => 'Akun Anda telah disuspend.',
                         'keterangan' => 'Silahkan menghubungi Customer Service untuk aktivasi kembali.'
                     ]);
             } else if ($user->is_active == '3') {
                 return redirect()->back()
                     ->withInput($request->only($this->username()))
                     ->withErrors([
-                        'error' => 'Akun dalam proses menunggu approval.', 
+                        'error' => 'Akun dalam proses menunggu approval.',
                         'keterangan' => 'Mohon bersabar menunggu sampai proses approval selesai.'
                     ]);
             } else {
                 if (Auth::attempt([$this->username() => $email, 'password' => $password])) {
                     $user = Auth::user();
-
                     Session::forget('role');
 
                     $role = UserRole::getACL(Auth::id());
+
                     Session::put('role', $role);
                     Session::save();
 
@@ -122,28 +122,28 @@ class LoginController extends Controller
 
         /*if (Auth::attempt([$this->username() => $email, 'password' => $password])) {
             $user = Auth::user();
-            echo '<pre>'; print_r ($user); 
+            echo '<pre>'; print_r ($user);
             echo $user->is_active;
             die;
             if ($user->is_active == '0') {
                 return redirect()->back()
                     ->withInput($request->only($this->username()))
                     ->withErrors([
-                        'error' => 'Akun Anda belum aktif.', 
+                        'error' => 'Akun Anda belum aktif.',
                         'keterangan' => 'Silahkan verifikasi email yang kami kirimkan terlebih dahulu.'
                     ]);
             } else if ($user->is_active == '2') {
                 return redirect()->back()
                     ->withInput($request->only($this->username()))
                     ->withErrors([
-                        'suspend' => 'Akun Anda telah disuspend.', 
+                        'suspend' => 'Akun Anda telah disuspend.',
                         'keterangan' => 'Silahkan menghubungi Customer Service untuk aktivasi kembali.'
                     ]);
             } else if ($user->is_active == '3') {
                 return redirect()->back()
                     ->withInput($request->only($this->username()))
                     ->withErrors([
-                        'error' => 'Akun Anda dalam proses menunggu approval.', 
+                        'error' => 'Akun Anda dalam proses menunggu approval.',
                         'keterangan' => 'Silahkan menghubungi Customer Service untuk aktivasi kembali.'
                     ]);
             } else {
@@ -153,7 +153,7 @@ class LoginController extends Controller
             return redirect()->back()
                 ->withInput($request->only($this->username()))
                 ->withErrors([
-                    'error' => 'Login gagal', 
+                    'error' => 'Login gagal',
                     'keterangan' => 'Data yang Anda masukkan salah. Silahkan ulangi kembali.'
                 ]);
         }*/
