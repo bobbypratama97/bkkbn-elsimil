@@ -15,10 +15,8 @@ class CreateKuisHamilKontakAwalsTable extends Migration
     {
         Schema::create('kuisioner_hamil_kontak_awal', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_user')->unsigned()->index();
-            $table->bigInteger('id_member')->unsigned()->index();
-            $table->foreign('id_user')->references('id')->on('users');
-            $table->foreign('id_member')->references('id')->on('members');
+            $table->integer('id_user');
+            $table->integer('id_member');
             $table->string('nama');
             $table->string('nik');
             $table->integer('usia');
