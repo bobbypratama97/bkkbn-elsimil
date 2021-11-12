@@ -25,7 +25,25 @@ class AuthController extends Controller
 
     public function register(Request $request) {
         try {
-            $existPhone = Member::where('no_telp', substr($request->phone, 1))->first();
+            if (empty($request->no_telp)) {
+                return response()->json([
+                    'code' => 401,
+                    'error' => true,
+                    'title' => 'Perhatian',
+                    'message' => 'Nomor telepon kosong.'
+                ], 401);
+            }
+
+            if (empty($request->email)) {
+                return response()->json([
+                    'code' => 401,
+                    'error' => true,
+                    'title' => 'Perhatian',
+                    'message' => 'Email kosong.'
+                ], 401);
+            }
+
+            $existPhone = Member::where('no_telp', substr($request->no_telp, 1))->first();
 
             if ($existPhone) {
                 return response()->json([
