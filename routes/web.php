@@ -97,6 +97,10 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		//Route::resource('approval', 'ApprovalController')->except(['destroy']);
 	});
 
+    Route::prefix('kuesioner-ibu-hamil')->group(function() {
+        Route::get('kontak-awal/save','KuisHamilController@storeKontakAwal')->name('kontakawal-save');
+	});
+
 	Route::prefix('artikel')->group(function() {
 		Route::get('kategori/sort', 'KategoriController@sort')->name('kategori.sort');
 		Route::post('kategori/submit', 'KategoriController@submit')->name('kategori.submit');
@@ -126,6 +130,8 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::get('member/{id}/result', 'MemberController@result')->name('member.result');
 		Route::post('member/kelola', 'MemberController@kelola')->name('member.kelola');
 		Route::resource('member', 'MemberController')->except(['create', 'store', 'destroy', 'edit', 'update']);
+
+        Route::get('member/{id}/kuesioner-ibu-hamil', 'MemberController@indexIbuHamil')->name('member.ibuhamil');
 
 		Route::get('user/{id}/delegasi', 'UserController@delegasi')->name('user.delegasi');
 		Route::post('user/submit', 'UserController@submit')->name('user.submit');

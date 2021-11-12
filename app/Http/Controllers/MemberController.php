@@ -506,4 +506,9 @@ class MemberController extends Controller
         die();
     }
 
+    public function indexIbuHamil()
+    {
+        return view('kuis_ibuhamil.index');
+    }
+
 }
