@@ -18,7 +18,7 @@ class NotifikasiOTP extends Mailable
     }
  
     public function build() {
-        return $this->from('sender@example.com', 'ELSIMIL')
+        return $this->from('admin@elsimil.com', 'ELSIMIL')
             ->subject('Atur Ulang Kata Sandi Akun')
             ->view('mails.demo');
     }

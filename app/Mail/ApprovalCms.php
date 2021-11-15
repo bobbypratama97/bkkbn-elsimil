@@ -18,7 +18,7 @@ class ApprovalCms extends Mailable
     }
  
     public function build() {
-        return $this->from('sender@example.com', 'ELSIMIL')
+        return $this->from('admin@elsimil.com', 'ELSIMIL')
             ->subject('Konfirmasi Approval Akun')
             ->markdown('mails.cmsapprove');
     }

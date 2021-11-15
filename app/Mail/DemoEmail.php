@@ -35,7 +35,7 @@ class DemoEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('sender@example.com', 'ELSIMIL')
+        return $this->from('admin@elsimil.com', 'ELSIMIL')
             ->subject('Notifikasi OTP')
             ->view('mails.demo');
                     //->text('mails.demo_plain')
