@@ -21,11 +21,10 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-3">
                     <div class="card-title">
-                        <h3 class="card-label">Data Ibu Hamil : Pevita Pearce </h3>
+                        <h3 class="card-label">Data Ibu Hamil : {{$name}} </h3>
                     </div>
                     <div class="card-toolbar">
                         <a href="{{url()->previous()}}" class="btn btn-primary font-weight-bolder" style="background-color: #F64F61">Kembali</a>
-
                     </div>
                 </div>
                 <div class="card-body">
@@ -35,19 +34,19 @@
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon2-user"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">Nama : </span>
+                                        <span class="form-control-plaintext font-weight-bolder">Nama : {{$name}} </span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon2-website"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">No KTP : </span>
+                                        <span class="form-control-plaintext font-weight-bolder">No KTP :  {{$no_ktp}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon-rotate"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">Gender : </span>
+                                        <span class="form-control-plaintext font-weight-bolder">Gender : {{$gender}}{{$id}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -57,19 +56,19 @@
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon2-user"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">Usia : </span>
+                                        <span class="form-control-plaintext font-weight-bolder">Usia :  {{$umur}} Tahun</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon-calendar-with-a-clock-time-tools"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">Tempat / Tgl Lahir :</span>
+                                        <span class="form-control-plaintext font-weight-bolder">Tempat / Tgl Lahir : {{$tempat_lahir}} , {{ \Carbon\Carbon::parse($tanggal_lahir)->format('d F Y')}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon-placeholder-3"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">Lokasi : </span>
+                                        <span class="form-control-plaintext font-weight-bolder">Lokasi : {{$alamat}} </span>
                                     </div>
                                 </div>
                             </div>
@@ -87,31 +86,187 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="card card-custom bg-light-success card-shadowless gutter-b">
-                                <div class="card-body my-3">
-                                    <a class="card-title font-weight-bolder text-success text-hover-state-dark font-size-h6 mb-4 d-block">Ulasan Pendamping</a>
-                                    <div class="font-weight-bold font-size-md">
-                                        TEST
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-1.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Kontak Awal</a>
+                                            <a href="{{route('admin.kontakawal-create',$id)}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="card card-custom bg-light-success card-shadowless gutter-b">
-                                <div class="card-body my-3">
-                                    <a class="card-title font-weight-bolder text-success text-hover-state-dark font-size-h6 mb-4 d-block">Ulasan Pendamping</a>
-                                    <div class="font-weight-bold font-size-md">
-                                        TEST
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-2.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 12 Minggu</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="card card-custom bg-light-success card-shadowless gutter-b">
-                                <div class="card-body my-3">
-                                    <a class="card-title font-weight-bolder text-success text-hover-state-dark font-size-h6 mb-4 d-block">Ulasan Pendamping</a>
-                                    <div class="font-weight-bold font-size-md">
-                                        TEST
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-2.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 16 Minggu</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-2.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 20 Minggu</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-2.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 24 Minggu</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-2.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 28 Minggu</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-2.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 32 Minggu</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-2.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 36 Minggu</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-3.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Sesaat Setelah Persalinan</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <span>Sudah Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card card-custom card-shadowless gutter-b" style="background-color: #E8EFFF">
+                                <div class="card-body my-3" >
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-12">
+                                            <img src="{{url('/assets/media/svg/illustrations/periode-3.png')}}" alt="..." class="img-thumbnail">
+                                        </div>
+                                        <div class="col-lg-9 col-md-12" style="margin-top: 1%">
+                                            <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Pasca Salin Akhir Masa Nifas</a>
+                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                <span>Belum Mengisi Kuesioner </span>
+                                                <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

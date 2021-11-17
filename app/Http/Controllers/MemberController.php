@@ -506,9 +506,35 @@ class MemberController extends Controller
         die();
     }
 
-    public function indexIbuHamil()
+    public function indexIbuHamil($id)
     {
-        return view('kuis_ibuhamil.index');
+        $member = Member::where('id', $id)->first();
+        if($member != null){
+            $name = $member->name;
+            $no_ktp =  Helper::decryptNik($member->no_ktp);
+            if($member -> gender == 1){
+                $gender = "Pria";
+            }else{
+                $gender = "Wanita";
+            }
+            $today = date("Y-m-d");
+            $ageCalculation = date_diff(date_create($member->tgl_lahir), date_create($today));
+            $age = $ageCalculation->format('%y');
+            $tempat_lahir = $member->tempat_lahir;
+            $tanggal_lahir = $member->tgl_lahir;
+            $alamat = $member->alamat;
+
+        }
+        return view('kuis_ibuhamil.index',[
+            "id" => $id,
+            "name" => $name,
+            "no_ktp" => $no_ktp,
+            "gender" => $gender,
+            "umur" => $age,
+            "tempat_lahir" => $tempat_lahir,
+            "tanggal_lahir" => $tanggal_lahir,
+            "alamat" => $alamat
+        ]);
     }
 
 }
