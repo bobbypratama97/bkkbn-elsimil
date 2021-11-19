@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api\v1', 'prefix' => 'v1'], function() {
 	Route::get('/test',function(){
-		return "ok"; 
+		return "ok";
    });
 	Route::post('register', 'AuthController@register');
 	Route::post('login', 'AuthController@login');
@@ -76,4 +76,6 @@ Route::group(['namespace' => 'Api\v1', 'prefix' => 'v1'], function() {
 	Route::post('notifinsert', 'NotifikasiController@notifinsert');
 
 	Route::post('version', 'SettingController@check_version_code');
+
+    Route::get('kontak-awal/{id}','KuisHamilController@getKontakAwalResult');
 });

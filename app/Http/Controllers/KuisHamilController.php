@@ -50,6 +50,8 @@ class KuisHamilController extends Controller
             $alamat = $member->alamat;
 
         }
+        #data kuesioner
+        $data = KuisHamilKontakAwal::where('id_member',$id)->first();
         return view('kuis_ibuhamil.kontakawal_create',[
             "id" => $id,
             "name" => $name,
@@ -58,7 +60,8 @@ class KuisHamilController extends Controller
             "umur" => $age,
             "tempat_lahir" => $tempat_lahir,
             "tanggal_lahir" => $tanggal_lahir,
-            "alamat" => $alamat
+            "alamat" => $alamat,
+            "data_kuesioner" => $data
         ]);
     }
 

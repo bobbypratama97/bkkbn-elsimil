@@ -94,7 +94,7 @@
 
                     <div class="row">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : </button>
+                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : {{$data_kuesioner->created_at}}</button>
                         </div>
                         <div class="col-lg-8">
                             <button type="button" class="btn btn-sm btn-block" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
@@ -102,45 +102,45 @@
                     </div>
                     <div class="row" style="margin-top: 1%">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : </button>
+                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : {{$data_kuesioner->updated_at}} </button>
                         </div>
                         <div class="col-lg-8">
                             <form action="{{route('admin.kontakawal-save',$id)}}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="nama"> 1. Nama</label>
-                                    <input type="text" class="text form-control" name="nama">
+                                    <input type="text" class="text form-control" name="nama" value="{{$data_kuesioner->nama}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 2. NIK</label>
-                                    <input type="text" class="text form-control" name="nik">
+                                    <input type="text" class="text form-control" name="nik" value="{{$data_kuesioner->nik}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 3. Usia</label>
-                                    <input type="number" class="number form-control" name="usia">
+                                    <input type="number" class="number form-control" name="usia" value={{$data_kuesioner->usia}}>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 4. Alamat</label>
-                                    <input type="text" class="text form-control" name="alamat">
+                                    <input type="text" class="text form-control" name="alamat" value={{$data_kuesioner->alamat}}>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 5. Jumlah Anak</label>
-                                    <input type="number" class="number form-control" name="jumlah_anak">
+                                    <input type="number" class="number form-control" name="jumlah_anak" value="{{$data_kuesioner->jumlah_anak}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 6. Usia Anak Terakhir</label>
-                                    <input type="number" class="number form-control" name="usia_anak_terakhir">
+                                    <input type="number" class="number form-control" name="usia_anak_terakhir" value={{$data_kuesioner->usia_anak_terakhir}}>
                                 </div>
                                 <div class="form-group">
                                     <label for="">7. Anak Stunting</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="anak_stunting" value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="anak_stunting"  <?php echo ($data_kuesioner->anak_stunting =='1')? 'checked':'' ?>   value="1" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="anak_stunting" value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="anak_stunting" <?php echo ($data_kuesioner->anak_stunting =='0')? 'checked':'' ?>  value="0" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
@@ -148,18 +148,18 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">8. Hari Pertama Haid Terakhir</label>
-                                    <input type="date" name="hari_pertama_haid_terakhir" class="form-control">
+                                    <input type="date" name="hari_pertama_haid_terakhir" class="form-control" value="{{$data_kuesioner->hari_pertama_haid_terakhir}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="">9. Sumber Air Bersih</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="sumber_air_bersih" value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="sumber_air_bersih"  <?php echo ($data_kuesioner->sumber_air_bersih =='1')? 'checked':'' ?>  value="1" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="sumber_air_bersih" value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="sumber_air_bersih" <?php echo ($data_kuesioner->sumber_air_bersih =='0')? 'checked':'' ?>  value="0" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
@@ -168,13 +168,13 @@
                                 <div class="form-group">
                                     <label for="">10. Rumah Layak Huni</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rumah_layak_huni" value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="rumah_layak_huni"  <?php echo ($data_kuesioner->rumah_layak_huni =='1')? 'checked':'' ?> value="1" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rumah_layak_huni" value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="rumah_layak_huni" <?php echo ($data_kuesioner->rumah_layak_huni =='0')? 'checked':'' ?> value="0" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
@@ -183,13 +183,13 @@
                                 <div class="form-group">
                                     <label for="">11. Bansos</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="bansos" value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="bansos"  <?php echo ($data_kuesioner->bansos =='1')? 'checked':'' ?> value="1" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="bansos" value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="bansos"  <?php echo ($data_kuesioner->bansos =='0')? 'checked':'' ?> value="0" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
