@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ],
 
     /*
@@ -232,7 +233,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Helper' => App\Helpers\Helper::class,
-
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class, 
     ],
 
 ];
