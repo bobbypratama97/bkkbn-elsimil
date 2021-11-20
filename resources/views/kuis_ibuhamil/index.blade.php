@@ -46,7 +46,7 @@
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon-rotate"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">Gender : {{$gender}}{{$id}}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">Gender : {{$gender}}</span>
                                     </div>
                                 </div>
                             </div>
