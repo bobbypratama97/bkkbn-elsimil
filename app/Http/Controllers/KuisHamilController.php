@@ -83,69 +83,69 @@ class KuisHamilController extends Controller
      */
     public function storeKontakAwal(Request $request)
     {
-         $this->validate($request,[
-            'nama' => 'required',
-            'nik' => 'required',
-            'usia' => 'required',
-            'alamat' => 'required',
-            'jumlah_anak' => 'required',
-            'usia_anak_terakhir' => 'required',
-            'anak_stunting' => 'required',
-            'hari_pertama_haid_terakhir' => 'required',
-            'sumber_air_bersih' => 'required',
-            'rumah_layak_huni' => 'required',
-            'bansos' => 'required'
-        ],
-        [
-            'nama.required' => 'Nama harus diisi.',
-            'nik.required' => 'NIK harus diisi.',
-            'usia.required' => 'Usia harus diisi.',
-            'alamat.required' => 'Alamat harus diisi.',
-            'jumlah_anak.required' => 'Jumlah anak harus diisi.',
-            'usia_anak_terakhir.required' => 'Usia anak terakhir harus diisi.',
-            'anak_stunting.required' => 'Anak stunting harus diisi.',
-            'hari_pertama_haid_terakhir.required' => 'Tanggal hari pertama haid harus diisi.',
-            'sumber_air_bersih.required' => 'Sumber air bersih harus diisi.',
-            'rumah_layak_huni.required' => 'Rumah layak huni bersih harus diisi.',
-            'bansos.required' => 'Bansos bersih harus diisi.',
-        ]);
-        $kontakAwal = new KuisHamilKontakAwal;
-        $kontakAwal->id_user = Auth::user()->id;
-        $kontakAwal->id_member = $request->id;
-        $kontakAwal->nama = $request->nama;
-        $kontakAwal->nik = $request->nik;
-        $kontakAwal->usia = $request->usia;
-        $kontakAwal->alamat = $request->alamat;
-        $kontakAwal->jumlah_anak = $request->jumlah_anak;
-        $kontakAwal->usia_anak_terakhir = $request->usia_anak_terakhir;
-        $kontakAwal->anak_stunting = $request->anak_stunting;
-        $kontakAwal->hari_pertama_haid_terakhir = $request->hari_pertama_haid_terakhir;
-        $kontakAwal->sumber_air_bersih = $request->sumber_air_bersih;
-        $kontakAwal->rumah_layak_huni = $request->rumah_layak_huni;
-        $kontakAwal->bansos = $request->bansos;
-        // dd($kontakAwal);
-        $kontakAwal->save();
-        // dd("masuk2");
-        $message = 'Kuesioner hamil kontak awal berhasil ditambahkan';
-        return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
-
-        // $insertKontakAwal = array(
-        //     'id_user' => Auth::user()->id,
-        //     'id_member' => $request->id,
-        //     'nama' => $request->nama,
-        //     'nik' => $request->nik,
-        //     'usia' => $request->usia,
-        //     'alamat' => $request->alamat,
-        //     'jumlah_anak' => $request->jumlah_anak,
-        //     'usia_anak_terakhir' => $request->usia_anak_terakhir,
-        //     'anak_stunting' => $request->anak_stunting,
-        //     'hari_pertama_haid_terakhir' => $request->hari_pertama_haid_terakhir,
-        //     'sumber_air_bersih' => $request->sumber_air_bersih,
-        //     'rumah_layak_huni' => $request->rumah_layak_huni,
-        //     'bansos' => $request->bansos
-        // );
-        // KuisHamilKontakAwal::create($insertKontakAwal);
-
+        $checkExisting = KuisHamilKontakAwal::where('nik',$request->nik)->first();
+        if($checkExisting != null){
+            KuisHamilKontakAwal::where('nik', $request->nik)
+            ->update([
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'usia' => $request->usia,
+                'alamat' => $request->alamat,
+                'jumlah_anak' => $request->jumlah_anak,
+                'usia_anak_terakhir' => $request->usia_anak_terakhir,
+                'anak_stunting' => $request->anak_stunting,
+                'hari_pertama_haid_terakhir' => $request->hari_pertama_haid_terakhir,
+                'sumber_air_bersih' => $request->sumber_air_bersih,
+                'rumah_layak_huni' => $request->rumah_layak_huni,
+                'bansos' => $request->bansos
+            ]);
+            $message = 'Kuesioner hamil kontak awal berhasil diperbaharui';
+            return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
+        }else{
+            $this->validate($request,[
+                'nama' => 'required',
+                'nik' => 'required',
+                'usia' => 'required',
+                'alamat' => 'required',
+                'jumlah_anak' => 'required',
+                'usia_anak_terakhir' => 'required',
+                'anak_stunting' => 'required',
+                'hari_pertama_haid_terakhir' => 'required',
+                'sumber_air_bersih' => 'required',
+                'rumah_layak_huni' => 'required',
+                'bansos' => 'required'
+            ],
+            [
+                'nama.required' => 'Nama harus diisi.',
+                'nik.required' => 'NIK harus diisi.',
+                'usia.required' => 'Usia harus diisi.',
+                'alamat.required' => 'Alamat harus diisi.',
+                'jumlah_anak.required' => 'Jumlah anak harus diisi.',
+                'usia_anak_terakhir.required' => 'Usia anak terakhir harus diisi.',
+                'anak_stunting.required' => 'Anak stunting harus diisi.',
+                'hari_pertama_haid_terakhir.required' => 'Tanggal hari pertama haid harus diisi.',
+                'sumber_air_bersih.required' => 'Sumber air bersih harus diisi.',
+                'rumah_layak_huni.required' => 'Rumah layak huni bersih harus diisi.',
+                'bansos.required' => 'Bansos bersih harus diisi.',
+            ]);
+            $kontakAwal = new KuisHamilKontakAwal;
+            $kontakAwal->id_user = Auth::user()->id;
+            $kontakAwal->id_member = $request->id;
+            $kontakAwal->nama = $request->nama;
+            $kontakAwal->nik = $request->nik;
+            $kontakAwal->usia = $request->usia;
+            $kontakAwal->alamat = $request->alamat;
+            $kontakAwal->jumlah_anak = $request->jumlah_anak;
+            $kontakAwal->usia_anak_terakhir = $request->usia_anak_terakhir;
+            $kontakAwal->anak_stunting = $request->anak_stunting;
+            $kontakAwal->hari_pertama_haid_terakhir = $request->hari_pertama_haid_terakhir;
+            $kontakAwal->sumber_air_bersih = $request->sumber_air_bersih;
+            $kontakAwal->rumah_layak_huni = $request->rumah_layak_huni;
+            $kontakAwal->bansos = $request->bansos;
+            $kontakAwal->save();
+            $message = 'Kuesioner hamil kontak awal berhasil ditambahkan';
+            return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
+        }
     }
 
     /**
