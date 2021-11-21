@@ -94,10 +94,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Kontak Awal</a>
-                                            <a href="{{route('admin.kontakawal-create',$id)}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </a>
+                                            @if ($kuesionerData[0]['created_at'] != null)
+                                                <a href="{{route('admin.kontakawal-create',$id)}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="{{route('admin.kontakawal-create',$id)}}" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -112,10 +119,18 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 12 Minggu</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                            @if ($kuesionerData[1]['created_at'] != null)
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -130,10 +145,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 16 Minggu</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                            @if ($kuesionerData[2]['created_at'] != null)
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -150,10 +172,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 20 Minggu</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                            @if ($kuesionerData[3]['created_at'] != null)
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -168,10 +197,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 24 Minggu</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                            @if ($kuesionerData[4]['created_at'] != null)
+                                            <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
                                                 <span>Sudah Mengisi Kuesioner </span>
                                                 <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                            </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -186,10 +222,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 28 Minggu</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                            @if ($kuesionerData[5]['created_at'] != null)
+                                            <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
                                                 <span>Sudah Mengisi Kuesioner </span>
                                                 <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -206,10 +249,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 32 Minggu</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                            @if ($kuesionerData[6]['created_at'] != null)
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -224,10 +274,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 36 Minggu</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                            @if ($kuesionerData[7]['created_at'] != null)
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -242,10 +299,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Sesaat Setelah Persalinan</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
-                                            </button>
+                                            @if ($kuesionerData[8]['created_at'] != null)
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -262,10 +326,17 @@
                                         </div>
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Pasca Salin Akhir Masa Nifas</a>
-                                            <button type="button" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
-                                                <span>Belum Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
-                                            </button>
+                                            @if ($kuesionerData[9]['created_at'] != null)
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                </a>
+                                            @else
+                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                    <span>Belum Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
