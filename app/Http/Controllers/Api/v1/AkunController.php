@@ -78,6 +78,7 @@ class AkunController extends Controller
                 'members.rw',
                 'members.rt',
                 'members.kodepos',
+                'members.rencana_pernikahan',
                 'members.profile_code as profile_id'
             ])
             ->where('members.id', $request->id)
@@ -181,6 +182,7 @@ class AkunController extends Controller
                 'kelurahan_id' => $request->kelurahan_id,
                 'rt' => $request->rt,
                 'rw' => $request->rw,
+                'rencana_pernikahan' => $request->rencana_pernikahan,
                 'kodepos' => $request->kodepos,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => $request->id
