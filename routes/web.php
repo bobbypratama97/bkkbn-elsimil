@@ -102,7 +102,6 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('kategori/submit', 'KategoriController@submit')->name('kategori.submit');
 		Route::post('kategori/delete', 'KategoriController@delete')->name('kategori.delete');
 		Route::post('kategori/upload', 'KategoriController@upload')->name('kategori.upload');
-		Route::get('kategori/fetch', 'KategoriController@fetchData')->name('kategori.fetch');
 		Route::resource('kategori', 'KategoriController')->except(['destroy']);
 
 		Route::post('artikel/upload', 'ArtikelController@upload')->name('artikel.upload');

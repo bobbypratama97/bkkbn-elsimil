@@ -39,26 +39,38 @@ class ArtikelController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Artikel::class, Auth::user()->role, 'index']);
 
-        $news = News::leftJoin('news_kategori as nk', function($join) {
+        $paginate = News::leftJoin('news_kategori as nk', function($join) {
             $join->on('nk.id', '=', 'news.kategori_id');
         })
         ->leftJoin('users', function($join) {
             $join->on('users.id', '=', 'news.created_by');
         })
         ->whereNull('news.deleted_by')
-        ->whereNull('nk.deleted_by')
+        ->whereNull('nk.deleted_by');
+
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('nk.name', 'like', '%' . $request->name . '%')
+                ->orWhere('news.title', 'like', '%' . $request->name . '%')
+                ->orWhere('users.name', 'like', '%' . $request->name . '%');
+        }
+
+        $paginate = $paginate
         ->orderBy('news.id', 'DESC')
         ->select([
             'news.id', 'news.title', 'news.thumbnail', 'news.status', 'news.created_at',
             'nk.name as parent',
             'users.name as nama'
-        ])->get();
+        ])->paginate(10);
 
-        return view('artikel.index', ['news' => $news]);
+        $news = $paginate->items();
+
+        return view('artikel.index', ['news' => $news, 'paginate'=> $paginate]);
     }
 
     public function create() {

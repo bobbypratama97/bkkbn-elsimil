@@ -50,18 +50,18 @@ class DashboardController extends Controller
         }
 
         if ($role->role_id == '2') {
-            $whereChat = " WHERE members.provinsi_id = {$auth->provinsi_id}";
-            $whereReview = " AND members.provinsi_id = {$auth->provinsi_id}";
+            $whereChat = " WHERE members.provinsi_id = ". $auth->provinsi_id ?? null;
+            $whereReview = " AND members.provinsi_id = ". $auth->provinsi_id ?? null;
 
-            $whereChats = " WHERE mb.provinsi_id = {$auth->provinsi_id}";
+            $whereChats = " WHERE mb.provinsi_id = ". $auth->provinsi_id ?? null;
 
-            $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = {$auth->provinsi_id}";
+            $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = ". $auth->provinsi_id ?? null;
 
-            $whereKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = {$auth->provinsi_id}";
+            $whereKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null;
 
-            $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = {$auth->provinsi_id}";
+            $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null;
 
-            $whereUnmap = " WHERE md.member_id IS NULL AND mb.provinsi_id = {$auth->provinsi_id}";
+            $whereUnmap = " WHERE md.member_id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null;
 
             $provcur = $auth->provinsi_id;
             $kabcur = '';
@@ -69,18 +69,18 @@ class DashboardController extends Controller
         }
 
         if ($role->role_id == '3') {
-            $whereChat = " WHERE members.provinsi_id = {$auth->provinsi_id} AND members.kabupaten_id = {$auth->kabupaten_id}";
-            $whereReview = " AND members.provinsi_id = {$auth->provinsi_id} AND members.kabupaten_id = {$auth->kabupaten_id}";
+            $whereChat = " WHERE members.provinsi_id = ". $auth->provinsi_id ?? null ." AND members.kabupaten_id = ". $auth->kabupaten_id ?? null;
+            $whereReview = " AND members.provinsi_id = ". $auth->provinsi_id ?? null ." AND members.kabupaten_id = ". $auth->kabupaten_id ?? null;
 
-            $whereChats = " WHERE mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id}";
+            $whereChats = " WHERE mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ". $auth->kabupaten_id ?? null;
 
-            $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id} AND mb.kecamatan_id = {$auth->kecamatan_id}";
+            $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ". $auth->kabupaten_id ?? null ." AND mb.kecamatan_id = ". $auth->kecamatan_id ?? null;
 
-            $whereKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id}";
+            $whereKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ". $auth->kabupaten_id ?? null;
 
-            $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id}";
+            $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ". $auth->kabupaten_id ?? null;
 
-            $whereUnmap = " WHERE md.member_id IS NULL AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id}";
+            $whereUnmap = " WHERE md.member_id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ".$auth->kabupaten_id ?? null;
 
             $provcur = $auth->provinsi_id;
             $kabcur = $auth->kabupaten_id;
@@ -88,18 +88,14 @@ class DashboardController extends Controller
         }
 
         if ($role->role_id == '4') {
-            $whereChat = " WHERE members.provinsi_id = {$auth->provinsi_id} AND members.kabupaten_id = {$auth->kabupaten_id} AND members.kecamatan_id = {$auth->kecamatan_id}";
-            $whereReview = " AND members.provinsi_id = {$auth->provinsi_id} AND members.kabupaten_id = {$auth->kabupaten_id} AND members.kecamatan_id = {$auth->kecamatan_id}";
+            $whereChat = " WHERE members.provinsi_id = ".$auth->provinsi_id ?? null." AND members.kabupaten_id = ".$auth->kabupaten_id ?? null." AND members.kecamatan_id = ".$auth->kecamatan_id ?? null;
+            $whereReview = " AND members.provinsi_id = ".$auth->provinsi_id ?? null." AND members.kabupaten_id = ".$auth->kabupaten_id ?? null." AND members.kecamatan_id = ".$auth->kecamatan_id ?? null;
 
-            $whereChats = " WHERE ch.responder_id = {$auth->id} AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id} AND mb.kecamatan_id = {$auth->kecamatan_id}";
-
-            $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id} AND mb.kecamatan_id = {$auth->kecamatan_id}";
-
-            $whereKuis = " WHERE kr.status = 1 AND kr.responder_id = {$auth->id} AND krc.id IS NULL AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id} AND mb.kecamatan_id = {$auth->kecamatan_id}";
-
-            $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id} AND mb.kecamatan_id = {$auth->kecamatan_id}";
-
-            $whereUnmap = " WHERE md.member_id IS NULL AND mb.provinsi_id = {$auth->provinsi_id} AND mb.kabupaten_id = {$auth->kabupaten_id} AND mb.kecamatan_id = {$auth->kecamatan_id}";
+            $whereChats = " WHERE ch.responder_id = ".$auth->id." AND mb.provinsi_id = ".$auth->provinsi_id ?? null." AND mb.kabupaten_id = ".$auth->kabupaten_id ?? null." AND mb.kecamatan_id = ".$auth->kecamatan_id ?? null;
+            $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = ".$auth->provinsi_id ?? null ." AND mb.kabupaten_id = ".$auth->kabupaten_id ?? null ." AND mb.kecamatan_id = ".$auth->kecamatan_id ?? null;
+            $whereKuis = " WHERE kr.status = 1 AND kr.responder_id = {$auth->id} AND krc.id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ".$auth->kabupaten_id ?? null ." AND mb.kecamatan_id = ".$auth->kecamatan_id ?? null;
+            $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ". $auth->kabupaten_id ?? null ." AND mb.kecamatan_id = ". $auth->kecamatan_id ?? null;
+            $whereUnmap = " WHERE md.member_id IS NULL AND mb.provinsi_id = ". $auth->provinsi_id ?? null ." AND mb.kabupaten_id = ". $auth->kabupaten_id ?? null ." AND mb.kecamatan_id = ". $auth->kecamatan_id ?? null;
 
             $provcur = $auth->provinsi_id;
             $kabcur = $auth->kabupaten_id;
@@ -144,7 +140,6 @@ class DashboardController extends Controller
             LEFT JOIN member_delegate md ON md.member_id = mb.id
             {$whereUnmap}
         ";
-        //echo $infounmapping;
         $resallunmap = DB::select($infounmapping);
 
         $sqlchatalloc = "
