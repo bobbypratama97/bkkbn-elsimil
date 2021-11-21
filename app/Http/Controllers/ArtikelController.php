@@ -70,7 +70,7 @@ class ArtikelController extends Controller
 
         $news = $paginate->items();
 
-        return view('artikel.index', ['news' => $news, 'paginate'=> $paginate]);
+        return view('artikel.index', ['news' => $news, 'paginate'=> $paginate, 'name' => $name]);
     }
 
     public function create() {

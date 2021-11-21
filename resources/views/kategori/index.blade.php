@@ -65,7 +65,7 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
-                                    <th>Thumbnail</th>
+                                    <th width="10%">Thumbnail</th>
                                     <th>Kategori</th>
                                     <th width="40%">Deskripsi</th>
                                     <th>Warna Background</th>
@@ -76,6 +76,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(count($kategori) == 0)
+                                <tr><td colspan="10" align="center">Data tidak ditemukan.</td></tr>
+                                @endif
                                 @foreach($kategori as $key => $row)
                                 <tr>
                                     <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
