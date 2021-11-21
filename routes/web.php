@@ -102,6 +102,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('kategori/submit', 'KategoriController@submit')->name('kategori.submit');
 		Route::post('kategori/delete', 'KategoriController@delete')->name('kategori.delete');
 		Route::post('kategori/upload', 'KategoriController@upload')->name('kategori.upload');
+		Route::get('kategori/fetch', 'KategoriController@fetchData')->name('kategori.fetch');
 		Route::resource('kategori', 'KategoriController')->except(['destroy']);
 
 		Route::post('artikel/upload', 'ArtikelController@upload')->name('artikel.upload');
@@ -124,6 +125,8 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 	Route::prefix('user-management')->group(function() {
 		Route::post('member/blokir', 'MemberController@blokir')->name('member.blokir');
 		Route::get('member/{id}/result', 'MemberController@result')->name('member.result');
+		Route::get('member/{id}/logbook', 'MemberController@logbook')->name('member.logbook');
+		Route::post('member/logbook-update', 'MemberController@logbookUpdate')->name('member.logbook_update');
 		Route::post('member/kelola', 'MemberController@kelola')->name('member.kelola');
 		Route::resource('member', 'MemberController')->except(['create', 'store', 'destroy', 'edit', 'update']);
 

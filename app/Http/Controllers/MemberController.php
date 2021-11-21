@@ -19,11 +19,14 @@ use Redirect;
 use Helper;
 
 use App\Member;
+use App\Logbook;
 use App\MemberCouple;
 use App\MemberDelegate;
 use App\MemberDelegateLog;
 use App\ChatHeader;
 use App\KuisResult;
+use App\Kuis;
+use App\KuisResultDetail;
 
 use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
@@ -252,6 +255,242 @@ class MemberController extends Controller
         ->get();
 
         return view('member.result', compact('member', 'res'));
+    }
+
+    public function logbookUpdate (Request $request) {
+
+
+        $logbook = Logbook::where([['id_user','=', $request->id_user],['id_member','=', $request->id_member]])->first();
+
+        if(!$logbook){
+            $logbook = new Logbook();
+        }
+
+        $logbook->id_user = $request->id_user;
+        $logbook->id_member = $request->id_member;
+        $logbook->suplemen_makanan = isset($request->suplemenMakanan) ? 1 : 0;
+        $logbook->suplemen_darah = isset($request->suplemenDarah) ? 1 : 0;
+        $logbook->kie = isset($request->kie) ? 1 : 0;
+        $logbook->rujukan = isset($request->rujukan) ? 1 : 0;
+        
+        if($logbook->save()){
+            $msg = 'Intervensi berhasil ditambahkan';
+            return redirect()->back()->with('success', $msg);
+        }else {
+            return redirect()->back()->withErrors([
+                'error' => 'Perhatian', 
+                'keterangan' => 'Intervensi gagal. Silahkan coba beberapa saat lagi'
+            ]);
+        }
+    }
+
+    public function logbook($id) {
+
+        $member = Member::where('id', $id)->first();
+
+        if($member->rencana_pernikahan) {
+            $member->rencana_pernikahan = \Carbon\Carbon::parse($member->rencana_pernikahan)->isoFormat('D MMMM Y');
+        }
+
+        if($member->tgl_lahir) {
+            $member->tgl_lahir = \Carbon\Carbon::parse($member->tgl_lahir)->isoFormat('D MMMM Y');
+        }
+
+
+        $logbook = Logbook::where('id_member',$member->id)->first();
+
+        // get result before intervensi
+        $kuis_first = KuisResult::where('member_id', $id)
+            ->select([
+                'id',
+                'member_id',
+                'kuis_id',
+                'kuis_code', 
+                'kuis_title',
+                'created_at', 
+                'kuis_max_nilai', 
+                'member_kuis_nilai', 
+                'label',
+                'rating_color'
+            ])
+            ->first();
+        $details_first = [];
+        $details_last = [];
+
+
+        if($kuis_first){
+            $deskripsi = Kuis::where('id', $kuis_first->kuis_id)->first();
+
+            $details_first = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
+                $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
+                $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
+            })
+            ->where('kuisioner_result_detail.result_id', $kuis_first->id)
+            ->select([
+                'kuisioner_result_header.pertanyaan_header_caption',
+                'kuisioner_result_header.pertanyaan_header_jenis',
+                'kuisioner_result_detail.pertanyaan_detail_title',
+                'kuisioner_result_detail.pertanyaan_detail_pilihan',
+                'kuisioner_result_detail.pertanyaan_bobot_label',
+                'kuisioner_result_detail.pertanyaan_rating',
+                'kuisioner_result_detail.pertanyaan_rating_color',
+                'kuisioner_result_detail.value',
+                'kuisioner_result_detail.formula_value',
+                'kuisioner_result_detail.pertanyaan_bobot_id',
+                'kuisioner_result_detail.pertanyaan_bobot'
+            ])
+            ->get()
+            ->toArray();
+        }
+
+        // get result after intervensi
+        $kuis = KuisResult::where('member_id', $id)
+            ->select([
+                'id',
+                'member_id',
+                'kuis_id',
+                'kuis_code', 
+                'kuis_title',
+                'created_at', 
+                'kuis_max_nilai', 
+                'member_kuis_nilai', 
+                'label',
+                'rating_color'
+            ])
+            ->orderBy('id', 'desc');
+        $kuis_last = [];
+
+        if($kuis->count() > 1 && $logbook){
+            $kuis_last = $kuis->first();
+            $deskripsi = Kuis::where('id', $kuis_last->kuis_id)->first();
+
+            $details_last = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
+                $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
+                $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
+            })
+            ->where('kuisioner_result_detail.result_id', $kuis_last->id)
+            ->select([
+                'kuisioner_result_header.pertanyaan_header_caption',
+                'kuisioner_result_header.pertanyaan_header_jenis',
+                'kuisioner_result_detail.pertanyaan_detail_title',
+                'kuisioner_result_detail.pertanyaan_detail_pilihan',
+                'kuisioner_result_detail.pertanyaan_bobot_label',
+                'kuisioner_result_detail.pertanyaan_rating',
+                'kuisioner_result_detail.pertanyaan_rating_color',
+                'kuisioner_result_detail.value',
+                'kuisioner_result_detail.formula_value',
+                'kuisioner_result_detail.pertanyaan_bobot_id',
+                'kuisioner_result_detail.pertanyaan_bobot'
+            ])
+            ->get()
+            ->toArray();
+        }
+
+        $couple = MemberCouple::where('member_id', $id)->first();
+        $details_couple_first = [];
+        $details_couple_last = [];
+
+        if($couple){
+                // get result before intervensi
+            $kuis_couple_first = KuisResult::where('member_id', $couple->couple_id)
+            ->select([
+                'id',
+                'member_id',
+                'kuis_id',
+                'kuis_code', 
+                'kuis_title',
+                'created_at', 
+                'kuis_max_nilai', 
+                'member_kuis_nilai', 
+                'label',
+                'rating_color'
+            ])
+            ->first();
+
+            if($kuis_couple_first){
+                $deskripsi = Kuis::where('id', $kuis_couple_first->kuis_id)->first();
+
+                $tanggal = explode(' ', $kuis_couple_first->created_at);
+                $tanggal = $tanggal[0] . ' ' . $tanggal[1] . ' ' . $tanggal[2];
+                $kuis_couple_first->tanggal = $tanggal; 
+
+                $details_couple_first = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
+                    $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
+                    $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
+                })
+                ->where('kuisioner_result_detail.result_id', $kuis_couple_first->id)
+                ->select([
+                    'kuisioner_result_header.pertanyaan_header_caption',
+                    'kuisioner_result_header.pertanyaan_header_jenis',
+                    'kuisioner_result_detail.pertanyaan_detail_title',
+                    'kuisioner_result_detail.pertanyaan_detail_pilihan',
+                    'kuisioner_result_detail.pertanyaan_bobot_label',
+                    'kuisioner_result_detail.pertanyaan_rating',
+                    'kuisioner_result_detail.pertanyaan_rating_color',
+                    'kuisioner_result_detail.value',
+                    'kuisioner_result_detail.formula_value',
+                    'kuisioner_result_detail.pertanyaan_bobot_id',
+                    'kuisioner_result_detail.pertanyaan_bobot'
+                ])
+                ->get()
+                ->toArray();
+            }
+
+            // get result after intervensi
+            $kuis_couple = KuisResult::where('member_id', $couple->couple_id)
+                ->select([
+                    'id',
+                    'member_id',
+                    'kuis_id',
+                    'kuis_code', 
+                    'kuis_title',
+                    'created_at', 
+                    'kuis_max_nilai', 
+                    'member_kuis_nilai', 
+                    'label',
+                    'rating_color'
+                ])
+                ->orderBy('id', 'desc');
+
+            if($kuis_couple->count() > 1){
+                $kuis_couple_last = $kuis_couple->first();
+                $deskripsi = Kuis::where('id', $kuis_couple_last->kuis_id)->first();
+
+                $tanggal = explode(' ', $kuis_couple_last->created_at);
+                $tanggal = $tanggal[0] . ' ' . $tanggal[1] . ' ' . $tanggal[2];
+                $kuis_couple_last->tanggal = $tanggal; 
+
+                $details_couple_last = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
+                    $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
+                    $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
+                })
+                ->where('kuisioner_result_detail.result_id', $kuis_couple_last->id)
+                ->select([
+                    'kuisioner_result_header.pertanyaan_header_caption',
+                    'kuisioner_result_header.pertanyaan_header_jenis',
+                    'kuisioner_result_detail.pertanyaan_detail_title',
+                    'kuisioner_result_detail.pertanyaan_detail_pilihan',
+                    'kuisioner_result_detail.pertanyaan_bobot_label',
+                    'kuisioner_result_detail.pertanyaan_rating',
+                    'kuisioner_result_detail.pertanyaan_rating_color',
+                    'kuisioner_result_detail.value',
+                    'kuisioner_result_detail.formula_value',
+                    'kuisioner_result_detail.pertanyaan_bobot_id',
+                    'kuisioner_result_detail.pertanyaan_bobot'
+                ])
+                ->get()
+                ->toArray();
+            }
+        }
+
+        if(!$logbook){
+            $logbook = new Logbook();
+        }
+
+        return view('member.logbook', compact(
+            'member','logbook', 'details_first',
+            'details_last', 'kuis_first', 'kuis_last', 
+            'details_couple_last','details_couple_first','couple'));
     }
 
     public function show($id) {

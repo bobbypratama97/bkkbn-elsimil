@@ -45,7 +45,7 @@
                             <button type="submit" class="btn btn-success">Filter </button>
                         </form>
 
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: nowrap;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
