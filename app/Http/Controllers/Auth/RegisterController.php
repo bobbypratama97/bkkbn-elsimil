@@ -69,10 +69,10 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6'],
-            //'provinsi_id' => ['required'],
-            //'kabupaten_id' => ['required'],
-            //'kecamatan_id' => ['required'],
-            //'kelurahan_id' => ['required']
+            'provinsi_id' => ['required'],
+            'kabupaten_id' => ['required'],
+            'kecamatan_id' => ['required'],
+            'kelurahan_id' => ['required']
         ], $messages);
 
         if ($validator->fails()) {
