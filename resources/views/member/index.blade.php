@@ -21,7 +21,7 @@
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
-                            <h3 class="card-label">Catin 
+                            <h3 class="card-label">Catin
                             <span class="d-block text-muted pt-2 font-size-sm">Halaman ini menampilkan data catin</span></h3>
                         </div>
                     </div>
@@ -75,6 +75,9 @@
                                     <td>{{ $row['created_at'] }}</td>
                                     <td>{{ (!empty($row['petugas'])) ? $row['petugas'] : '-' }}</td>
                                     <td class="text-center" width="14%">
+                                        <a href="{{ route('admin.member.ibuhamil', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Tambah Kuesioner Ibu Hamil" style="background-color: #EB30EF">
+                                            <i class="flaticon2-notepad"></i>
+                                        </a>
                                         <a href="{{ route('admin.member.result', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Lihat Hasil Kuesioner">
                                             <i class="flaticon2-writing"></i>
                                         </a>

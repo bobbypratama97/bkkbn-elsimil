@@ -10,7 +10,8 @@ class KuisHamilKontakAwal extends Model
     protected $fillable = [
     'id_user',
     'id_member',
-    'nama','nik',
+    'nama',
+    'nik',
     'usia',
     'alamat',
     'jumlah_anak',

@@ -162,9 +162,9 @@
                                             </li>
                                             @if (in_array('Kuesioner', Session::get('role.menu')))
                                             <li class="menu-item menu-item-submenu menu-item-rel {{ (
-                                                    \Request::route()->getName() == 'admin.widget.index' || 
-                                                    \Request::route()->getName() == 'admin.kuis.index' || 
-                                                    \Request::route()->getName() == 'admin.kuis.approve' || 
+                                                    \Request::route()->getName() == 'admin.widget.index' ||
+                                                    \Request::route()->getName() == 'admin.kuis.index' ||
+                                                    \Request::route()->getName() == 'admin.kuis.approve' ||
                                                     \Request::route()->getName() == 'admin.widget.edit'
                                                 ) ? 'menu-item-active' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                                                 <a href="javascript:;" class="menu-link menu-toggle">
