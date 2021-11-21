@@ -127,6 +127,15 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('member/kelola', 'MemberController@kelola')->name('member.kelola');
 		Route::resource('member', 'MemberController')->except(['create', 'store', 'destroy', 'edit', 'update']);
 
+        Route::prefix('member/{id}/kuesioner-ibu-hamil')->group(function(){
+            #halaman index
+            Route::get('/', 'MemberController@indexIbuHamil')->name('member.ibuhamil');
+            #kontak awal
+            Route::get('kontak-awal/create','KuisHamilController@indexKontakAwal')->name('kontakawal-create');
+            Route::post('kontak-awal/save','KuisHamilController@storeKontakAwal')->name('kontakawal-save');
+        });
+
+
 		Route::get('user/{id}/delegasi', 'UserController@delegasi')->name('user.delegasi');
 		Route::post('user/submit', 'UserController@submit')->name('user.submit');
 		Route::post('user/move', 'UserController@move')->name('user.move');

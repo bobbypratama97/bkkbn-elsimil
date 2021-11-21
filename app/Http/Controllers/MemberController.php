@@ -25,6 +25,15 @@ use App\MemberDelegateLog;
 use App\ChatHeader;
 use App\KuisResult;
 
+use App\KuisHamilKontakAwal;
+use App\KuisHamil12Minggu;
+use App\KuisHamil16Minggu;
+use App\KuisHamilIbuJanin;
+use App\KuisHamilPersalinan;
+use App\KuisHamilNifas;
+
+
+
 class MemberController extends Controller
 {
     /**
@@ -504,6 +513,199 @@ class MemberController extends Controller
         return json_encode($output);
 
         die();
+    }
+
+    public function indexIbuHamil($id)
+    {
+        $member = Member::where('id', $id)->first();
+        if($member != null){
+            $name = $member->name;
+            $no_ktp =  Helper::decryptNik($member->no_ktp);
+            if($member -> gender == 1){
+                $gender = "Pria";
+            }else{
+                $gender = "Wanita";
+            }
+            $today = date("Y-m-d");
+            $ageCalculation = date_diff(date_create($member->tgl_lahir), date_create($today));
+            $age = $ageCalculation->format('%y');
+            $tempat_lahir = $member->tempat_lahir;
+            $tanggal_lahir = $member->tgl_lahir;
+            $alamat = $member->alamat;
+
+            #retrieve kuesioner data
+            $kuesionerData = array();
+
+            for($i=0 ; $i<10 ; $i++)
+            {
+                switch ($i){
+                    case '0' :
+                        $hamilkontakAwal = KuisHamilKontakAwal::where('id_member',$id)->first();
+                        if($hamilkontakAwal != null){
+                            $arrayKontakAwal = array(
+                                'id' => 'kontak-awal',
+                                'created_at' => $hamilkontakAwal -> created_at
+                            );
+                        }else{
+                            $arrayKontakAwal = array(
+                                'id' => 'kontak-awal',
+                                'created_at' => null
+                            );
+                         }
+                         array_push($kuesionerData,$arrayKontakAwal);
+                         break;
+                    case '1' :
+                        $hamil12minggu = KuisHamil12Minggu::where('id_member',$id)->first();
+                        if($hamil12minggu != null){
+                            $array12Minggu = array(
+                                'id' => '12-minggu',
+                                'created_at' => $hamil12minggu->created_at
+                            );
+                        }else{
+                            $array12Minggu = array(
+                                'id' => '12-minggu',
+                                'created_at' => null
+                            );
+                         }
+                         array_push($kuesionerData,$array12Minggu);
+                         break;
+                    case '2' :
+                        $hamil16minggu = KuisHamil16Minggu::where('id_member',$id)->first();
+                        if($hamil16minggu != null){
+                            $array16Minggu = array(
+                                'id' => '16-minggu',
+                                'created_at' => $hamil16minggu->created_at
+                            );
+                        }else{
+                            $array16Minggu = array(
+                                'id' => '16-minggu',
+                                'created_at' => null
+                            );
+                            }
+                        array_push($kuesionerData,$array16Minggu);
+                        break;
+                    case '3' :
+                            $hamil20minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',20)->first();
+                            if($hamil20minggu != null){
+                                $array20Minggu = array(
+                                    'id' => '20-minggu',
+                                    'created_at' => $hamil20Minggu->created_at
+                                );
+                            }else{
+                                $array20Minggu = array(
+                                    'id' => '20-minggu',
+                                    'created_at' => null
+                                );
+                                }
+                            array_push($kuesionerData,$array20Minggu);
+                            break;
+                    case '4' :
+                            $hamil24minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',24)->first();
+                            if($hamil24minggu != null){
+                                $array24Minggu = array(
+                                    'id' => '24-minggu',
+                                    'created_at' => $hamil24Minggu->created_at
+                                );
+                            }else{
+                                $array24Minggu = array(
+                                    'id' => '24-minggu',
+                                    'created_at' => null
+                                );
+                                }
+                            array_push($kuesionerData,$array24Minggu);
+                            break;
+                    case '5' :
+                            $hamil28minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',28)->first();
+                            if($hamil28minggu != null){
+                                $array28Minggu = array(
+                                    'id' => '28-minggu',
+                                    'created_at' => $hamil28Minggu->created_at
+                                );
+                            }else{
+                                $array28Minggu = array(
+                                    'id' => '28-minggu',
+                                    'created_at' => null
+                                );
+                                }
+                            array_push($kuesionerData,$array28Minggu);
+                            break;
+                    case '6' :
+                            $hamil32minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',32)->first();
+                            if($hamil32minggu != null){
+                                $array32Minggu = array(
+                                    'id' => '32-minggu',
+                                    'created_at' => $hamil32Minggu->created_at
+                                );
+                            }else{
+                                $array32Minggu = array(
+                                    'id' => '32-minggu',
+                                    'created_at' => null
+                                );
+                                }
+                            array_push($kuesionerData,$array32Minggu);
+                            break;
+                     case '7' :
+                            $hamil36minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',36)->first();
+                            if($hamil36minggu != null){
+                                $array36Minggu = array(
+                                    'id' => '36-minggu',
+                                    'created_at' => $hamil36Minggu->created_at
+                                );
+                            }else{
+                                $array36Minggu = array(
+                                    'id' => '36-minggu',
+                                    'created_at' => null
+                                );
+                                }
+                            array_push($kuesionerData,$array36Minggu);
+                            break;
+                    case '8' :
+                            $hamilPersalinan = KuisHamilPersalinan::where('id_member',$id)->first();
+                            if($hamilPersalinan != null){
+                                $arrayPersalinan = array(
+                                    'id' => 'persalinan',
+                                    'created_at' => $hamilPersalinan->created_at
+                                );
+                            }else{
+                                $arrayPersalinan = array(
+                                    'id' => 'persalinan',
+                                    'created_at' => null
+                                );
+                                }
+                            array_push($kuesionerData,$arrayPersalinan);
+                            break;
+                     case '9' :
+                            $hamilNifas = KuisHamilNifas::where('id_member',$id)->first();
+                            if($hamilNifas != null){
+                                $arrayNifas = array(
+                                    'id' => 'nifas',
+                                    'created_at' => $hamilNifas->created_at
+                                );
+                            }else{
+                                $arrayNifas = array(
+                                    'id' => 'nifas',
+                                    'created_at' => null
+                                );
+                                }
+                            array_push($kuesionerData,$arrayNifas);
+                            break;
+                }
+            }
+            // dd($kuesionerData);
+            return view('kuis_ibuhamil.index',[
+                "id" => $id,
+                "name" => $name,
+                "no_ktp" => $no_ktp,
+                "gender" => $gender,
+                "umur" => $age,
+                "tempat_lahir" => $tempat_lahir,
+                "tanggal_lahir" => $tanggal_lahir,
+                "alamat" => $alamat,
+                "kuesionerData" => $kuesionerData
+            ]);
+
+        }
+
     }
 
 }
