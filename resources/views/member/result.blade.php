@@ -24,7 +24,9 @@
                             <h3 class="card-label">Hasil Kuesioner : {{ $member->name }}
                             <span class="d-block text-muted pt-2 font-size-sm">Halaman ini menampilkan data hasil kuisioner catin</span></h3>
                         </div>
+
                                 <div class="card-toolbar">
+                                    <a href="{{ route('admin.member.logbook',$member->id) }}" class="btn btn-success font-weight-bolder btn-md px-8 mr-5">Logbook</a>
                                     <a href="{{ route('admin.member.index') }}" class="btn btn-danger font-weight-bolder btn-md">Kembali</a>
                                 </div>
                     </div>
