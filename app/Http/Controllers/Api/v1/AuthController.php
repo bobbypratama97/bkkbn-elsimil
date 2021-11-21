@@ -149,6 +149,7 @@ class AuthController extends Controller
             $user->kodepos = $request->kodepos;
             $user->is_active = 4;
             $user->profile_code = $profile_code;
+            $user->rencana_pernikahan;
             $user->created_at = date('Y-m-d H:i:s');
 
             if ($user->save()) {
