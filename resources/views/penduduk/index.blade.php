@@ -57,7 +57,7 @@
                             <tbody>
                                 @foreach($penduduk as $key => $row)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
                                     <td>{!! Helper::decryptNik($row->nik) !!}</td>
                                     <td>{{ $row->nama }}</td>
                                     <td>{{ Helper::customDateMember($row->tgl_lahir) }}</td>

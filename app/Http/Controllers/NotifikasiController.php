@@ -40,21 +40,33 @@ class NotifikasiController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Notifikasi::class, Auth::user()->role, 'index']);
 
-        $notifikasi = Notifikasi::leftJoin('users', function($join) {
+        $paginate = Notifikasi::leftJoin('users', function($join) {
             $join->on('users.id', '=', 'notifikasi.created_by');
         })
-        ->whereNull('notifikasi.deleted_by')
+        ->whereNull('notifikasi.deleted_by');
+
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('notifikasi.content', 'like', '%' . $request->name . '%')
+                ->orWhere('notifikasi.title', 'like', '%' . $request->name . '%')
+                ->orWhere('users.name', 'like', '%' . $request->name . '%');
+        }
+
+        $paginate = $paginate
         ->select([
             'notifikasi.*',
             'users.name as nama'
         ])
-        ->get();
+        ->paginate(10);
 
-        return view('notifikasi.index', compact('notifikasi'));
+        $notifikasi = $paginate->items();
+
+        return view('notifikasi.index', compact('notifikasi', 'paginate', 'name'));
     }
 
     public function create() {

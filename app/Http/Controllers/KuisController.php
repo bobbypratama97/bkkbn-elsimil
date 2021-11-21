@@ -49,11 +49,11 @@ class KuisController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Kuis::class, Auth::user()->role, 'index']);
 
-        $kuis = Kuis::leftJoin('users', function($join) {
+        $paginate = Kuis::leftJoin('users', function($join) {
             $join->on('users.id', '=', 'kuisioner.created_by');
         })
         ->leftJoin('kuisioner_approval', function($join) {
@@ -61,7 +61,18 @@ class KuisController extends Controller
             $join->on('kuisioner_approval.status', '=', 'kuisioner.apv')
             ->whereRaw('kuisioner_approval.id IN (select MAX(a2.id) from kuisioner_approval as a2 join kuisioner as u2 on u2.id = a2.kuis_id group by u2.id)');
         })
-        ->whereNull('kuisioner.deleted_by')
+        ->whereNull('kuisioner.deleted_by');
+
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('kuisioner.title', 'like', '%' . $request->name . '%')
+                ->orWhere('kuisioner.gender', 'like', '%' . $request->name . '%')
+                ->orWhere('kuisioner.apv', 'like', '%' . $request->name . '%')
+                ->orWhere('users.name', 'like', '%' . $request->name . '%');
+        }
+
+        $paginate = $paginate
         ->select([
             'kuisioner.id',
             'kuisioner.title',
@@ -72,9 +83,11 @@ class KuisController extends Controller
             'kuisioner_approval.catatan'
         ])
         ->orderBy('kuisioner.position')
-        ->get();
+        ->paginate(10);
 
-        return view('kuis.index', ['kuis' => $kuis]);
+        $kuis = $paginate->items();
+
+        return view('kuis.index', ['kuis' => $kuis, 'paginate' => $paginate, 'name' => $name]);
     }
 
     public function create() {
@@ -615,10 +628,10 @@ class KuisController extends Controller
 
     }
 
-    public function approve() {
+    public function approve(Request $request) {
         $this->authorize('access', [\App\Kuis::class, Auth::user()->role, 'approve']);
 
-        $kuis = Kuis::whereNull('kuisioner.deleted_by')
+        $paginate = Kuis::whereNull('kuisioner.deleted_by')
             ->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'kuisioner.created_by');
             })
@@ -630,15 +643,27 @@ class KuisController extends Controller
             ->leftJoin('users as uka', function($join) {
                 $join->on('uka.id', '=', 'kuisioner_approval.proceed_by');
             })
-            ->whereIn('kuisioner.apv', ['APV200'])
+            ->whereIn('kuisioner.apv', ['APV200']);
+
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('kuisioner.title', 'like', '%' . $request->name . '%')
+                ->orWhere('kuisioner.gender', 'like', '%' . $request->name . '%')
+                ->orWhere('kuisioner.apv', 'like', '%' . $request->name . '%')
+                ->orWhere('users.name', 'like', '%' . $request->name . '%');
+        }
+
+        $paginate = $paginate
             ->select([
                 'kuisioner.*',
                 'users.name as nama',
                 'uka.name as proceed_name'
             ])
-            ->get();
+            ->paginate(10);
 
-        return view('kuis.approve', compact('kuis'));
+        $kuis = $paginate->items();
+        return view('kuis.approve', compact('kuis', 'name', 'paginate'));
     }
 
     public function upload(Request $request) {
