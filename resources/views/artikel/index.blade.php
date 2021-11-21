@@ -41,7 +41,14 @@
                         @endcan
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <form class="form-inline mb-7" method="GET" action="{{ route('admin.artikel.index') }}">
+                            <div class="form-group mr-3">
+                                <label for="name">Cari : </label>
+                                <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="Judu;, Kategori, Dibuat Oleh" aria-controls="kt_datatable" _vkenabled="true">
+                            </div>
+                            <button type="submit" class="btn btn-success">Filter </button>
+                        </form>
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important; height: 100% !important;overflow-x:auto !important;display:block;">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -57,9 +64,9 @@
                             <tbody>
                                 @foreach($news as $key => $row)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
                                     <td width="50">
-                                        <img src="{{ URL::to('/') }}/uploads/artikel/thumbnail/sm/sm_{{ $row->thumbnail }}" height="25" class="d-block mx-auto" alt="Gambar artikel {{ $row->title }}">
+                                        <img src="{{ URL::to('/') }}/uploads/artikel/thumbnail/sm/sm_{{ $row->thumbnail }}" height="25" class="d-block mx-auto" alt="Gambar_artikel_{{ substr($row->title, 0, 10) }}">
                                     </td>
                                     <td>{{ $row->title }}</td>
                                     <td>{{ $row->parent }}</td>
@@ -88,6 +95,16 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="float-left">
+                            @if (count($news) > 1)
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($news) }} dari {{ $paginate->total() }} data
+                            @else
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                            @endif
+                        </div>
+                        <div class="float-right">
+                            {{ $paginate->appends($_GET)->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,33 +116,33 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
-    });
+    // $(document).ready(function() {
+    //     var table = $('#kt_datatable').DataTable({
+    //         "sScrollX": "100%",
+    //         //"sScrollXInner": "110%",
+    //         "bLengthChange": false,
+    //         "ordering": false,
+    //         "iDisplayLength": 10,
+    //         "oLanguage": {
+    //             "sSearch": "Cari : ",
+    //             "oPaginate": {
+    //                 "sFirst": "Hal. Pertama",
+    //                 "sPrevious": "Sebelumnya",
+    //                 "sNext": "Berikutnya",
+    //                 "sLast": "Hal. Terakhir"
+    //             }
+    //         },
+    //         "language": {
+    //             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+    //             "infoEmpty": "Menampilkan 0 dari _MAX_ data",
+    //             "zeroRecords": "Tidak ada data",
+    //             "sInfoFiltered":   "",
+    //         },
+    //         columnDefs: [
+    //             { "width": "50px", "targets": [0] }
+    //         ]
+    //     });
+    // });
 
     $('#kt_datatable tbody').on('click', '.hapus', function () {
         var id = $(this).attr('data-id');
@@ -147,7 +164,7 @@
                     });
 
                     $.ajax({
-                        url: '{{ route('admin.artikel.delete') }}',
+                        url: '{{ route("admin.artikel.delete") }}',
                         type: 'POST',
                         data: {id : id, '_token': "{{ csrf_token() }}"},
                         dataType: 'json',
@@ -163,7 +180,7 @@
                                         label: "OK",
                                         className: 'btn-info',
                                         callback: function() {
-                                            window.location.href = '{{ route('admin.artikel.index') }}';
+                                            window.location.href = '{{ route("admin.artikel.index") }}';
                                         }
                                     }
                                 }

@@ -56,8 +56,8 @@
                     <div class="card-body">
                         <form class="form-inline mb-7" method="GET" action="{{ route('admin.kategori.index') }}">
                             <div class="form-group mr-3">
-                                <label for="name">Search : </label>
-                                <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="" aria-controls="kt_datatable" _vkenabled="true">
+                                <label for="name">Cari : </label>
+                                <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="Kategori, Deskripsi, Dibuat Oleh" aria-controls="kt_datatable" _vkenabled="true">
                             </div>
                             <button type="submit" class="btn btn-success">Filter </button>
                         </form>
@@ -174,7 +174,7 @@
                     });
 
                     $.ajax({
-                        url: '{{ route('admin.kategori.delete') }}',
+                        url: '{{ route("admin.kategori.delete") }}',
                         type: 'POST',
                         data: {id : id, '_token': "{{ csrf_token() }}"},
                         dataType: 'json',
@@ -190,7 +190,7 @@
                                         label: "OK",
                                         className: 'btn-info',
                                         callback: function() {
-                                            window.location.href = '{{ route('admin.kategori.index') }}';
+                                            window.location.href = '{{ route("admin.kategori.index") }}';
                                         }
                                     }
                                 }

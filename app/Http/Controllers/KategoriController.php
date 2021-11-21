@@ -78,57 +78,6 @@ class KategoriController extends Controller
         return view('kategori.index',compact('kategori', 'name', 'paginate'));
     }
 
-    public function fetchData(Request $request) {
-        $draw = $request->draw ?? 1;
-        $start = $request->start ?? 1;
-
-        $this->authorize('access', [\App\Kategori::class, Auth::user()->role, 'index']);
-
-        $kategori = NewsKategori::leftJoin('users', function($join) {
-            $join->on('users.id', '=', 'news_kategori.created_by');
-        })
-        ->whereNull('news_kategori.deleted_by');
-
-        $count = clone($kategori);
-        $kategori = $kategori
-        ->select([
-            'news_kategori.id',
-            'news_kategori.name',
-            'news_kategori.deskripsi',
-            'news_kategori.thumbnail',
-            'news_kategori.color', 
-            'news_kategori.status',
-            'news_kategori.created_at',
-            'users.name as nama'
-        ])
-        ->orderBy('position')
-        ->paginae();
-
-        return DataTables::of($kategori)        
-            ->addIndexColumn()  
-            ->addColumn('action', function($row) {
-                $html = '<td width="10%" style=" white-space: nowrap;">';
-
-                if($this->authorize('access', [\App\Kategori::class, Auth::user()->role, 'edit'])){
-                    $html .= '<a href="'.route("admin.kategori.edit", $row->id).'" class="btn btn-icon btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Ubah"><i class="flaticon2-edit"></i></a>';
-                }
-
-                if($this->authorize('access', [\App\Kategori::class, Auth::user()->role, 'delete'])){
-                    $html .= '<button class="btn btn-icon btn-sm btn-danger hapus" id="hapus"  data-toggle="tooltip" data-placement="top" title="Hapus" data-id="'.$row->id.'"><i class="flaticon2-trash"></i></button>';
-                }
-
-                $html .= '</td>';
-                return $html;
-            })
-            ->with([
-                "draw" => $draw,
-                "recordsTotal" => count($count->get()),
-                "recordsFiltered" => count($count->get()),
-            ])
-            ->rawColumns(['action'])
-            ->make(true);
-    }
-
     public function create() {
         $this->authorize('access', [\App\Kategori::class, Auth::user()->role, 'create']);
 
