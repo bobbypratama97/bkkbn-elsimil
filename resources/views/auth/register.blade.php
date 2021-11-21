@@ -63,22 +63,22 @@
                         </div>
                         <div class="form-group mb-5">
                             <label class="pl-8">Provinsi</label>
-                            <select class="form-control select2" id="provinsi" name="provinsi_id">
+                            <select class="form-control select2" id="provinsi" name="provinsi_id" required required oninvalid="this.setCustomValidity('Provinsi harus diisi')" oninput="setCustomValidity('')">
                             </select>
                         </div>
                         <div class="form-group mb-5">
                             <label class="pl-8">Kabupaten</label>
-                            <select class="form-control select2" id="kabupaten" name="kabupaten_id">
+                            <select class="form-control select2" id="kabupaten" name="kabupaten_id" required required oninvalid="this.setCustomValidity('Kabupaten harus diisi')" oninput="setCustomValidity('')">
                             </select>
                         </div>
                         <div class="form-group mb-5">
                             <label class="pl-8">Kecamatan</label>
-                            <select class="form-control select2" id="kecamatan" name="kecamatan_id">
+                            <select class="form-control select2" id="kecamatan" name="kecamatan_id" required required oninvalid="this.setCustomValidity('Kecamatan harus diisi')" oninput="setCustomValidity('')">
                             </select>
                         </div>
                         <div class="form-group mb-5">
                             <label class="pl-8">Kelurahan</label>
-                            <select class="form-control select2" id="kelurahan" name="kelurahan_id">
+                            <select class="form-control select2" id="kelurahan" name="kelurahan_id" required required oninvalid="this.setCustomValidity('Kelurahan harus diisi')" oninput="setCustomValidity('')">
                             </select>
                         </div>
                         <div class="form-group d-flex flex-wrap flex-center mt-10">

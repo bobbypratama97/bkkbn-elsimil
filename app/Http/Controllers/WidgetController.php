@@ -34,18 +34,28 @@ class WidgetController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Widget::class, Auth::user()->role, 'index']);
 
-        $widget = Widget::leftJoin('users', function($join) {
+        $paginate = Widget::leftJoin('users', function($join) {
             $join->on('users.id', '=', 'widgets.created_by');
         })
-        ->whereNull('widgets.deleted_by')
-        ->select(['widgets.*', 'users.name as nama'])
-        ->get();
+        ->whereNull('widgets.deleted_by');
+        
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('widgets.name', 'like', '%' . $request->name . '%')
+                ->orWhere('users.name', 'like', '%' . $request->name . '%');
+        }
 
-        return view('widget.index', compact('widget'));
+        $paginate = $paginate
+            ->select(['widgets.*', 'users.name as nama'])
+            ->paginate(10);
+
+        $widget = $paginate->items();
+        return view('widget.index', compact('widget', 'paginate', 'name'));
     }
 
     public function edit($id) {

@@ -54,11 +54,18 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <form class="form-inline mb-7" method="GET" action="{{ route('admin.kuis.index') }}">
+                            <div class="form-group mr-3">
+                                <label for="name">Cari : </label>
+                                <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="Judul, Gender, Dibuat Oleh" aria-controls="kt_datatable" _vkenabled="true">
+                            </div>
+                            <button type="submit" class="btn btn-success">Filter </button>
+                        </form>
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Judul Kuesioner</th>
+                                    <th width="70%">Judul Kuesioner</th>
                                     <th>Gender</th>
                                     <th>Status</th>
                                     <th>Tanggal Dibuat</th>
@@ -67,9 +74,16 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(count($kuis) == 0)
+                                <tr>
+                                    <td colspan="7" align="center">
+                                        Data tidak ditemukan.
+                                    </td>
+                                </tr>
+                                @endif
                                 @foreach($kuis as $key => $row)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
                                     <td>{{ $row->title }}</td>
                                     <td>{!! Helper::statusGender($row->gender) !!}</td>
                                     <td>
@@ -84,7 +98,7 @@
                                     </td>
                                     <td>{{ $row->created_at }}</td>
                                     <td>{!! Helper::customUser($row->name) !!}</td>
-                                    <td class="float-right">
+                                    <td>
                                         @can('access', [\App\Kuis::class, Auth::user()->role, 'preview'])
                                         @if ($row->apv == 'APV400' || $row->apv == 'APV100')
                                         <a href="{{ route('admin.kuis.preview', $row->id) }}" class="btn btn-icon btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Ajukan Approval">
@@ -117,6 +131,16 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="float-left">
+                            @if (count($kuis) > 1)
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($kuis) }} dari {{ $paginate->total() }} data
+                            @else
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                            @endif
+                        </div>
+                        <div class="float-right">
+                            {{ $paginate->appends($_GET)->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,33 +152,33 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
-    });
+    // $(document).ready(function() {
+    //     var table = $('#kt_datatable').DataTable({
+    //         "sScrollX": "100%",
+    //         //"sScrollXInner": "110%",
+    //         "bLengthChange": false,
+    //         "ordering": false,
+    //         "iDisplayLength": 10,
+    //         "oLanguage": {
+    //             "sSearch": "Cari : ",
+    //             "oPaginate": {
+    //                 "sFirst": "Hal. Pertama",
+    //                 "sPrevious": "Sebelumnya",
+    //                 "sNext": "Berikutnya",
+    //                 "sLast": "Hal. Terakhir"
+    //             }
+    //         },
+    //         "language": {
+    //             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+    //             "infoEmpty": "Menampilkan 0 dari _MAX_ data",
+    //             "zeroRecords": "Tidak ada data",
+    //             "sInfoFiltered":   "",
+    //         },
+    //         columnDefs: [
+    //             { "width": "50px", "targets": [0] }
+    //         ]
+    //     });
+    // });
 
     $('#kt_datatable tbody').on('click', '.hapus', function () {
         var id = $(this).attr('data-id');
