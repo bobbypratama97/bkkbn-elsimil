@@ -34,8 +34,7 @@ use App\KuisHamil16Minggu;
 use App\KuisHamilIbuJanin;
 use App\KuisHamilPersalinan;
 use App\KuisHamilNifas;
-
-
+use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
 {
@@ -61,22 +60,22 @@ class MemberController extends Controller
         $auth = Auth::user();
         $role = Auth::user()->role;
 
-        $self = Member::leftJoin('adms_provinsi', function($join) {
+        $self = Member::join('adms_provinsi', function($join) {
             $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
         })
-        ->leftJoin('adms_kabupaten', function($join) {
+        ->join('adms_kabupaten', function($join) {
             $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
         })
-        ->leftJoin('adms_kecamatan', function($join) {
+        ->join('adms_kecamatan', function($join) {
             $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
         })
-        ->leftJoin('adms_kelurahan', function($join) {
+        ->join('adms_kelurahan', function($join) {
             $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
         })
-        ->leftJoin('member_delegate', function($join) {
+        ->join('member_delegate', function($join) {
             $join->on('members.id', '=', 'member_delegate.member_id');
         })
-        ->leftJoin('users', function($join) {
+        ->join('users', function($join) {
             $join->on('users.id', '=', 'member_delegate.user_id');
         })
         ->select([
@@ -127,7 +126,7 @@ class MemberController extends Controller
         $paginate = $self->paginate(10);
         $self = $paginate->items();
         foreach ($self as $key => $val) {
-            $couple = MemberCouple::leftJoin('members', function($join) {
+            $couple = MemberCouple::join('members', function($join) {
                 $join->on('members.id', '=', 'member_couple.couple_id');
             })
             ->where('member_couple.member_id', $val->id)
@@ -150,25 +149,25 @@ class MemberController extends Controller
             $cop[] = $valz->id;
         }
 
-        $couples = Member::leftJoin('adms_provinsi', function($join) {
+        $couples = Member::join('adms_provinsi', function($join) {
             $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
         })
-        ->leftJoin('adms_kabupaten', function($join) {
+        ->join('adms_kabupaten', function($join) {
             $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
         })
-        ->leftJoin('adms_kecamatan', function($join) {
+        ->join('adms_kecamatan', function($join) {
             $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
         })
-        ->leftJoin('adms_kelurahan', function($join) {
+        ->join('adms_kelurahan', function($join) {
             $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
         })
-        ->leftJoin('member_delegate', function($join) {
+        ->join('member_delegate', function($join) {
             $join->on('members.id', '=', 'member_delegate.member_id');
         })
-        ->leftJoin('users', function($join) {
+        ->join('users', function($join) {
             $join->on('users.id', '=', 'member_delegate.user_id');
         })
-        ->leftJoin('member_couple', function($join) {
+        ->join('member_couple', function($join) {
             $join->on('member_couple.couple_id', '=', 'members.id');
         })
         ->select([
@@ -226,7 +225,6 @@ class MemberController extends Controller
         $couples = $couples->toArray();
 
         $member = array_merge($self, $couples);
-
 
         return view('member.index', compact('member', 'search', 'paginate', 'name'));
     }
