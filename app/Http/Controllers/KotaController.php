@@ -35,11 +35,11 @@ class KotaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Kota::class, Auth::user()->role, 'index']);
 
-        $kota = Kabupaten::leftJoin('adms_provinsi', function($join) {
+        $paginate = Kabupaten::leftJoin('adms_provinsi', function($join) {
             $join->on('adms_provinsi.provinsi_kode', '=', 'adms_kabupaten.provinsi_kode');
         })
         ->leftJoin('users', function($join) {
@@ -47,10 +47,19 @@ class KotaController extends Controller
         })
         ->select(['adms_provinsi.nama as provinsi', 'adms_kabupaten.*', 'users.name'])
         ->whereNull('adms_provinsi.deleted_by')
-        ->whereNull('adms_kabupaten.deleted_by')
-        ->get();
+        ->whereNull('adms_kabupaten.deleted_by');
+        
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('adms_provinsi.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kabupaten.nama', 'like', '%' . $request->name . '%');
+        }
 
-        return view('kota.index', ['kota' => $kota]);
+        $paginate = $paginate->paginate(10);
+        $kota = $paginate->items();
+
+        return view('kota.index', ['kota' => $kota, 'paginate' => $paginate, 'name' => $name]);
     }
 
     public function create() {

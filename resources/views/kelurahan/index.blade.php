@@ -41,7 +41,14 @@
                         @endcan
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <form class="form-inline mb-7" method="GET" action="{{ route('admin.kelurahan.index') }}">
+                            <div class="form-group mr-3">
+                                <label for="name">Cari : </label>
+                                <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="Provinsi, Kota, Kecamatan, Kelurahan" aria-controls="kt_datatable" _vkenabled="true">
+                            </div>
+                            <button type="submit" class="btn btn-success">Filter </button>
+                        </form>
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x: auto; display: block;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -60,9 +67,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(count($lurah) == 0)
+                                <tr><td colspan="13" align="center">Data tidak ditemukan.</td></tr>
+                                @endif
                                 @foreach($lurah as $key => $row)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
                                     <td>{{ $row->kelurahan_kode }}</td>
                                     <td>{{ $row->nama }}</td>
                                     <td>{{ $row->kecamatan_kode }}</td>
@@ -91,6 +101,16 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="float-left">
+                            @if (count($lurah) > 1)
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($lurah) }} dari {{ $paginate->total() }} data
+                            @else
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                            @endif
+                        </div>
+                        <div class="float-right">
+                            {{ $paginate->appends($_GET)->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,33 +122,33 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            //"sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
-    });
+    // $(document).ready(function() {
+    //     var table = $('#kt_datatable').DataTable({
+    //         //"sScrollX": "100%",
+    //         //"sScrollXInner": "110%",
+    //         "bLengthChange": false,
+    //         "ordering": false,
+    //         "iDisplayLength": 10,
+    //         "oLanguage": {
+    //             "sSearch": "Cari : ",
+    //             "oPaginate": {
+    //                 "sFirst": "Hal. Pertama",
+    //                 "sPrevious": "Sebelumnya",
+    //                 "sNext": "Berikutnya",
+    //                 "sLast": "Hal. Terakhir"
+    //             }
+    //         },
+    //         "language": {
+    //             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+    //             "infoEmpty": "Menampilkan 0 dari _MAX_ data",
+    //             "zeroRecords": "Tidak ada data",
+    //             "sInfoFiltered":   "",
+    //         },
+    //         columnDefs: [
+    //             { "width": "50px", "targets": [0] }
+    //         ]
+    //     });
+    // });
 
     $('#kt_datatable tbody').on('click', '.hapus', function () {
         var id = $(this).attr('data-id');

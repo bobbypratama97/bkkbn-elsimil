@@ -35,11 +35,11 @@ class KelurahanController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Kelurahan::class, Auth::user()->role, 'index']);
 
-        $lurah = Kelurahan::leftJoin('adms_kecamatan', function($join) {
+        $paginate = Kelurahan::leftJoin('adms_kecamatan', function($join) {
             $join->on('adms_kecamatan.kecamatan_kode', '=', 'adms_kelurahan.kecamatan_kode');
         })
         ->leftJoin('adms_kabupaten', function($join) {
@@ -61,10 +61,21 @@ class KelurahanController extends Controller
         ->whereNull('adms_provinsi.deleted_by')
         ->whereNull('adms_kabupaten.deleted_by')
         ->whereNull('adms_kecamatan.deleted_by')
-        ->whereNull('adms_kelurahan.deleted_by')
-        ->get();
+        ->whereNull('adms_kelurahan.deleted_by');
+        
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('adms_provinsi.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kabupaten.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kecamatan.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kelurahan.nama', 'like', '%' . $request->name . '%');
+        }
 
-        return view('kelurahan.index', ['lurah' => $lurah]);
+        $paginate = $paginate->paginate(10);
+        $lurah = $paginate->items();
+
+        return view('kelurahan.index', ['lurah' => $lurah, 'paginate' => $paginate, 'name' => $name]);
     }
 
     public function create() {

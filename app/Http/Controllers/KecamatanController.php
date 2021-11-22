@@ -35,11 +35,11 @@ class KecamatanController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Kecamatan::class, Auth::user()->role, 'index']);
 
-        $camat = Kecamatan::leftJoin('adms_kabupaten', function($join) {
+        $paginate = Kecamatan::leftJoin('adms_kabupaten', function($join) {
             $join->on('adms_kabupaten.kabupaten_kode', '=', 'adms_kecamatan.kabupaten_kode');
         })
         ->leftJoin('adms_provinsi', function($join) {
@@ -56,10 +56,20 @@ class KecamatanController extends Controller
         ])
         ->whereNull('adms_provinsi.deleted_by')
         ->whereNull('adms_kabupaten.deleted_by')
-        ->whereNull('adms_kecamatan.deleted_by')
-        ->get();
+        ->whereNull('adms_kecamatan.deleted_by');
 
-        return view('kecamatan.index', ['camat' => $camat]);
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $paginate = $paginate->where('adms_provinsi.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kabupaten.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kecamatan.nama', 'like', '%' . $request->name . '%');
+        }
+
+        $paginate = $paginate->paginate(10);
+        $camat = $paginate->items();
+
+        return view('kecamatan.index', ['camat' => $camat, 'paginate' => $paginate, 'name' => $name]);
     }
 
     public function create() {

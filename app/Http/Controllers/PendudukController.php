@@ -37,11 +37,11 @@ class PendudukController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('access', [\App\Penduduk::class, Auth::user()->role, 'index']);
 
-        $penduduk = Penduduk::leftJoin('users', function($join) {
+        $paginate = Penduduk::leftJoin('users', function($join) {
             $join->on('users.id', '=', 'adms_penduduk.created_by');
         })
         ->leftJoin('adms_provinsi', function($join) {
@@ -64,12 +64,25 @@ class PendudukController extends Controller
             'adms_kecamatan.nama as kecamatan',
             'adms_kelurahan.nama as kelurahan'
         ])
-        ->whereNull('adms_penduduk.deleted_by')
-        ->inRandomOrder()
-        ->limit(100)
-        ->get();
+        ->whereNull('adms_penduduk.deleted_by');
 
-        return view('penduduk.index', compact('penduduk'));
+        $name = '';
+        if (isset($request->name)) {
+            $name = $request->name;
+            $user = $paginate->where('adms_penduduk.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_penduduk.nik', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_provinsi.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kabupaten.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kecamatan.nama', 'like', '%' . $request->name . '%')
+                ->orWhere('adms_kelurahan.nama', 'like', '%' . $request->name . '%');
+        } 
+
+        $paginate = $paginate->inRandomOrder()
+            ->paginate(10);
+
+        $penduduk = $paginate->items();
+        // return $paginate;
+        return view('penduduk.index', compact('penduduk', 'paginate'));
     }
 
     public function upload()
