@@ -146,12 +146,12 @@
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 16 Minggu</a>
                                             @if ($kuesionerData[2]['created_at'] != null)
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <a href="{{route('admin.periode16minggu-create',$id)}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
                                                     <span>Sudah Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
                                                 </a>
                                             @else
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                <a href="{{route('admin.periode16minggu-create',$id)}}" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
                                                     <span>Belum Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
                                                 </a>
