@@ -68,6 +68,7 @@ class RegisterController extends Controller
             //'nik' => ['required', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'regex:/(.*)@(gmail|yahoo|)\.com/i',
             'password' => ['required', 'string', 'min:6'],
             'provinsi_id' => ['required'],
             'kabupaten_id' => ['required'],
@@ -89,6 +90,18 @@ class RegisterController extends Controller
 
     public function register(\Illuminate\Http\Request $request) {
         $this->validator($request->all())->validate();
+
+        //validasi email domain
+        $email = $request->email;
+        list($username, $domain) = explode('@', $email);
+        if (!checkdnsrr($domain, 'MX')) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors([
+                    'error' => 'Registrasi gagal', 
+                    'keterangan' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                ]);
+        }
 
         //print_r ($request->all()); die;
 
