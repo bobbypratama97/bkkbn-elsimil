@@ -12,6 +12,7 @@ use Helper;
 
 use App\Member;
 use App\KuisHamilKontakAwal;
+use App\KuisHamil12Minggu;
 
 class KuisHamilController extends Controller
 {
@@ -53,6 +54,41 @@ class KuisHamilController extends Controller
         #data kuesioner
         $data = KuisHamilKontakAwal::where('id_member',$id)->first();
         return view('kuis_ibuhamil.kontakawal_create',[
+            "id" => $id,
+            "name" => $name,
+            "no_ktp" => $no_ktp,
+            "gender" => $gender,
+            "umur" => $age,
+            "tempat_lahir" => $tempat_lahir,
+            "tanggal_lahir" => $tanggal_lahir,
+            "alamat" => $alamat,
+            "data_kuesioner" => $data
+        ]);
+
+    }
+
+    public function indexPeriode12Minggu($id)
+    {
+        $member = Member::where('id', $id)->first();
+        if($member != null){
+            $name = $member->name;
+            $no_ktp =  Helper::decryptNik($member->no_ktp);
+            if($member -> gender == 1){
+                $gender = "Pria";
+            }else{
+                $gender = "Wanita";
+            }
+            $today = date("Y-m-d");
+            $ageCalculation = date_diff(date_create($member->tgl_lahir), date_create($today));
+            $age = $ageCalculation->format('%y');
+            $tempat_lahir = $member->tempat_lahir;
+            $tanggal_lahir = $member->tgl_lahir;
+            $alamat = $member->alamat;
+
+        }
+        #data kuesioner
+        $data = KuisHamil12Minggu::where('id_member',$id)->first();
+        return view('kuis_ibuhamil.periode12_create',[
             "id" => $id,
             "name" => $name,
             "no_ktp" => $no_ktp,
@@ -148,6 +184,57 @@ class KuisHamilController extends Controller
             return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
         }
     }
+
+    public function storePeriode12Minggu(Request $request)
+    {
+        $checkExisting = KuisHamil12Minggu::where('id_member',$request->id)->first();
+        if($checkExisting != null){
+            KuisHamil12Minggu::where('id_member', $request->id)
+            ->update([
+                'berat_badan' => $request->berat_badan,
+                'tinggi_badan' => $request->tinggi_badan,
+                'lingkar_lengan_atas' => $request->lingkar_lengan_atas,
+                'hemoglobin' => $request->hemoglobin,
+                'tensi_darah' => $request->tensi_darah,
+                'gula_darah' => $request->gula_darah,
+                'riwayat_sakit_kronik' => $request->riwayat_sakit_kronik
+            ]);
+            $message = 'Kuesioner hamil periode 12 minggu berhasil diperbaharui';
+            return redirect()->route('admin.periode12minggu-create',["id" => $request->id])->with('success', $message);
+        }else{
+            $this->validate($request,[
+                'berat_badan' => 'required',
+                'tinggi_badan' => 'required',
+                'lingkar_lengan_atas' => 'required',
+                'hemoglobin' => 'required',
+                'tensi_darah' => 'required',
+                'gula_darah' => 'required',
+                'riwayat_sakit_kronik' => 'required'
+            ],
+            [
+                'berat_badan.required' => 'Berat Badan harus diisi.',
+                'tinggi_badan.required' => 'Tinggi Badan harus diisi.',
+                'lingkar_lengan_atas.required' => 'Lingkar Lengan Atas harus diisi.',
+                'hemoglobin.required' => 'Hemoglobin harus diisi.',
+                'tensi_darah.required' => 'Tensi Darah harus diisi.',
+                'gula_darah.required' => 'Gula Darah harus diisi.',
+            ]);
+            $periode12Minggu = new KuisHamil12Minggu;
+            $periode12Minggu->id_user = Auth::user()->id;
+            $periode12Minggu->id_member = $request->id;
+            $periode12Minggu->berat_badan = $request->berat_badan;
+            $periode12Minggu->tinggi_badan = $request->tinggi_badan;
+            $periode12Minggu->lingkar_lengan_atas = $request->lingkar_lengan_atas;
+            $periode12Minggu->hemoglobin = $request->hemoglobin;
+            $periode12Minggu->tensi_darah = $request->tensi_darah;
+            $periode12Minggu->gula_darah = $request->gula_darah;
+            $periode12Minggu->riwayat_sakit_kronik = $request->riwayat_sakit_kronik;
+            $periode12Minggu->save();
+            $message = 'Kuesioner hamil periode 12 minggu berhasil ditambahkan';
+            return redirect()->route('admin.periode12minggu-create',["id" => $request->id])->with('success', $message);
+        }
+    }
+
 
     /**
      * Display the specified resource.
