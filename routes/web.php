@@ -135,6 +135,10 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
             #kontak awal
             Route::get('kontak-awal/create','KuisHamilController@indexKontakAwal')->name('kontakawal-create');
             Route::post('kontak-awal/save','KuisHamilController@storeKontakAwal')->name('kontakawal-save');
+            #12-minggu
+            Route::get('periode-12-minggu/create','KuisHamilController@indexPeriode12Minggu')->name('periode12minggu-create');
+            Route::post('periode-12-minggu/save','KuisHamilController@storePeriode12Minggu')->name('periode12minggu-save');
+
         });
 
 

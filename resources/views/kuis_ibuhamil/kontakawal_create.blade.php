@@ -24,7 +24,7 @@
                         <h3 class="card-label">Data Ibu Hamil : {{$name}} </h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="{{url()->previous()}}" class="btn btn-primary font-weight-bolder" style="background-color: #F64F61">Kembali</a>
+                        <a href="{{route('admin.member.ibuhamil',$id)}}" class="btn btn-primary font-weight-bolder" style="background-color: #F64F61">Kembali</a>
                     </div>
                 </div>
                 <div class="card-body">
