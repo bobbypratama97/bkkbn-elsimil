@@ -63,6 +63,7 @@ class KuisHamilController extends Controller
             "alamat" => $alamat,
             "data_kuesioner" => $data
         ]);
+
     }
 
     /**
@@ -83,9 +84,9 @@ class KuisHamilController extends Controller
      */
     public function storeKontakAwal(Request $request)
     {
-        $checkExisting = KuisHamilKontakAwal::where('nik',$request->nik)->first();
+        $checkExisting = KuisHamilKontakAwal::where('id_member',$request->id)->first();
         if($checkExisting != null){
-            KuisHamilKontakAwal::where('nik', $request->nik)
+            KuisHamilKontakAwal::where('id_member', $request->id)
             ->update([
                 'nama' => $request->nama,
                 'nik' => $request->nik,
