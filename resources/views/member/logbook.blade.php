@@ -149,7 +149,14 @@
                     </thead>
                     <tbody>
                       @if($details_first)
-                        @foreach ($details_first as $detail)
+                        @foreach ($details_first as $key => $detail)
+
+                          @if($key-1 > -1)
+                            @if($details_first[$key-1]["pertanyaan_header_caption"] == $detail["pertanyaan_header_caption"])
+                              @continue
+                            @endif
+                          @endif
+
                           @if ($detail["pertanyaan_bobot_id"] != "0")
                             <tr>
                               <td scope="row" class="h6 p-6">{{ $detail["pertanyaan_header_caption"] }}</td>
@@ -159,6 +166,8 @@
                                 
                                 @if($detail["pertanyaan_header_caption"] == "Perilaku Merokok")
                                   {{ $detail["pertanyaan_bobot_label"] }}
+                                @elseif($detail["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
+                                  {{ $detail["formula_value"] }} - {{ $detail["pertanyaan_bobot_label"] }}
                                 @else
                                   {{ $detail["value"] }} - {{ $detail["pertanyaan_bobot_label"] }}
                                 @endif
@@ -171,6 +180,8 @@
                                   
                                   @if($details_last[$loop->index]["pertanyaan_header_caption"] == "Perilaku Merokok")
                                     {{ $details_last[$loop->index]["pertanyaan_bobot_label"] }}
+                                  @elseif($details_last[$loop->index]["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
+                                    {{ $details_last[$loop->index]["formula_value"] }} - {{ $details_last[$loop->index]["pertanyaan_bobot_label"] }}
                                   @else
                                     {{ $details_last[$loop->index]["value"] }} - {{ $details_last[$loop->index]["pertanyaan_bobot_label"] }}
                                   @endif
@@ -201,7 +212,15 @@
                         </thead>
                         <tbody>
                           @if($details_couple_first)
-                            @foreach ($details_couple_first as $detail_couple)
+
+                            @foreach ($details_couple_first as $key => $detail_couple)
+
+                            @if($key-1 > -1)
+                              @if($details_couple_first[$key-1]["pertanyaan_header_caption"] == $detail_couple["pertanyaan_header_caption"])
+                                @continue
+                              @endif
+                            @endif
+
                               @if ($detail_couple["pertanyaan_bobot_id"] != "0")
                                 <tr>
                                   <td scope="row" class="h6 p-6">{{ $detail_couple["pertanyaan_header_caption"] }}</td>
@@ -211,6 +230,8 @@
                                     
                                     @if($detail_couple["pertanyaan_header_caption"] == "Perilaku Merokok")
                                       {{ $detail_couple["pertanyaan_bobot_label"] }}
+                                    @elseif($detail_couple["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
+                                      {{ $detail_couple["formula_value"] }} - {{ $detail_couple["pertanyaan_bobot_label"] }}
                                     @else
                                       {{ $detail_couple["value"] }} - {{ $detail_couple["pertanyaan_bobot_label"] }}
                                     @endif
@@ -223,6 +244,8 @@
                                       
                                       @if($details_couple_last[$loop->index]["pertanyaan_header_caption"] == "Perilaku Merokok")
                                         {{ $details_couple_last[$loop->index]["pertanyaan_bobot_label"] }}
+                                      @elseif($details_couple_last[$loop->index]["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
+                                        {{ $details_couple_last[$loop->index]["formula_value"] }} - {{ $details_couple_last[$loop->index]["pertanyaan_bobot_label"] }}
                                       @else
                                         {{ $details_couple_last[$loop->index]["value"] }} - {{ $details_couple_last[$loop->index]["pertanyaan_bobot_label"] }}
                                       @endif
