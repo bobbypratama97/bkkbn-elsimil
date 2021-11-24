@@ -13,6 +13,7 @@ use Helper;
 use App\Member;
 use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
+use App\KuisHamil16Minggu;
 
 class KuisHamilController extends Controller
 {
@@ -89,6 +90,41 @@ class KuisHamilController extends Controller
         #data kuesioner
         $data = KuisHamil12Minggu::where('id_member',$id)->first();
         return view('kuis_ibuhamil.periode12_create',[
+            "id" => $id,
+            "name" => $name,
+            "no_ktp" => $no_ktp,
+            "gender" => $gender,
+            "umur" => $age,
+            "tempat_lahir" => $tempat_lahir,
+            "tanggal_lahir" => $tanggal_lahir,
+            "alamat" => $alamat,
+            "data_kuesioner" => $data
+        ]);
+
+    }
+
+    public function indexPeriode16Minggu($id)
+    {
+        $member = Member::where('id', $id)->first();
+        if($member != null){
+            $name = $member->name;
+            $no_ktp =  Helper::decryptNik($member->no_ktp);
+            if($member -> gender == 1){
+                $gender = "Pria";
+            }else{
+                $gender = "Wanita";
+            }
+            $today = date("Y-m-d");
+            $ageCalculation = date_diff(date_create($member->tgl_lahir), date_create($today));
+            $age = $ageCalculation->format('%y');
+            $tempat_lahir = $member->tempat_lahir;
+            $tanggal_lahir = $member->tgl_lahir;
+            $alamat = $member->alamat;
+
+        }
+        #data kuesioner
+        $data = KuisHamil16Minggu::where('id_member',$id)->first();
+        return view('kuis_ibuhamil.periode16_create',[
             "id" => $id,
             "name" => $name,
             "no_ktp" => $no_ktp,
@@ -235,6 +271,40 @@ class KuisHamilController extends Controller
         }
     }
 
+    public function storePeriode16Minggu(Request $request)
+    {
+        $checkExisting = KuisHamil16Minggu::where('id_member',$request->id)->first();
+        if($checkExisting != null){
+            KuisHamil16Minggu::where('id_member', $request->id)
+            ->update([
+                'hemoglobin' => $request->hemoglobin,
+                'tensi_darah' => $request->tensi_darah,
+                'gula_darah_sewaktu' => $request->gula_darah_sewaktu,
+            ]);
+            $message = 'Kuesioner hamil periode 16 minggu berhasil diperbaharui';
+            return redirect()->route('admin.periode16minggu-create',["id" => $request->id])->with('success', $message);
+        }else{
+            $this->validate($request,[
+                'hemoglobin' => 'required',
+                'tensi_darah' => 'required',
+                'gula_darah_sewaktu' => 'required',
+            ],
+            [
+                'hemoglobin.required' => 'Hemoglobin harus diisi.',
+                'tensi_darah.required' => 'Tinggi Badan harus diisi.',
+                'gula_darah_sewaktu.required' => 'Gula Darah Sewaktu harus diisi.',
+            ]);
+            $periode16Minggu = new KuisHamil16Minggu;
+            $periode16Minggu->id_user = Auth::user()->id;
+            $periode16Minggu->id_member = $request->id;
+            $periode16Minggu->hemoglobin = $request->hemoglobin;
+            $periode16Minggu->tensi_darah = $request->tensi_darah;
+            $periode16Minggu->gula_darah_sewaktu = $request->gula_darah_sewaktu;
+            $periode16Minggu->save();
+            $message = 'Kuesioner hamil periode 16 minggu berhasil ditambahkan';
+            return redirect()->route('admin.periode16minggu-create',["id" => $request->id])->with('success', $message);
+        }
+    }
 
     /**
      * Display the specified resource.
