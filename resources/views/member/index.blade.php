@@ -75,9 +75,11 @@
                                     <td>{{ $row['created_at'] }}</td>
                                     <td>{{ (!empty($row['petugas'])) ? $row['petugas'] : '-' }}</td>
                                     <td class="text-center" width="14%">
-                                        <a href="{{ route('admin.member.ibuhamil', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Tambah Kuesioner Ibu Hamil" style="background-color: #EB30EF">
-                                            <i class="flaticon2-notepad"></i>
-                                        </a>
+                                        @if ($row['gender'] == 2)
+                                            <a href="{{ route('admin.member.ibuhamil', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Tambah Kuesioner Ibu Hamil" style="background-color: #EB30EF">
+                                                <i class="flaticon2-notepad"></i>
+                                            </a>
+                                        @endif
                                         <a href="{{ route('admin.member.result', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Lihat Hasil Kuesioner">
                                             <i class="flaticon2-writing"></i>
                                         </a>
