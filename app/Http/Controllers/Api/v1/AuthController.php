@@ -46,12 +46,12 @@ class AuthController extends Controller
             $email = $request->email;
             list($username, $domain) = explode('@', $email);
             if (!checkdnsrr($domain, 'MX')) {
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors([
-                        'error' => 'Registrasi gagal', 
-                        'keterangan' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
-                    ]);
+                return response()->json([
+                    'code' => 401,
+                    'error' => true,
+                    'title' => 'Perhatian',
+                    'message' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                ], 401);
             }
 
             $existPhone = Member::where('no_telp', substr($request->no_telp, 1))->first();
