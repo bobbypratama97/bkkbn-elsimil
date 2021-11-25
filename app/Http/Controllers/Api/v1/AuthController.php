@@ -43,6 +43,17 @@ class AuthController extends Controller
                 ], 401);
             }
 
+            $email = $request->email;
+            list($username, $domain) = explode('@', $email);
+            if (!checkdnsrr($domain, 'MX')) {
+                return response()->json([
+                    'code' => 401,
+                    'error' => true,
+                    'title' => 'Perhatian',
+                    'message' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                ], 401);
+            }
+
             $existPhone = Member::where('no_telp', substr($request->no_telp, 1))->first();
 
             if ($existPhone) {

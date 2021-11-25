@@ -72,10 +72,10 @@ class MemberController extends Controller
         ->join('adms_kelurahan', function($join) {
             $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
         })
-        ->join('member_delegate', function($join) {
+        ->leftJoin('member_delegate', function($join) {
             $join->on('members.id', '=', 'member_delegate.member_id');
         })
-        ->join('users', function($join) {
+        ->leftJoin('users', function($join) {
             $join->on('users.id', '=', 'member_delegate.user_id');
         })
         ->select([
@@ -167,7 +167,7 @@ class MemberController extends Controller
         ->leftJoin('users', function($join) {
             $join->on('users.id', '=', 'member_delegate.user_id');
         })
-        ->leftJoin('member_couple', function($join) {
+        ->join('member_couple', function($join) {
             $join->on('member_couple.couple_id', '=', 'members.id');
         })
         ->select([
