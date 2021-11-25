@@ -33,6 +33,7 @@
                             <div class="row">
                                 <div class="col text-left">
                                     <button type="submit" class="btn btn-primary mr-2">Proses</button>
+                                    <a href="{{ route('admin.provinsi.template') }}" class="btn btn-warning">Download Template</a>
                                 </div>
                                 <div class="col text-right">
                                     <a href="{{ route('admin.provinsi.index') }}" class="btn btn-danger">Batal</a>

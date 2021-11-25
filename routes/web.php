@@ -187,6 +187,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 
 	Route::prefix('master-data')->group(function() {
 		Route::get('provinsi/upload', 'ProvinsiController@upload')->name('provinsi.upload');
+		Route::get('provinsi/template', 'ProvinsiController@downloadExcel')->name('provinsi.template');
 		Route::post('provinsi/delete', 'ProvinsiController@delete')->name('provinsi.delete');
 		Route::resource('provinsi', 'ProvinsiController')->except(['create', 'show', 'destroy']);
 
