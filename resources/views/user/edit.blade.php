@@ -84,13 +84,15 @@
 
                             <div class="form-group">
                                 <label>Role</label>
-                                <select class="form-control select2" id="roles" name="role">
+                                <select class="form-control select2" id="roles" name="role" onchange="roleChange(event)">
                                     @foreach ($roles as $key => $val)
                                     <option value="{{ $val->id }}" {{ ($user->role_id == $val->id) ? 'selected' : '' }}>{{ $val->name }}</option>
                                     @endforeach
                                 </select>
+                                <label></label>
+                                <select class="form-control" id="rolechild" name="rolechild" style="display: none;">
+                                </select>
                             </div>
-
                         </div>
 
                         <div class="card-footer bg-gray-100 border-top-0">
@@ -133,6 +135,27 @@
             },    
         });
     });
+
+    function roleChange(e) {
+        let id = e.target.value
+        let base_url = window.location.origin + '/' + window.location.pathname.split ('/') [1] + '/';
+
+        $.get(base_url+'user-management/role/'+id+'/child', function(res) {
+            if(res.length > 0){
+                var select = document.getElementById("rolechild");
+                res.forEach(element => {
+                    let option = document.createElement("option");
+                    option.text = element.name;
+                    option.value = element.id;
+                    select.appendChild(option);
+                });
+                document.getElementById("rolechild").style.display = "block";
+            }else{
+                document.getElementById("rolechild").style.display = "none";
+            }
+        })
+    }
+
 </script>
 @endpush
 

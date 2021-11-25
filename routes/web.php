@@ -144,7 +144,6 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 
         });
 
-
 		Route::get('user/{id}/delegasi', 'UserController@delegasi')->name('user.delegasi');
 		Route::post('user/submit', 'UserController@submit')->name('user.submit');
 		Route::post('user/move', 'UserController@move')->name('user.move');
@@ -156,6 +155,8 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('role/delete', 'RoleController@delete')->name('role.delete');
 		Route::match(['post'], 'role/{role}','RoleController@update')->name('role.update');
 		Route::resource('role', 'RoleController')->except(['update', 'destroy']);
+
+		Route::get('role/{roleid}/child', 'RoleController@getChild')->name('role.child');
 	});
 
 	Route::prefix('page')->group(function() {

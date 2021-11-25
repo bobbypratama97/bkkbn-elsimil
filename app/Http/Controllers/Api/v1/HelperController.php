@@ -25,7 +25,7 @@ class HelperController extends Controller
     }
 
     public function provinsi(Request $request) {
-        $data = Provinsi::whereNull('deleted_by')->get();
+        $data = Provinsi::whereNull('deleted_by')->orderBy('nama', 'asc')->get();
 
         return response()->json([
             'code' => 200,
@@ -36,9 +36,9 @@ class HelperController extends Controller
 
     public function kabupaten(Request $request) {
         if (!empty($request->code)) {
-            $data = Kabupaten::whereNull('deleted_by')->where('provinsi_kode', $request->code)->get()->toArray();
+            $data = Kabupaten::whereNull('deleted_by')->where('provinsi_kode', $request->code)->orderBy('nama', 'asc')->get()->toArray();
         } else if (!empty($request->provinsi_code)) {
-            $data = Kabupaten::whereNull('deleted_by')->where('provinsi_kode', $request->provinsi_code)->get()->toArray();
+            $data = Kabupaten::whereNull('deleted_by')->where('provinsi_kode', $request->provinsi_code)->orderBy('nama', 'asc')->get()->toArray();
         } else {
             $data = Kabupaten::whereNull('deleted_by')->get();
         }
@@ -52,9 +52,9 @@ class HelperController extends Controller
 
     public function kecamatan(Request $request) {
         if (!empty($request->code)) {
-            $data = Kecamatan::whereNull('deleted_by')->where('kabupaten_kode', $request->code)->get()->toArray();
+            $data = Kecamatan::whereNull('deleted_by')->where('kabupaten_kode', $request->code)->orderBy('nama', 'asc')->get()->toArray();
         } else if (!empty($request->kabupaten_code)) {
-            $data = Kecamatan::whereNull('deleted_by')->where('kabupaten_kode', $request->kabupaten_code)->get()->toArray();
+            $data = Kecamatan::whereNull('deleted_by')->where('kabupaten_kode', $request->kabupaten_code)->orderBy('nama', 'asc')->get()->toArray();
         } else {
             $data = Kecamatan::whereNull('deleted_by')->get();
         }
@@ -68,9 +68,9 @@ class HelperController extends Controller
 
     public function kelurahan(Request $request) {
         if (!empty($request->code)) {
-            $data = Kelurahan::whereNull('deleted_by')->where('kecamatan_kode', $request->code)->get()->toArray();
+            $data = Kelurahan::whereNull('deleted_by')->where('kecamatan_kode', $request->code)->orderBy('nama', 'asc')->get()->toArray();
         } else if (!empty($request->kecamatan_code)) {
-            $data = Kelurahan::whereNull('deleted_by')->where('kecamatan_kode', $request->kecamatan_code)->get()->toArray();
+            $data = Kelurahan::whereNull('deleted_by')->where('kecamatan_kode', $request->kecamatan_code)->orderBy('nama', 'asc')->get()->toArray();
         } else {
             $data = Kelurahan::whereNull('deleted_by')->get();
         }
