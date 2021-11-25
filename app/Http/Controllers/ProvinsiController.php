@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\WilayahTemplate;
 use App\Http\Controllers\Controller;
-
+use App\Kabupaten;
+use App\Kecamatan;
+use App\Kelurahan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Auth;
 use Str;
@@ -19,6 +23,7 @@ use Redirect;
 use Helper;
 
 use App\Provinsi;
+use App\Rwrt;
 
 class ProvinsiController extends Controller
 {
@@ -398,5 +403,25 @@ class ProvinsiController extends Controller
         return json_encode($output);
 
         die();
+    }
+
+    public function downloadExcel(){
+        $provinsi[] = [
+            'Kode Provinsi'         => '00',
+            'Provinsi'              => '',
+            'Kode Kabupaten'        => '0000',
+            'Kabupaten'             => '',
+            'Kode Kecamatan'        => '000000',
+            'Kecamatan'             => '',
+            'Kode Kelurahan'        => '00000000',
+            'Kelurahan'             => '',
+            'Kode Rw'               => '01',
+            'Rw'                    => '1',
+            'Kode Rt'               => '004',
+            'Rt'                    => '4'
+        ];
+
+        $title = 'Template_Upload_Wilayahs.xlsx';
+        return Excel::download(new WilayahTemplate($provinsi), $title);
     }
 }

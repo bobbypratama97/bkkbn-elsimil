@@ -283,7 +283,17 @@
                     message: "<p class='text-center'>Kuesioner harus dipilih</p>",
                     size: 'small'
                 });
-            } else {
+            }
+            else if(tanggal == '') {
+                bootbox.alert({
+                    title: 'Perhatian',
+                    centerVertical: true,
+                    closeButton: false,
+                    message: "<p class='text-center'>Range Tanggal harus dipilih</p>",
+                    size: 'small'
+                });
+            }
+            else {
 
                 $('#detail-kuesioner').val(kuesioner);
                 $('#detail-tanggal').val(tanggal);
