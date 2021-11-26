@@ -27,6 +27,7 @@ class CreateKuisHamilKontakAwalsTable extends Migration
             $table->date('hari_pertama_haid_terakhir');
             $table->boolean('sumber_air_bersih');
             $table->boolean('rumah_layak_huni');
+            $table->boolean('jamban_sehat');
             $table->boolean('bansos');
             $table->softDeletes();
             $table->timestamps();
