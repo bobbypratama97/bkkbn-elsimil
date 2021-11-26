@@ -34,6 +34,7 @@ use App\KuisHamil16Minggu;
 use App\KuisHamilIbuJanin;
 use App\KuisHamilPersalinan;
 use App\KuisHamilNifas;
+use App\KuesionerHamil;
 use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
@@ -773,11 +774,25 @@ class MemberController extends Controller
             #retrieve kuesioner data
             $kuesionerData = array();
 
+            /*
+            * Nanti semuanya masuk ke tabel kuesioner hamil dan dibedakan berdasarkan kolom periode
+            * Periode berdasarkan kuesionernya
+            * Kontak awal = 1
+            * 12 Minggu = 2
+            * 16 Minggu = 3
+            * dan seterusnya
+
+            * nanti ngeGetnya pake query di bawah ini aja
+            * KuesionerHamil::where('id_member',$id)->select('created_at')->groupBy('periode')
+            * jadi bisa dapet per periode kuis
+
+            */
+
             for($i=0 ; $i<10 ; $i++)
             {
                 switch ($i){
                     case '0' :
-                        $hamilkontakAwal = KuisHamilKontakAwal::where('id_member',$id)->first();
+                        $hamilkontakAwal = KuesionerHamil::where([['id_member','=',$id],['periode','=',1]])->select('created_at')->first();
                         if($hamilkontakAwal != null){
                             $arrayKontakAwal = array(
                                 'id' => 'kontak-awal',

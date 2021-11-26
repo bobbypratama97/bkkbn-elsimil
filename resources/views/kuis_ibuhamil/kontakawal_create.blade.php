@@ -115,19 +115,19 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="nama"> 1. Nama</label>
-                                    <input type="text" class="text form-control" name="nama" value="@php echo isset($data_kuesioner->nama) ? ($data_kuesioner->nama) : null; @endphp">
+                                    <input type="text" class="text form-control" name="nama" value="@php echo isset($data_kuesioner->nama) ? ($data_kuesioner->nama) : $name; @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 2. NIK</label>
-                                    <input type="text" class="text form-control" name="nik" value="@php echo isset($data_kuesioner->nik) ? ($data_kuesioner->nik) : null; @endphp">
+                                    <input type="text" class="text form-control" name="nik" value="@php echo isset($data_kuesioner->nik) ? ($data_kuesioner->nik) : $no_ktp; @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 3. Usia</label>
-                                    <input type="number" class="number form-control" name="usia" value="@php echo isset($data_kuesioner->usia) ? ($data_kuesioner->usia) : null; @endphp">
+                                    <input type="number" class="number form-control" name="usia" value="@php echo isset($data_kuesioner->usia) ? ($data_kuesioner->usia) : $umur; @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 4. Alamat</label>
-                                    <input type="text" class="text form-control" name="alamat" value=@php echo isset($data_kuesioner->alamat) ? ($data_kuesioner->alamat) : null; @endphp>
+                                    <input type="text" class="text form-control" name="alamat" value=@php echo isset($data_kuesioner->alamat) ? ($data_kuesioner->alamat) : $alamat; @endphp>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 5. Jumlah Anak</label>
@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">8. Hari Pertama Haid Terakhir</label>
-                                    <input type="date" name="hari_pertama_haid_terakhir" class="form-control" value="@php echo isset($data_kuesioner->hari_pertama_haid_terakhir) ? ($data_kuesioner->hari_pertama_haid_terakhir) : null; @endphp">
+                                    <input type="date" name="hari_pertama_haid_terakhir" class="form-control" value="@php echo isset($data_kuesioner->hari_pertama_haid_terakhir) ? ($data_kuesioner->hari_pertama_haid_terakhir) : date("Y-m-d"); @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="">9. Sumber Air Bersih</label>
@@ -218,84 +218,6 @@
 @push('script')
 <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
-
-{{-- <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
-    });
-
-    $('#kt_datatable tbody').on('click', '.hapus', function () {
-        var id = $(this).attr('data-id');
-
-        bootbox.confirm({
-            title: 'Perhatian',
-            message: "<p class='text-center'>Apakah Anda yakin menghapus data ini ?</p>",
-            centerVertical: true,
-            closeButton: false,
-            buttons: {
-                confirm: { label: 'Yakin', className: 'btn-success' },
-                cancel: { label: 'Batalkan', className: 'btn-danger' }
-            },
-            callback: function (result) {
-                if (result == true) {
-                    $.preloader.start({
-                        modal:true,
-                        src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
-                    });
-
-                    $.ajax({
-                        url: '{{ route('admin.kuis.delete') }}',
-                        type: 'POST',
-                        data: {id : id, '_token': "{{ csrf_token() }}"},
-                        dataType: 'json',
-                        success: function( data ) {
-                            $.preloader.stop();
-                            bootbox.dialog({
-                                title: 'Perhatian',
-                                centerVertical: true,
-                                closeButton: false,
-                                message: "<p class='text-center'>" + data.message + "</p>",
-                                buttons: {
-                                    ok: {
-                                        label: "OK",
-                                        className: 'btn-info',
-                                        callback: function() {
-                                            window.location.href = '{{ route('admin.kuis.index') }}';
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    })
-                }
-            }
-        });
-    });
-</script> --}}
 @endpush
 
 @endsection

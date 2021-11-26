@@ -11,6 +11,7 @@ use Helper;
 
 
 use App\Member;
+use App\KuesionerHamil;
 use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
@@ -53,7 +54,11 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamilKontakAwal::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',1]])
+                ->select(['nama', 'nik', 'usia', 
+                        'alamat', 'jumlah_anak','usia_anak_terakhir', 
+                        'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih', 
+                        'rumah_layak_huni', 'bansos','created_at','updated_at'])->first();
         return view('kuis_ibuhamil.kontakawal_create',[
             "id" => $id,
             "name" => $name,
@@ -156,9 +161,9 @@ class KuisHamilController extends Controller
      */
     public function storeKontakAwal(Request $request)
     {
-        $checkExisting = KuisHamilKontakAwal::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',1]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamilKontakAwal::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',1]])
             ->update([
                 'nama' => $request->nama,
                 'nik' => $request->nik,
@@ -170,7 +175,8 @@ class KuisHamilController extends Controller
                 'hari_pertama_haid_terakhir' => $request->hari_pertama_haid_terakhir,
                 'sumber_air_bersih' => $request->sumber_air_bersih,
                 'rumah_layak_huni' => $request->rumah_layak_huni,
-                'bansos' => $request->bansos
+                'bansos' => $request->bansos,
+                'periode' => 1
             ]);
             $message = 'Kuesioner hamil kontak awal berhasil diperbaharui';
             return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
@@ -201,7 +207,7 @@ class KuisHamilController extends Controller
                 'rumah_layak_huni.required' => 'Rumah layak huni bersih harus diisi.',
                 'bansos.required' => 'Bansos bersih harus diisi.',
             ]);
-            $kontakAwal = new KuisHamilKontakAwal;
+            $kontakAwal = new KuesionerHamil;
             $kontakAwal->id_user = Auth::user()->id;
             $kontakAwal->id_member = $request->id;
             $kontakAwal->nama = $request->nama;
@@ -215,6 +221,7 @@ class KuisHamilController extends Controller
             $kontakAwal->sumber_air_bersih = $request->sumber_air_bersih;
             $kontakAwal->rumah_layak_huni = $request->rumah_layak_huni;
             $kontakAwal->bansos = $request->bansos;
+            $kontakAwal->periode = 1;
             $kontakAwal->save();
             $message = 'Kuesioner hamil kontak awal berhasil ditambahkan';
             return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
