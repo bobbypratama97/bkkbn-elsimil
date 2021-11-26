@@ -14,6 +14,7 @@ use App\Member;
 use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
+use App\KuisHamilIbuJanin;
 
 class KuisHamilController extends Controller
 {
@@ -125,6 +126,41 @@ class KuisHamilController extends Controller
         #data kuesioner
         $data = KuisHamil16Minggu::where('id_member',$id)->first();
         return view('kuis_ibuhamil.periode16_create',[
+            "id" => $id,
+            "name" => $name,
+            "no_ktp" => $no_ktp,
+            "gender" => $gender,
+            "umur" => $age,
+            "tempat_lahir" => $tempat_lahir,
+            "tanggal_lahir" => $tanggal_lahir,
+            "alamat" => $alamat,
+            "data_kuesioner" => $data
+        ]);
+
+    }
+
+    public function indexHamilIbuJanin($id,$periode)
+    {
+        $member = Member::where('id', $id)->first();
+        if($member != null){
+            $name = $member->name;
+            $no_ktp =  Helper::decryptNik($member->no_ktp);
+            if($member -> gender == 1){
+                $gender = "Pria";
+            }else{
+                $gender = "Wanita";
+            }
+            $today = date("Y-m-d");
+            $ageCalculation = date_diff(date_create($member->tgl_lahir), date_create($today));
+            $age = $ageCalculation->format('%y');
+            $tempat_lahir = $member->tempat_lahir;
+            $tanggal_lahir = $member->tgl_lahir;
+            $alamat = $member->alamat;
+
+        }
+        #data kuesioner
+        $data = KuisHamilIbuJanin::where('id_member',$id)->where('periode',$periode)->first();
+        return view('kuis_ibuhamil.ibujanin_create',[
             "id" => $id,
             "name" => $name,
             "no_ktp" => $no_ktp,
@@ -303,6 +339,70 @@ class KuisHamilController extends Controller
             $periode16Minggu->save();
             $message = 'Kuesioner hamil periode 16 minggu berhasil ditambahkan';
             return redirect()->route('admin.periode16minggu-create',["id" => $request->id])->with('success', $message);
+        }
+    }
+
+    public function storeHamilIbuJanin(Request $request,$periode)
+    {
+        $checkExisting = KuisHamilIbuJanin::where('id_member',$request->id)->where('periode',$periode)->first();
+        if($checkExisting != null){
+            KuisHamilIbuJanin::where('id_member', $request->id)->where('periode',$periode)
+            ->update([
+                'kenaikan_berat_badan' => $request->kenaikan_berat_badan,
+                'hemoglobin' => $request->hemoglobin,
+                'tensi_darah' => $request->tensi_darah,
+                'gula_darah' => $request->gula_darah,
+                'proteinuria' => $request->proteinuria,
+                'denyut_jantung' => $request->denyut_jantung,
+                'tinggi_fundus_uteri' => $request->tinggi_fundus_uteri,
+                'taksiran_berat_janin' => $request->taksiran_berat_janin,
+                'gerak_janin' => $request->gerak_janin,
+                'jumlah_janin' => $request->jumlah_janin
+            ]);
+            $message = 'Kuesioner hamil periode ' +  $periode + ' minggu berhasil diperbaharui';
+            return redirect()->route('admin.periodeIbuJanin-create',["id" => $request->id, "periode" => $periode])->with('success', $message);
+        }else{
+            $this->validate($request,[
+                'kenaikan_berat_badan' => 'required',
+                'hemoglobin' =>  'required',
+                'tensi_darah' => 'required',
+                'gula_darah' => 'required',
+                'proteinuria' =>  'required',
+                'denyut_jantung' =>  'required',
+                'tinggi_fundus_uteri' =>  'required',
+                'taksiran_berat_janin' =>  'required',
+                'gerak_janin' => 'required',
+                'jumlah_janin' =>  'required',
+            ],
+            [
+                'kenaikan_berat_badan.required' => 'Kenaikan berat badan harus diisi.',
+                'hemoglobin.required' => 'Hemoglobin harus diisi.',
+                'tensi_darah.required' => 'Tinggi Badan harus diisi.',
+                'gula_darah.required' => 'Gula Darah harus diisi.',
+                'proteinuria.required' =>  'Proteinuria harus diisi.',
+                'denyut_jantung.required' =>  'Denyut jantung haris diisi.',
+                'tinggi_fundus_uteri.required' =>  'Tinggi Fundus Uteri harus diisi.',
+                'taksiran_berat_janin.required' =>  'Taksiran Berat Janin harus diisi.',
+                'gerak_janin.required' => 'Gerak janin harus diisi.',
+                'jumlah_janin.required' =>  'Jumlah janin harus diisi.',
+            ]);
+            $hamilIbuJanin = new KuisHamilIbuJanin;
+            $hamilIbuJanin->id_user = Auth::user()->id;
+            $hamilIbuJanin->id_member = $request->id;
+            $hamilIbuJanin->periode = $periode;
+            $hamilIbuJanin->kenaikan_berat_badan = $request->kenaikan_berat_badan;
+            $hamilIbuJanin->hemoglobin = $request->hemoglobin;
+            $hamilIbuJanin->tensi_darah = $request->tensi_darah;
+            $hamilIbuJanin->gula_darah = $request->gula_darah;
+            $hamilIbuJanin->proteinuria = $request->proteinuira;
+            $hamilIbuJanin->denyut_jantung = $request->denyut_jantung;
+            $hamilIbuJanin->tinggi_fundus_uteri = $request->tinggi_fundus_uteri;
+            $hamilIbuJanin->taksiran_berat_janin = $request->taksiran_berat_janin;
+            $hamilIbuJanin->gerak_janin = $request->gerak_janin;
+            $hamilIbuJanin->jumlah_janin = $request->jumlah_janin;
+            $hamilIbuJanin->save();
+            $message = 'Kuesioner hamil periode ' + $periode + ' minggu berhasil ditambahkan';
+            return redirect()->route('admin.periodeIbuJanin-create',["id" => $request->id, "periode" => $periode])->with('success', $message);
         }
     }
 
