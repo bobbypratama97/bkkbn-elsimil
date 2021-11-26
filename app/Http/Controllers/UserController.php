@@ -32,6 +32,7 @@ use App\MemberDelegate;
 use App\MemberDelegateLog;
 
 use App\ChatHeader;
+use App\Config;
 use App\KuisResult;
 use App\KuisResultComment;
 
@@ -192,7 +193,8 @@ class UserController extends Controller
             'adms_kecamatan.nama as kecamatan',
             'adms_kelurahan.nama as kelurahan',
             'role.name as role',
-            'role_user.role_id'
+            'role_user.role_id',
+            'role_user.role_child_id'
         ])
         ->where('users.id', $id)
         ->first();
@@ -200,7 +202,10 @@ class UserController extends Controller
         $status = Helper::statusAdmin();
         $roles = Role::whereNull('deleted_by')->get();
 
-        return view('user.edit', compact('user', 'status', 'roles'));
+        $role_childs = Config::where('code', 'role_child_'.$user->role_id)
+            ->get();
+
+        return view('user.edit', compact('user', 'status', 'roles', 'role_childs'));
     }
 
     public function update(Request $request, $id) {
@@ -213,11 +218,14 @@ class UserController extends Controller
         $check = UserRole::where('user_id', $id)->first();
         if ($check) {
             $updaterole = UserRole::where('user_id', $id)->update([
-                'role_id' => $request->role
+                'role_id' => $request->role,
+                'role_child_id' => $request->rolechild
             ]);
         } else {
+            //mapping role child
             $insertrole = new UserRole;
             $insertrole->role_id = $request->role;
+            $insertrole->role_child_id = $request->rolechild;
             $insertrole->user_id = $id;
 
             $insertrole->save();
@@ -226,14 +234,14 @@ class UserController extends Controller
         $user = User::where('id', $id)->first();
 
         if ($user->is_active != '2' && $user->is_active != '3') {
-            Helper::sendMail([
-                'id' => $user->id, 
-                'tipe' => 1, 
-                'name' => $user->name, 
-                'email' => $user->email, 
-                'content' => $user->is_active,
-                'url' => 'lgn'
-            ]);
+            // Helper::sendMail([
+            //     'id' => $user->id, 
+            //     'tipe' => 1, 
+            //     'name' => $user->name, 
+            //     'email' => $user->email, 
+            //     'content' => $user->is_active,
+            //     'url' => 'lgn'
+            // ]);
         }
 
         $msg = 'Pengubahan data admin CMS berhasil';

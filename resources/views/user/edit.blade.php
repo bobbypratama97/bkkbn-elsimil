@@ -90,7 +90,11 @@
                                     @endforeach
                                 </select>
                                 <label></label>
-                                <select class="form-control" id="rolechild" name="rolechild" style="display: none;">
+                                <select class="form-control select2" id="rolechild" name="rolechild" style="display: block;">
+                                <option value="">-</option>
+                                @foreach($role_childs as $rolechild)
+                                <option value="{{$rolechild['value']}}" {{ ($user->role_child_id == $rolechild['value']) ? 'selected' : '' }}>{{$rolechild['name']}}</option>
+                                @endforeach
                                 </select>
                             </div>
                         </div>
@@ -134,6 +138,15 @@
                 }
             },    
         });
+
+        $('#rolechild').select2({
+            placeholder: "Pilih",
+            "language": {
+                "noResults": function(){
+                    return "Tidak ada data";
+                }
+            },    
+        });
     });
 
     function roleChange(e) {
@@ -141,17 +154,18 @@
         let base_url = window.location.origin + '/' + window.location.pathname.split ('/') [1] + '/';
 
         $.get(base_url+'user-management/role/'+id+'/child', function(res) {
+            var select = document.getElementById("rolechild");
+            select.innerHTML = ''
             if(res.length > 0){
-                var select = document.getElementById("rolechild");
                 res.forEach(element => {
                     let option = document.createElement("option");
                     option.text = element.name;
                     option.value = element.id;
                     select.appendChild(option);
                 });
-                document.getElementById("rolechild").style.display = "block";
+                // document.getElementById("rolechild").style.display = "block";
             }else{
-                document.getElementById("rolechild").style.display = "none";
+                // document.getElementById("rolechild").style.display = "none";
             }
         })
     }
