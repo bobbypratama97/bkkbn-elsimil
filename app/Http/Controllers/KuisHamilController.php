@@ -15,6 +15,8 @@ use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
 use App\KuisHamilIbuJanin;
+use App\KuisHamilPersalinan;
+use App\KuisHamilNifas;
 
 class KuisHamilController extends Controller
 {
@@ -175,6 +177,76 @@ class KuisHamilController extends Controller
 
     }
 
+    public function indexPersalinan($id)
+    {
+        $member = Member::where('id', $id)->first();
+        if($member != null){
+            $name = $member->name;
+            $no_ktp =  Helper::decryptNik($member->no_ktp);
+            if($member -> gender == 1){
+                $gender = "Pria";
+            }else{
+                $gender = "Wanita";
+            }
+            $today = date("Y-m-d");
+            $ageCalculation = date_diff(date_create($member->tgl_lahir), date_create($today));
+            $age = $ageCalculation->format('%y');
+            $tempat_lahir = $member->tempat_lahir;
+            $tanggal_lahir = $member->tgl_lahir;
+            $alamat = $member->alamat;
+
+        }
+        #data kuesioner
+        $data = KuisHamilPersalinan::where('id_member',$id)->first();
+        return view('kuis_ibuhamil.persalinan_create',[
+            "id" => $id,
+            "name" => $name,
+            "no_ktp" => $no_ktp,
+            "gender" => $gender,
+            "umur" => $age,
+            "tempat_lahir" => $tempat_lahir,
+            "tanggal_lahir" => $tanggal_lahir,
+            "alamat" => $alamat,
+            "data_kuesioner" => $data
+        ]);
+
+    }
+
+    public function indexNifas($id)
+    {
+        $member = Member::where('id', $id)->first();
+        if($member != null){
+            $name = $member->name;
+            $no_ktp =  Helper::decryptNik($member->no_ktp);
+            if($member -> gender == 1){
+                $gender = "Pria";
+            }else{
+                $gender = "Wanita";
+            }
+            $today = date("Y-m-d");
+            $ageCalculation = date_diff(date_create($member->tgl_lahir), date_create($today));
+            $age = $ageCalculation->format('%y');
+            $tempat_lahir = $member->tempat_lahir;
+            $tanggal_lahir = $member->tgl_lahir;
+            $alamat = $member->alamat;
+
+        }
+        #data kuesioner
+        $data = KuisHamilNifas::where('id_member',$id)->first();
+        return view('kuis_ibuhamil.nifas_create',[
+            "id" => $id,
+            "name" => $name,
+            "no_ktp" => $no_ktp,
+            "gender" => $gender,
+            "umur" => $age,
+            "tempat_lahir" => $tempat_lahir,
+            "tanggal_lahir" => $tanggal_lahir,
+            "alamat" => $alamat,
+            "data_kuesioner" => $data
+        ]);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -310,7 +382,6 @@ class KuisHamilController extends Controller
 
     public function storePeriode16Minggu(Request $request)
     {
-        dd($request->id);
         $checkExisting = KuisHamil16Minggu::where('id_member',$request->id)->first();
         if($checkExisting != null){
             KuisHamil16Minggu::where('id_member', $request->id)
@@ -405,6 +476,89 @@ class KuisHamilController extends Controller
             $hamilIbuJanin->save();
             $message = 'Kuesioner hamil periode ' . $periode . ' minggu berhasil ditambahkan';
             return redirect()->route('admin.periodeIbuJanin-create',["id" => $request->id, "periode" => $periode])->with('success', $message);
+        }
+    }
+
+
+    public function storePersalinan(Request $request)
+    {
+        $checkExisting = KuisHamilPersalinan::where('id_member',$request->id)->first();
+        if($checkExisting != null){
+            KuisHamilPersalinan::where('id_member', $request->id)
+            ->update([
+                'tanggal_persalinan' => $request->tanggal_persalinan,
+                'kb' => $request->kb,
+                'usia' => $request->usia,
+                'berat' => $request->berat,
+                'panjang_badan' => $request->panjang_badan,
+                'jumlah' => $request->jumlah
+            ]);
+            $message = 'Kuesioner hamil pasca persalinan berhasil diperbaharui';
+            return redirect()->route('admin.periodePersalinan-create',["id" => $request->id])->with('success', $message);
+        }else{
+            $this->validate($request,[
+                'tanggal_persalinan' => 'required',
+                'kb' =>  'required',
+                'usia' => 'required',
+                'berat' => 'required',
+                'panjang_badan' =>  'required',
+                'jumlah' =>  'required',
+            ],
+            [
+                'tanggal_persalinan.required' => 'Tanggal Persalinan harus diisi.',
+                'kb.required' => 'KB harus diisi.',
+                'usia.required.required' => 'Usia harus diisi.',
+                'berat.required.required' => 'Berat lahir harus diisi.',
+                'panjang_badan.required' => 'Panjang badan harus diisi.',
+                'jumlah.required' => 'Jumlah bayi harus diisi.'
+            ]);
+            $periodePersalinan = new KuisHamilPersalinan;
+            $periodePersalinan->id_user = Auth::user()->id;
+            $periodePersalinan->id_member = $request->id;
+            $periodePersalinan->tanggal_persalinan = $request->tanggal_persalinan;
+            $periodePersalinan->kb = $request->kb;
+            $periodePersalinan->usia = $request->usia;
+            $periodePersalinan->berat = $request->berat;
+            $periodePersalinan->panjang_badan = $request->panjang_badan;
+            $periodePersalinan->jumlah = $request->jumlah;
+            $periodePersalinan->save();
+            $message = 'Kuesioner hamil pasca persalinan berhasil ditambahkan';
+            return redirect()->route('admin.periodePersalinan-create',["id" => $request->id])->with('success', $message);
+        }
+    }
+
+    public function storeNifas(Request $request)
+    {
+        $checkExisting = KuisHamilNifas::where('id_member',$request->id)->first();
+        if($checkExisting != null){
+            KuisHamilNifas::where('id_member', $request->id)
+            ->update([
+                'komplikasi' => $request->komplikasi,
+                'asi' => $request->asi,
+                'kbpp_mkjp' => $request->kbpp_mkjp,
+            ]);
+            $message = 'Kuesioner hamil periode pasca salin sampai akhir nifas berhasil diperbaharui';
+            return redirect()->route('admin.periodeNifas-create',["id" => $request->id])->with('success', $message);
+        }else{
+            $this->validate($request,[
+                'komplikasi' => 'required',
+                'asi' => 'required',
+                'kbpp_mkjp' => 'required',
+            ],
+            [
+                'komplikasi.required' => 'Komplikasi harus diisi.',
+                'asi.required' => 'ASI harus diisi.',
+                'kbpp_mkjp.required' => 'KBPP - MKJP harus diisi.',
+            ]);
+            $periodeNifas = new KuisHamilNifas;
+            $periodeNifas->id_user = Auth::user()->id;
+            $periodeNifas->id_member = $request->id;
+            $periodeNifas->komplikasi = $request->komplikasi;
+            $periodeNifas->asi = $request->asi;
+            $periodeNifas->kbpp_mkjp = $request->kbpp_mkjp;
+            $periodeNifas->save();
+            $message = 'Kuesioner hamil periode pasca salin sampai akhir nifas berhasil ditambahkan';
+            return redirect()->route('admin.periodeNifas-create',["id" => $request->id])->with('success', $message);
         }
     }
 

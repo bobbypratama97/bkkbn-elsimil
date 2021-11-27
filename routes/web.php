@@ -144,6 +144,12 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
             #20-36-minggu
             Route::get('periode-20-minggu/create/{periode}','KuisHamilController@indexHamilIbuJanin')->name('periodeIbuJanin-create');
             Route::post('periode-20-minggu/save/{periode}','KuisHamilController@storeHamilIbuJanin')->name('periodeIbuJanin-save');
+            #persalinan
+            Route::get('persalinan/create','KuisHamilController@indexPersalinan')->name('periodePersalinan-create');
+            Route::post('persalinan/save','KuisHamilController@storePersalinan')->name('periodePersalinan-save');
+            #nifas
+            Route::get('nifas/create','KuisHamilController@indexNifas')->name('periodeNifas-create');
+            Route::post('nifas/save','KuisHamilController@storeNifas')->name('periodeNifas-save');
 
         });
 

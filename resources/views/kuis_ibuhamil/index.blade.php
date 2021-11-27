@@ -227,12 +227,14 @@
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 28 Minggu</a>
                                             @if ($kuesionerData[5]['created_at'] != null)
-                                            <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
-                                                <span>Sudah Mengisi Kuesioner </span>
-                                                <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
+                                                @php $periode = 28 @endphp
+                                                <a href="{{route('admin.periodeIbuJanin-create',['id' => $id, 'periode' => $periode])}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                    <span>Sudah Mengisi Kuesioner </span>
+                                                    <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
                                                 </a>
                                             @else
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                @php $periode = 28 @endphp
+                                                <a href="{{route('admin.periodeIbuJanin-create',['id' => $id, 'periode' => $periode])}}" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
                                                     <span>Belum Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
                                                 </a>
@@ -254,12 +256,14 @@
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 32 Minggu</a>
                                             @if ($kuesionerData[6]['created_at'] != null)
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                @php $periode = 32 @endphp
+                                                <a href="{{route('admin.periodeIbuJanin-create',['id' => $id, 'periode' => $periode])}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
                                                     <span>Sudah Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
                                                 </a>
                                             @else
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                @php $periode = 32 @endphp
+                                                <a href="{{route('admin.periodeIbuJanin-create',['id' => $id, 'periode' => $periode])}}" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
                                                     <span>Belum Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
                                                 </a>
@@ -279,12 +283,14 @@
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Usia Hamil 36 Minggu</a>
                                             @if ($kuesionerData[7]['created_at'] != null)
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                @php $periode = 36 @endphp
+                                                <a href="{{route('admin.periodeIbuJanin-create',['id' => $id, 'periode' => $periode])}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
                                                     <span>Sudah Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
                                                 </a>
                                             @else
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                @php $periode = 36 @endphp
+                                                <a href="{{route('admin.periodeIbuJanin-create',['id' => $id, 'periode' => $periode])}}" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
                                                     <span>Belum Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
                                                 </a>
@@ -304,12 +310,12 @@
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Sesaat Setelah Persalinan</a>
                                             @if ($kuesionerData[8]['created_at'] != null)
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <a href="{{route('admin.periodePersalinan-create',['id' => $id])}}" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
                                                     <span>Sudah Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
                                                 </a>
                                             @else
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                            <a href="{{route('admin.periodePersalinan-create',['id' => $id])}}" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
                                                     <span>Belum Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
                                                 </a>
@@ -331,12 +337,12 @@
                                         <div class="col-lg-9 col-md-12" style="margin-top: 1%">
                                             <a class="card-title font-weight-bolder text-hover-state-dark mb-4 d-block" style="color: black">Pasca Salin Akhir Masa Nifas</a>
                                             @if ($kuesionerData[9]['created_at'] != null)
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
+                                                <a href="{{route('admin.periodeNifas-create',['id' => $id])}}"  class="btn btn-sm btn-block" style="background-color: #1CC5BE ; color: white">
                                                     <span>Sudah Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-check-mark" style="color: white"></i></label>
                                                 </a>
                                             @else
-                                                <a href="" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
+                                                <a href="{{route('admin.periodeNifas-create',['id' => $id])}}" class="btn btn-sm btn-block" style="background-color: #FFFFFF ; color: #999999">
                                                     <span>Belum Mengisi Kuesioner </span>
                                                     <label class="col-1 col-form-label"><i class="flaticon2-delete"></i></label>
                                                 </a>
