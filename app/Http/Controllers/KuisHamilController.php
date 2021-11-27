@@ -93,7 +93,7 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamil12Minggu::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])->first();
         return view('kuis_ibuhamil.periode12_create',[
             "id" => $id,
             "name" => $name,
@@ -166,7 +166,7 @@ class KuisHamilController extends Controller
             KuesionerHamil::where([['id_member','=',$request->id],['periode','=',1]])
             ->update([
                 'nama' => $request->nama,
-                'nik' => $request->nik,
+                'nik' => Helper::encryptNik($request->nik),
                 'usia' => $request->usia,
                 'alamat' => $request->alamat,
                 'jumlah_anak' => $request->jumlah_anak,
@@ -211,7 +211,7 @@ class KuisHamilController extends Controller
             $kontakAwal->id_user = Auth::user()->id;
             $kontakAwal->id_member = $request->id;
             $kontakAwal->nama = $request->nama;
-            $kontakAwal->nik = $request->nik;
+            $kontakAwal->nik = Helper::encryptNik($request->nik);
             $kontakAwal->usia = $request->usia;
             $kontakAwal->alamat = $request->alamat;
             $kontakAwal->jumlah_anak = $request->jumlah_anak;
@@ -230,9 +230,9 @@ class KuisHamilController extends Controller
 
     public function storePeriode12Minggu(Request $request)
     {
-        $checkExisting = KuisHamil12Minggu::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',2]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamil12Minggu::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',2]])
             ->update([
                 'berat_badan' => $request->berat_badan,
                 'tinggi_badan' => $request->tinggi_badan,
@@ -262,7 +262,8 @@ class KuisHamilController extends Controller
                 'tensi_darah.required' => 'Tensi Darah harus diisi.',
                 'gula_darah.required' => 'Gula Darah harus diisi.',
             ]);
-            $periode12Minggu = new KuisHamil12Minggu;
+            $periode12Minggu = new KuesionerHamil;
+            $periode12Minggu->periode = 2;
             $periode12Minggu->id_user = Auth::user()->id;
             $periode12Minggu->id_member = $request->id;
             $periode12Minggu->berat_badan = $request->berat_badan;

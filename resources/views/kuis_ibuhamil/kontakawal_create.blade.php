@@ -94,7 +94,7 @@
 
                     <div class="row">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-success btn-lg btn-block"><span class="font-weight-boldest">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             @if ( Session::has( 'success' ))
@@ -108,7 +108,7 @@
                     </div>
                     <div class="row" style="margin-top: 1%">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-info btn-lg btn-block mb-5"><span class="font-weight-boldest">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             <form action="{{route('admin.kontakawal-save',$id)}}" method="post" enctype="multipart/form-data">
@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 2. NIK</label>
-                                    <input type="text" class="text form-control" name="nik" value="@php echo isset($data_kuesioner->nik) ? ($data_kuesioner->nik) : $no_ktp; @endphp">
+                                    <input type="text" class="text form-control" name="nik" value="@php echo isset($data_kuesioner->nik) ? Helper::decryptNik($data_kuesioner->nik) : ""; @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 3. Usia</label>
@@ -174,7 +174,7 @@
                                 <div class="form-group">
                                     <label for="">10. Rumah Layak Huni</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rumah_layak_huni"  <?php   echo  isset($data_kuesioner->rumah_layak_huni) && $data_kuesioner->rumah_layak_huni =='1' ? 'checked':'' ?>value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="rumah_layak_huni"  <?php   echo  isset($data_kuesioner->rumah_layak_huni) && $data_kuesioner->rumah_layak_huni =='1' ? 'checked':'' ?> value="1" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
@@ -201,7 +201,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
 
                         </div>

@@ -36,7 +36,7 @@ use App\KuisHamilPersalinan;
 use App\KuisHamilNifas;
 use App\KuesionerHamil;
 use Illuminate\Support\Facades\Log;
-// use Barryvdh\Debugbar\Facade as Debugbar;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class MemberController extends Controller
 {
@@ -793,12 +793,12 @@ class MemberController extends Controller
             * jadi bisa dapet per periode kuis
 
             */
-
-            for($i=0 ; $i<10 ; $i++)
+            $kuesionerChecked = KuesionerHamil::where('id_member',$id)->select('periode','created_at')->get()->groupBy('periode');
+            for($i=1 ; $i<=10 ; $i++)
             {
                 switch ($i){
-                    case '0' :
-                        $hamilkontakAwal = KuesionerHamil::where([['id_member','=',$id],['periode','=',1]])->select('created_at')->first();
+                    case '1' :
+                        $hamilkontakAwal = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                         if($hamilkontakAwal != null){
                             $arrayKontakAwal = array(
                                 'id' => 'kontak-awal',
@@ -812,8 +812,8 @@ class MemberController extends Controller
                          }
                          array_push($kuesionerData,$arrayKontakAwal);
                          break;
-                    case '1' :
-                        $hamil12minggu = KuisHamil12Minggu::where('id_member',$id)->first();
+                    case '2' :
+                        $hamil12minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                         if($hamil12minggu != null){
                             $array12Minggu = array(
                                 'id' => '12-minggu',
@@ -827,8 +827,8 @@ class MemberController extends Controller
                          }
                          array_push($kuesionerData,$array12Minggu);
                          break;
-                    case '2' :
-                        $hamil16minggu = KuisHamil16Minggu::where('id_member',$id)->first();
+                    case '3' :
+                        $hamil16minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                         if($hamil16minggu != null){
                             $array16Minggu = array(
                                 'id' => '16-minggu',
@@ -842,8 +842,8 @@ class MemberController extends Controller
                             }
                         array_push($kuesionerData,$array16Minggu);
                         break;
-                    case '3' :
-                            $hamil20minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',20)->first();
+                    case '4' :
+                            $hamil20minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil20minggu != null){
                                 $array20Minggu = array(
                                     'id' => '20-minggu',
@@ -857,8 +857,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array20Minggu);
                             break;
-                    case '4' :
-                            $hamil24minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',24)->first();
+                    case '5' :
+                            $hamil24minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil24minggu != null){
                                 $array24Minggu = array(
                                     'id' => '24-minggu',
@@ -872,8 +872,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array24Minggu);
                             break;
-                    case '5' :
-                            $hamil28minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',28)->first();
+                    case '6' :
+                            $hamil28minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil28minggu != null){
                                 $array28Minggu = array(
                                     'id' => '28-minggu',
@@ -887,8 +887,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array28Minggu);
                             break;
-                    case '6' :
-                            $hamil32minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',32)->first();
+                    case '7' :
+                            $hamil32minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil32minggu != null){
                                 $array32Minggu = array(
                                     'id' => '32-minggu',
@@ -902,8 +902,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array32Minggu);
                             break;
-                     case '7' :
-                            $hamil36minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',36)->first();
+                     case '8' :
+                            $hamil36minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil36minggu != null){
                                 $array36Minggu = array(
                                     'id' => '36-minggu',
@@ -917,8 +917,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array36Minggu);
                             break;
-                    case '8' :
-                            $hamilPersalinan = KuisHamilPersalinan::where('id_member',$id)->first();
+                    case '9' :
+                            $hamilPersalinan = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamilPersalinan != null){
                                 $arrayPersalinan = array(
                                     'id' => 'persalinan',
@@ -932,8 +932,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$arrayPersalinan);
                             break;
-                     case '9' :
-                            $hamilNifas = KuisHamilNifas::where('id_member',$id)->first();
+                     case '10' :
+                            $hamilNifas = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamilNifas != null){
                                 $arrayNifas = array(
                                     'id' => 'nifas',

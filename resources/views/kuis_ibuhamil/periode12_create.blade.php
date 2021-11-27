@@ -94,7 +94,7 @@
 
                     <div class="row">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-success btn-lg btn-block"><span class="font-weight-boldest">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             @if ( Session::has( 'success' ))
@@ -108,7 +108,7 @@
                     </div>
                     <div class="row" style="margin-top: 1%">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-info btn-lg btn-block mb-5"><span class="font-weight-boldest">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             <form action="{{route('admin.periode12minggu-save',$id)}}" method="post" enctype="multipart/form-data">
@@ -152,7 +152,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
                         </div>
                     </div>

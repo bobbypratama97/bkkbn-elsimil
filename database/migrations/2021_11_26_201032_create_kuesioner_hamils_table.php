@@ -13,10 +13,11 @@ class CreateKuesionerHamilsTable extends Migration
      */
     public function up()
     {
-        Schema::create('kuesioner_hamils', function (Blueprint $table) {
+        Schema::create('kuesioner_hamil', function (Blueprint $table) {
             $table->id();
             $table->integer('id_user');
             $table->integer('id_member');
+            $table->integer('periode');
             $table->string('nama');
             $table->string('nik');
             $table->integer('usia');
@@ -37,7 +38,6 @@ class CreateKuesionerHamilsTable extends Migration
             $table->integer('gula_darah');
             $table->boolean('riwayat_sakit_kronik');
             $table->integer('gula_darah_sewaktu');
-            $table->integer('periode');
             $table->double('kenaikan_berat_badan');
             $table->boolean('proteinuria');
             $table->integer('denyut_jantung');

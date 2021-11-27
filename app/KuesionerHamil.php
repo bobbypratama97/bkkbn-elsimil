@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class KuesionerHamil extends Model
 {
-    protected $table = 'kuesioner_hamils';
+    protected $table = 'kuesioner_hamil';
 
     /*
     nanti setiap ngubah kuesioner ke tabel ini
