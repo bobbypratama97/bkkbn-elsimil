@@ -35,7 +35,7 @@ use App\KuisHamilIbuJanin;
 use App\KuisHamilPersalinan;
 use App\KuisHamilNifas;
 use Illuminate\Support\Facades\Log;
-use Barryvdh\Debugbar\Facade as Debugbar;
+// use Barryvdh\Debugbar\Facade as Debugbar;
 
 class MemberController extends Controller
 {
