@@ -162,6 +162,7 @@ class KuisHamilController extends Controller
         $data = KuisHamilIbuJanin::where('id_member',$id)->where('periode',$periode)->first();
         return view('kuis_ibuhamil.ibujanin_create',[
             "id" => $id,
+            "periode" => $periode,
             "name" => $name,
             "no_ktp" => $no_ktp,
             "gender" => $gender,
@@ -309,6 +310,7 @@ class KuisHamilController extends Controller
 
     public function storePeriode16Minggu(Request $request)
     {
+        dd($request->id);
         $checkExisting = KuisHamil16Minggu::where('id_member',$request->id)->first();
         if($checkExisting != null){
             KuisHamil16Minggu::where('id_member', $request->id)
@@ -342,7 +344,7 @@ class KuisHamilController extends Controller
         }
     }
 
-    public function storeHamilIbuJanin(Request $request,$periode)
+    public function storeHamilIbuJanin(Request $request,$id,$periode)
     {
         $checkExisting = KuisHamilIbuJanin::where('id_member',$request->id)->where('periode',$periode)->first();
         if($checkExisting != null){
@@ -394,14 +396,14 @@ class KuisHamilController extends Controller
             $hamilIbuJanin->hemoglobin = $request->hemoglobin;
             $hamilIbuJanin->tensi_darah = $request->tensi_darah;
             $hamilIbuJanin->gula_darah = $request->gula_darah;
-            $hamilIbuJanin->proteinuria = $request->proteinuira;
+            $hamilIbuJanin->proteinuria = $request->proteinuria;
             $hamilIbuJanin->denyut_jantung = $request->denyut_jantung;
             $hamilIbuJanin->tinggi_fundus_uteri = $request->tinggi_fundus_uteri;
             $hamilIbuJanin->taksiran_berat_janin = $request->taksiran_berat_janin;
             $hamilIbuJanin->gerak_janin = $request->gerak_janin;
             $hamilIbuJanin->jumlah_janin = $request->jumlah_janin;
             $hamilIbuJanin->save();
-            $message = 'Kuesioner hamil periode ' + $periode + ' minggu berhasil ditambahkan';
+            $message = 'Kuesioner hamil periode ' . $periode . ' minggu berhasil ditambahkan';
             return redirect()->route('admin.periodeIbuJanin-create',["id" => $request->id, "periode" => $periode])->with('success', $message);
         }
     }
