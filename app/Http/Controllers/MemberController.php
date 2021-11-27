@@ -36,6 +36,7 @@ use App\KuisHamilPersalinan;
 use App\KuisHamilNifas;
 use App\KuesionerHamil;
 use Illuminate\Support\Facades\Log;
+// use Barryvdh\Debugbar\Facade as Debugbar;
 
 class MemberController extends Controller
 {
@@ -385,10 +386,15 @@ class MemberController extends Controller
             ->toArray();
         }
 
-        $couple = MemberCouple::where('member_id', $id)->first();
+        $couple = MemberCouple::join('members', function($join) {
+            $join->on('members.id', '=', 'member_couple.couple_id');
+        })
+        ->where('member_couple.member_id', $id)
+        ->where('member_couple.status', '=', 'APM200')
+        ->select(['couple_id', 'members.no_ktp as no_ktp', 'members.name as namapasangan'])->first();
+
         $details_couple_first = [];
         $details_couple_last = [];
-
         if($couple){
                 // get result before intervensi
             $kuis_couple_first = KuisResult::where('member_id', $couple->couple_id)
