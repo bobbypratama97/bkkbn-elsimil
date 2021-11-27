@@ -17,6 +17,7 @@ use Helper;
 use App\Member;
 
 use App\KuisHamilKontakAwal;
+use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
 
 class KuisHamilController extends Controller
@@ -168,6 +169,119 @@ class KuisHamilController extends Controller
         }
     }
 
+    private function _get12MingguResult($id)
+    {
+         $base_url = env('BASE_URL_PDF');
+         #kontak-16-minggu
+         $data12Minggu = KuisHamil12Minggu::where('id_user',$id)->first();
+         $answer12Minggu= array();
+         $pdf12Minggu = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+         if($data12Minggu != null){
+             $imtCalculation = $data12Minggu->berat_badan / ($data12Minggu->tinggi_badan ^ 2);
+             foreach( $data12Minggu->toArray() as $key => $value )
+             {
+                 switch($key) {
+                     case 'berat_badan' : if($imtCalculation >= 19 && $imtCalculation <= 29){
+                                                       $isRisky = false;
+                                                     }else if($imtCalculation < 19 || $imtCalculation > 29){
+                                                       $isRisky = true;
+                                                     }
+                                                     $singleData = [
+                                                     "question" => $key,
+                                                     "answer" => $value,
+                                                     "isRisky" => $isRisky
+                                                     ];
+                                                     array_push($answer12Minggu,$singleData);
+                                                     break;
+                       case 'tinggi_badan' : if($value >= 145){
+                                                         $isRisky = false;
+                                                       }else if($value < 145){
+                                                         $isRisky = true;
+                                                       }
+                                                       $singleData = [
+                                                       "question" => $key,
+                                                       "answer" => $value,
+                                                       "isRisky" => $isRisky
+                                                       ];
+                                                       array_push($answer12Minggu,$singleData);
+                                                       break;
+
+                       case 'lingkar_lengan_atas' : if($value >= 23.5){
+                                                                        $isRisky = false;
+                                                                    }else if($value < 23.5){
+                                                                        $isRisky = true;
+                                                                    }
+                                                                    $singleData = [
+                                                                    "question" => $key,
+                                                                    "answer" => $value,
+                                                                    "isRisky" => $isRisky
+                                                                    ];
+                                                                    array_push($answer12Minggu,$singleData);
+                                                                    break;
+
+                        case 'hemoglobin' :             if($value >= 11){
+                                                                        $isRisky = false;
+                                                                    }else if($value < 11){
+                                                                        $isRisky = true;
+                                                                    }
+                                                                    $singleData = [
+                                                                    "question" => $key,
+                                                                    "answer" => $value,
+                                                                    "isRisky" => $isRisky
+                                                                    ];
+                                                                    array_push($answer12Minggu,$singleData);
+                                                                    break;
+
+                        case 'tensi_darah' :             if($value <= 90){
+                                                                        $isRisky = false;
+                                                                    }else if($value > 90){
+                                                                        $isRisky = true;
+                                                                    }
+                                                                    $singleData = [
+                                                                    "question" => $key,
+                                                                    "answer" => $value,
+                                                                    "isRisky" => $isRisky
+                                                                    ];
+                                                                    array_push($answer12Minggu,$singleData);
+                                                                    break;
+
+                         case 'gula_darah_sewaktu' :       if($value >= 95 && $value <= 200){
+                                                                                $isRisky = false;
+                                                                            }else if($value < 95 || $value > 200){
+                                                                                $isRisky = true;
+                                                                            }
+                                                                            $singleData = [
+                                                                            "question" => $key,
+                                                                            "answer" => $value,
+                                                                            "isRisky" => $isRisky
+                                                                            ];
+                                                                            array_push($answer12Minggu,$singleData);
+                                                                            break;
+
+                            case 'riwayat_sakit_kronik' :       if($value == 1){
+                                                                                   $isRisky = true;
+                                                                                }else if($value == 0){
+                                                                                    $isRisky = false;
+                                                                                }
+                                                                                $singleData = [
+                                                                                "question" => $key,
+                                                                                "answer" => $value,
+                                                                                "isRisky" => $isRisky
+                                                                                ];
+                                                                                array_push($answer12Minggu,$singleData);
+                                                                                break;
+                 }
+             }
+             $array12Minggu = array(
+               "id" => '12-minggu',
+               "answerDate" => \Carbon\Carbon::parse($data12Minggu->created_at)->isoFormat('YYYY-MM-DD'),
+               "pdfUrl" =>  $base_url.$pdf12Minggu,
+               "answers" => $answer12Minggu
+             );
+             return $array12Minggu;
+         }
+    }
+
     private function _get16MingguResult($id)
     {
         $today = date("Y-m-d");
@@ -241,6 +355,10 @@ class KuisHamilController extends Controller
         #kontak awal
         $arrayKontakAwal = $this->_getKontakAwalResult($id);
         array_push($finalData,$arrayKontakAwal);
+
+        #12 minggu
+        $array12Minggu = $this->_get12MingguResult($id);
+        array_push($finalData,$array12Minggu);
 
         #16 minggu
         $array16Minggu = $this->_get16MingguResult($id);
