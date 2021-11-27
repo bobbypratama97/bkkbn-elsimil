@@ -783,16 +783,21 @@ class MemberController extends Controller
             /*
             * Nanti semuanya masuk ke tabel kuesioner hamil dan dibedakan berdasarkan kolom periode
             * Periode berdasarkan kuesionernya
-            * Kontak awal = 1
-            * 12 Minggu = 2
-            * 16 Minggu = 3
+                Kontak awal                     = 1
+                12 Minggu                       = 2
+                16 Minggu                       = 3
+                20 Minggu                       = 4
+                24 Minggu                       = 5
+                28 Minggu                       = 6
+                32 Minggu                       = 7
+                36 Minggu                       = 8
+                Setelah Persalinan              = 9
+                Pasca Salin Akhir Masa Nifas    = 10
             * dan seterusnya
 
-            * nanti ngeGetnya pake query di bawah ini aja
-            * KuesionerHamil::where('id_member',$id)->select('created_at')->groupBy('periode')
-            * jadi bisa dapet per periode kuis
-
             */
+
+            // mengambil kuesioner yang sudah diisi sesuai dengan periodenya
             $kuesionerChecked = KuesionerHamil::where('id_member',$id)->select('periode','created_at')->get()->groupBy('periode');
             for($i=1 ; $i<=10 ; $i++)
             {
