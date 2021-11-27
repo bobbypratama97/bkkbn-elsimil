@@ -74,7 +74,7 @@
                                     <td>{!! Helper::statusUser($row['is_active']) !!}</td>
                                     <td>{{ $row['created_at'] }}</td>
                                     <td>{{ (!empty($row['petugas'])) ? $row['petugas'] : '-' }}</td>
-                                    <td class="text-center" width="14%">
+                                    <td class="text-right" width="14%">
                                         @if ($row['gender'] == 2)
                                             <a href="{{ route('admin.member.ibuhamil', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Tambah Kuesioner Ibu Hamil" style="background-color: #EB30EF">
                                                 <i class="flaticon2-notepad"></i>

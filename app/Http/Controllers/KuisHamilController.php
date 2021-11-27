@@ -128,7 +128,7 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamil16Minggu::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',3]])->first();
         return view('kuis_ibuhamil.periode16_create',[
             "id" => $id,
             "name" => $name,
@@ -281,9 +281,9 @@ class KuisHamilController extends Controller
 
     public function storePeriode16Minggu(Request $request)
     {
-        $checkExisting = KuisHamil16Minggu::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',3]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamil16Minggu::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',3]])
             ->update([
                 'hemoglobin' => $request->hemoglobin,
                 'tensi_darah' => $request->tensi_darah,
@@ -302,7 +302,8 @@ class KuisHamilController extends Controller
                 'tensi_darah.required' => 'Tinggi Badan harus diisi.',
                 'gula_darah_sewaktu.required' => 'Gula Darah Sewaktu harus diisi.',
             ]);
-            $periode16Minggu = new KuisHamil16Minggu;
+            $periode16Minggu = new KuesionerHamil;
+            $periode16Minggu->periode = 3;
             $periode16Minggu->id_user = Auth::user()->id;
             $periode16Minggu->id_member = $request->id;
             $periode16Minggu->hemoglobin = $request->hemoglobin;
