@@ -48,7 +48,7 @@
                         </div>
                       </div>
                       <div class="form-group row my-0">
-                        <label class="mr-5 col-form-label"><i class="flaticon-calendar-with-a-clock-time-tools"></i></label>
+                        <label class="mr-5 col-form-label"><i class="flaticon2-calendar-8"></i></label>
                         <div class="">
                             <span class="form-control-plaintext h6">Rencana Menikah: {{ $member->rencana_pernikahan }}</span>
                         </div>
@@ -81,40 +81,40 @@
                   <div class="card-body">
                     <div class="form-check mb-4">
                       <input class="form-check-input mr-3" role="button" type="checkbox" value="1" name="suplemenDarah" id="suplemenDarah" {{ $logbook->suplemen_darah ? 'checked' : '' }}>
-                      <label class="form-check-label h6" for="suplemenDarah">
+                      <label class="form-check-label h6 ml-4" for="suplemenDarah">
                         Suplemen Penambah Darah
                       </label>
-                      <div class="text-muted my-1">
+                      <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
                       </div>
                     </div>
 
                     <div class="form-check mb-4">
                       <input class="form-check-input mr-3" role="button" type="checkbox" value="1" name="suplemenMakanan" id="suplemenMakanan" {{ $logbook->suplemen_makanan ? 'checked' : '' }}>
-                      <label class="form-check-label h6" for="suplemenMakanan">
+                      <label class="form-check-label h6 ml-4" for="suplemenMakanan">
                         Suplemen Makanan
                       </label>
-                      <div class="text-muted my-1">
+                      <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
                       </div>
                     </div>
 
                     <div class="form-check mb-4">
                       <input class="form-check-input mr-3" role="button" type="checkbox" value="1" name="kie" id="kie" {{ $logbook->kie ? 'checked' : '' }}>
-                      <label class="form-check-label h6" for="kie">
+                      <label class="form-check-label h6 ml-4" for="kie">
                         KIE
                       </label>
-                      <div class="text-muted my-1">
+                      <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
                       </div>
                     </div>
 
                     <div class="form-check mb-4">
                       <input class="form-check-input mr-3" role="button" type="checkbox" value="1" name="rujukan" id="rujukan" {{ $logbook->rujukan ? 'checked' : '' }}>
-                      <label class="form-check-label h6" for="rujukan">
+                      <label class="form-check-label h6 ml-4" for="rujukan">
                         Rujukan
                       </label>
-                      <div class="text-muted my-1">
+                      <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
                       </div>
                     </div>
@@ -139,12 +139,12 @@
                     <button type="button" class="btn btn-info btn-lg btn-block mb-5"><span class="font-weight-boldest">Tgl Update : {{ $kuis_last ? $kuis_last->created_at : '-' }}</span></button>
                   </div>
 
-                  <table class="table table-bordered text-center mt-10">
+                  <table class="table table-bordered text-left mt-10">
                     <thead>
                       <tr>
-                        <th scope="col" class="h6">Variabel</th>
-                        <th scope="col" class="h6">Sebelum Intervensi</th>
-                        <th scope="col" class="h6">Setelah Intervensi</th>
+                        <th scope="col" class="h6 p-6">Variabel</th>
+                        <th scope="col" class="h6 p-6">Sebelum Intervensi</th>
+                        <th scope="col" class="h6 p-6">Setelah Intervensi</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -201,13 +201,14 @@
                   @if($couple)
                     <div class="mt-10">
                       <h5 class="card-text">Calon Pengantin {{ $member->gender == 1 ? 'Wanita' : 'Pria' }} / Pasangan</h5>
+                      <h5 class="card-text">{{ $couple->namapasangan }} - {!! Helper::decryptNik($couple->no_ktp) !!}</h5>
 
-                      <table class="table table-bordered text-center mt-10">
+                      <table class="table table-bordered text-left mt-10">
                         <thead>
                           <tr>
-                            <th scope="col" class="h6">Variabel</th>
-                            <th scope="col" class="h6">Sebelum Intervensi</th>
-                            <th scope="col" class="h6">Setelah Intervensi</th>
+                            <th scope="col" class="h6 p-6">Variabel</th>
+                            <th scope="col" class="h6 p-6">Sebelum Intervensi</th>
+                            <th scope="col" class="h6 p-6">Setelah Intervensi</th>
                           </tr>
                         </thead>
                         <tbody>

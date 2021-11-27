@@ -137,7 +137,7 @@ class HelperController extends Controller
     }
 
     public function provinsi(Request $request) {
-        $data = Provinsi::whereNull('deleted_by')->get();
+        $data = Provinsi::whereNull('deleted_by')->orderBy('nama', 'asc')->get();
 
         $count = 0;
         $select = '';
@@ -163,7 +163,7 @@ class HelperController extends Controller
         if (!empty($request->provinsi_id)) {
             $data = Kabupaten::whereNull('deleted_by')->where('provinsi_kode', $request->provinsi_id)->orderBy('nama', 'ASC')->get();
         } else {
-            $data = Kabupaten::whereNull('deleted_by')->get();
+            $data = Kabupaten::whereNull('deleted_by')->orderBy('nama', 'asc')->get();
         }
 
         $count = 0;
@@ -190,7 +190,7 @@ class HelperController extends Controller
         if (!empty($request->kabupaten_id)) {
             $data = Kecamatan::whereNull('deleted_by')->where('kabupaten_kode', $request->kabupaten_id)->orderBy('nama', 'ASC')->get();
         } else {
-            $data = Kecamatan::whereNull('deleted_by')->get();
+            $data = Kecamatan::whereNull('deleted_by')->orderBy('nama', 'asc')->get();
         }
 
         $count = 0;
@@ -217,7 +217,7 @@ class HelperController extends Controller
         if (!empty($request->kecamatan_id)) {
             $data = Kelurahan::whereNull('deleted_by')->where('kecamatan_kode', $request->kecamatan_id)->orderBy('nama', 'ASC')->get();
         } else {
-            $data = Kelurahan::whereNull('deleted_by')->get();
+            $data = Kelurahan::whereNull('deleted_by')->orderBy('nama', 'asc')->get();
         }
 
         $count = 0;

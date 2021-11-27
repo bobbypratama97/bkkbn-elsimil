@@ -77,5 +77,5 @@ Route::group(['namespace' => 'Api\v1', 'prefix' => 'v1'], function() {
 
 	Route::post('version', 'SettingController@check_version_code');
 
-    Route::get('kontak-awal/{id}','KuisHamilController@getKontakAwalResult');
+    Route::get('kuesioner-hamil/{id}','KuisHamilController@getKuesionerHamilResult');
 });
