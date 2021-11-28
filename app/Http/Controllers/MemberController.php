@@ -60,33 +60,34 @@ class MemberController extends Controller
 
         $auth = Auth::user();
         $role = Auth::user()->role;
+        $role_child = Auth::user()->roleChild;
 
-        $self = Member::join('adms_provinsi', function($join) {
+        $self = Member::leftJoin('adms_provinsi', function($join) {
             $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
         })
-        ->join('adms_kabupaten', function($join) {
+        ->leftJoin('adms_kabupaten', function($join) {
             $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
         })
-        ->join('adms_kecamatan', function($join) {
+        ->leftJoin('adms_kecamatan', function($join) {
             $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
         })
-        ->join('adms_kelurahan', function($join) {
+        ->leftJoin('adms_kelurahan', function($join) {
             $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
         })
-        ->leftJoin('member_delegate', function($join) {
-            $join->on('members.id', '=', 'member_delegate.member_id');
-        })
-        ->leftJoin('users', function($join) {
-            $join->on('users.id', '=', 'member_delegate.user_id');
-        })
+        // ->leftJoin('member_delegate', function($join) {
+        //     $join->on('members.id', '=', 'member_delegate.member_id');
+        // })
+        // ->leftJoin('users', function($join) {
+        //     $join->on('users.id', '=', 'member_delegate.user_id');
+        // })
         ->select([
             'members.*',
             'adms_provinsi.nama as provinsi',
             'adms_kabupaten.nama as kabupaten',
             'adms_kecamatan.nama as kecamatan',
             'adms_kelurahan.nama as kelurahan',
-            'users.id as petugas_id',
-            'users.name as petugas'
+            // 'users.id as petugas_id',
+            // 'users.name as petugas'
         ]);
 
 
@@ -100,6 +101,10 @@ class MemberController extends Controller
 
         if ($role == '4') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id);
+        }
+
+        if ($role == '5') {
+            $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id)->where('members.kelurahan_id', $auth->kelurahan_id);
         }
 
         $search = '';
@@ -124,9 +129,40 @@ class MemberController extends Controller
             $self = $self->where('members.name', 'like', '%' . $request->name . '%');
         }
 
-        $paginate = $self->paginate(10);
+        $paginate = $self->orderBy('id', 'asc')->paginate(10);
         $self = $paginate->items();
         foreach ($self as $key => $val) {
+            if($role == 5){
+                //cek member delegate
+                $member_delegates = MemberDelegate::select('member_delegate.member_id', 'member_delegate.user_id', 'role_user.role_id', 'role_user.role_child_id', 'u.name as petugas_name')
+                    ->join('users as u', 'u.id', 'member_delegate.user_id')
+                    ->join('role_user', 'role_user.user_id', 'u.id')
+                    ->where('member_id', $val->id);
+    
+                $all_member_delegates = clone($member_delegates);
+                $all_member_delegates = $all_member_delegates->get()->toArray();
+                $self_member_delegates = $member_delegates->where('role_user.role_child_id', $role_child)->first();
+    
+                if($self_member_delegates) {
+                    $petugas = array_column($all_member_delegates, 'petugas_name');
+                    $self[$key]['petugas_id'] = $self_member_delegates->user_id;
+                    $self[$key]['petugas'] = implode(', ',$petugas);
+                }else{
+                    $petugas = array_column($all_member_delegates, 'petugas_name');
+                    $self[$key]['petugas_id'] = null;
+                    $self[$key]['petugas'] = implode(',',$petugas);
+                }
+            }else {
+                $member_delegates = MemberDelegate::select('member_delegate.member_id', 'member_delegate.user_id', 'u.name as petugas_name')
+                    ->join('users as u', 'u.id', 'member_delegate.user_id')
+                    ->where('member_id', $val->id)->first();
+
+                $self[$key]['petugas_id'] = $member_delegates->user_id ?? null;
+                $self[$key]['petugas'] = $member_delegates->petugas_name ?? null;
+            }
+            // echo('<pre>');
+            // print_r( $self[0]);die;
+            
             $couple = MemberCouple::join('members', function($join) {
                 $join->on('members.id', '=', 'member_couple.couple_id');
             })
@@ -145,87 +181,88 @@ class MemberController extends Controller
             }
         }
 
-        $cop = [];
-        foreach ($self as $keyz => $valz) {
-            $cop[] = $valz->id;
-        }
+        // $cop = [];
+        // foreach ($self as $keyz => $valz) {
+        //     $cop[] = $valz->id;
+        // }
 
-        $couples = Member::join('adms_provinsi', function($join) {
-            $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
-        })
-        ->join('adms_kabupaten', function($join) {
-            $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
-        })
-        ->join('adms_kecamatan', function($join) {
-            $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
-        })
-        ->join('adms_kelurahan', function($join) {
-            $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
-        })
-        ->leftJoin('member_delegate', function($join) {
-            $join->on('members.id', '=', 'member_delegate.member_id');
-        })
-        ->leftJoin('users', function($join) {
-            $join->on('users.id', '=', 'member_delegate.user_id');
-        })
-        ->join('member_couple', function($join) {
-            $join->on('member_couple.couple_id', '=', 'members.id');
-        })
-        ->select([
-            'members.*',
-            'adms_provinsi.nama as provinsi',
-            'adms_kabupaten.nama as kabupaten',
-            'adms_kecamatan.nama as kecamatan',
-            'adms_kelurahan.nama as kelurahan',
-            'users.id as petugas_id',
-            'users.name as petugas'
-        ])
-        ->where('member_couple.status', '=', 'APM200')
-        ->where('member_delegate.user_id', Auth::id())
-        ->whereNotIn('member_delegate.member_id', $cop);
+        // $couples = Member::join('adms_provinsi', function($join) {
+        //     $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
+        // })
+        // ->join('adms_kabupaten', function($join) {
+        //     $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
+        // })
+        // ->join('adms_kecamatan', function($join) {
+        //     $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
+        // })
+        // ->join('adms_kelurahan', function($join) {
+        //     $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
+        // })
+        // ->leftJoin('member_delegate', function($join) {
+        //     $join->on('members.id', '=', 'member_delegate.member_id');
+        // })
+        // ->leftJoin('users', function($join) {
+        //     $join->on('users.id', '=', 'member_delegate.user_id');
+        // })
+        // ->join('member_couple', function($join) {
+        //     $join->on('member_couple.couple_id', '=', 'members.id');
+        // })
+        // ->select([
+        //     'members.*',
+        //     'adms_provinsi.nama as provinsi',
+        //     'adms_kabupaten.nama as kabupaten',
+        //     'adms_kecamatan.nama as kecamatan',
+        //     'adms_kelurahan.nama as kelurahan',
+        //     'users.id as petugas_id',
+        //     'users.name as petugas'
+        // ])
+        // ->where('member_couple.status', '=', 'APM200')
+        // ->where('member_delegate.user_id', Auth::id())
+        // ->whereNotIn('member_delegate.member_id', $cop);
 
 
-        $search = '';
-        if (isset($request->s)) {
-            if ($request->s == 'all') {
-                $search = 'all';
-            } else if ($request->s == 'h') {
-                $couples = $couples->whereNotNull('member_delegate.user_id');
-                $search = 'h';
-            } else if ($request->s == 'nh') {
-                $couples = $couples->whereNull('member_delegate.user_id');
-                $search = 'nh';
-            } else if ($request->s == 'm') {
-                $couples = $couples->where('member_delegate.user_id', Auth::id());
-                $search = 'm';
-            }
-        }
+        // $search = '';
+        // if (isset($request->s)) {
+        //     if ($request->s == 'all') {
+        //         $search = 'all';
+        //     } else if ($request->s == 'h') {
+        //         $couples = $couples->whereNotNull('member_delegate.user_id');
+        //         $search = 'h';
+        //     } else if ($request->s == 'nh') {
+        //         $couples = $couples->whereNull('member_delegate.user_id');
+        //         $search = 'nh';
+        //     } else if ($request->s == 'm') {
+        //         $couples = $couples->where('member_delegate.user_id', Auth::id());
+        //         $search = 'm';
+        //     }
+        // }
 
-        $couples = $couples->get();
+        // $couples = $couples->get();
 
-        foreach ($couples as $keyzz => $valzz) {
-            $coups = MemberCouple::leftJoin('members', function($join) {
-                $join->on('members.id', '=', 'member_couple.couple_id');
-            })
-            ->where('member_couple.member_id', $valzz->id)
-            ->where('member_couple.status', '=', 'APM200')
-            ->select(['members.name as namapasangancoup'])
-            ->get();
+        // foreach ($couples as $keyzz => $valzz) {
+        //     $coups = MemberCouple::leftJoin('members', function($join) {
+        //         $join->on('members.id', '=', 'member_couple.couple_id');
+        //     })
+        //     ->where('member_couple.member_id', $valzz->id)
+        //     ->where('member_couple.status', '=', 'APM200')
+        //     ->select(['members.name as namapasangancoup'])
+        //     ->get();
 
-            $pasangancoup = '';
-            if ($coups->isNotEmpty()) {
-                foreach ($coups as $keyss => $valss) {
-                    $pasangancoup .= $valss->namapasangancoup . ', ';
-                }
-                $pasangancoup = substr($pasangancoup, 0, -2);
-                $couples[$keyzz]->pasangan = $pasangancoup;
-            }
-        }
+        //     $pasangancoup = '';
+        //     if ($coups->isNotEmpty()) {
+        //         foreach ($coups as $keyss => $valss) {
+        //             $pasangancoup .= $valss->namapasangancoup . ', ';
+        //         }
+        //         $pasangancoup = substr($pasangancoup, 0, -2);
+        //         $couples[$keyzz]->pasangan = $pasangancoup;
+        //     }
+        // }
 
         // $self = $self->toArray();
-        $couples = $couples->toArray();
+        // $couples = $couples->toArray();
 
-        $member = array_merge($self, $couples);
+        // $member = array_merge($self, $couples);
+        $member = $self;
 
         return view('member.index', compact('member', 'search', 'paginate', 'name'));
     }
@@ -629,7 +666,13 @@ class MemberController extends Controller
     }
 
     public function kelola(Request $request) {
-        $check = MemberDelegate::where('member_id', $request->id)->first();
+        $role_child = Auth::user()->roleChild;
+        // $check = MemberDelegate::where('member_id', $request->id)->first();
+        $check = MemberDelegate::select('member_delegate.member_id', 'member_delegate.user_id', 'role_user.role_id', 'role_user.role_child_id', 'u.name as petugas_name')
+            ->join('users as u', 'u.id', 'member_delegate.user_id')
+            ->join('role_user', 'role_user.user_id', 'u.id')
+            ->where('member_id', $request->id)
+            ->where('role_user.role_child_id', $role_child)->first();
 
         $output = [];
         if ($check) {
@@ -655,7 +698,7 @@ class MemberController extends Controller
 
                 $tambah->save();
 
-                $chat = ChatHeader::where('member_id', $request->id)->first();
+                $chat = ChatHeader::where('member_id', $request->id)->where('type', $role_child)->first();
 
                 if ($chat) {
                     $updated = ChatHeader::where('member_id', $request->id)->update([
@@ -678,7 +721,12 @@ class MemberController extends Controller
 
                 if ($check->isNotEmpty()) {
                     foreach ($check as $keys => $rows) {
-                        $cekdelegate = MemberDelegate::where('member_id', $rows->couple_id)->first();
+                        // $cekdelegate = MemberDelegate::where('member_id', $rows->couple_id)->first();
+                        $cekdelegate = MemberDelegate::select('member_delegate.member_id', 'member_delegate.user_id', 'role_user.role_id', 'role_user.role_child_id', 'u.name as petugas_name')
+                            ->join('users as u', 'u.id', 'member_delegate.user_id')
+                            ->join('role_user', 'role_user.user_id', 'u.id')
+                            ->where('member_id', $rows->couple_id)
+                            ->where('role_user.role_child_id', $role_child)->first();
 
                         if ($cekdelegate) {
                             $updateCouple = MemberDelegate::where('member_id', $rows->couple_id)->update([

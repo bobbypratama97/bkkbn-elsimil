@@ -80,6 +80,16 @@ class ChatController extends Controller
             $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
         }
 
+        if ($role == '5') {
+            $where = "
+                chat_header.provinsi_kode = '{$user->provinsi_id}' AND 
+                chat_header.kabupaten_kode = '{$user->kabupaten_id}' AND 
+                chat_header.kecamatan_kode = '{$user->kecamatan_id}' AND 
+                chat_header.kelurahan_kode = '{$user->kelurahan_id}' AND 
+            ";
+            $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+        }
+
         $sql = "
             SELECT 
                 members.id,
@@ -271,6 +281,16 @@ class ChatController extends Controller
                 AND chat_header.provinsi_kode = '{$user->provinsi_id}' 
                 AND chat_header.kabupaten_kode = '{$user->kabupaten_id}' 
                 AND chat_header.kecamatan_kode = '{$user->kecamatan_id}'
+            ";
+            $condition = "{$where} {$filter}";
+        }
+
+        if ($role == '5') {
+            $where = "
+                AND chat_header.provinsi_kode = '{$user->provinsi_id}' 
+                AND chat_header.kabupaten_kode = '{$user->kabupaten_id}' 
+                AND chat_header.kecamatan_kode = '{$user->kecamatan_id}'
+                AND chat_header.kelurahan_kode = '{$user->kelurahan_id}'
             ";
             $condition = "{$where} {$filter}";
         }
