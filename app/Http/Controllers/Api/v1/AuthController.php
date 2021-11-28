@@ -45,7 +45,7 @@ class AuthController extends Controller
 
             $email = $request->email;
             list($username, $domain) = explode('@', $email);
-            if (!checkdnsrr($domain, 'MX')) {
+            if(!in_array($domain, $this->accept_email)){
                 return response()->json([
                     'code' => 401,
                     'error' => true,

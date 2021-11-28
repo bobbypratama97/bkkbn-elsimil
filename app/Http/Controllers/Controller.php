@@ -10,4 +10,6 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public $accept_email = ['gmail.com', 'yahoo.com', 'yahoo.co.id'];
 }

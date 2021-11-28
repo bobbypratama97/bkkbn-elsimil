@@ -94,14 +94,15 @@ class RegisterController extends Controller
         //validasi email domain
         $email = $request->email;
         list($username, $domain) = explode('@', $email);
-        if (!checkdnsrr($domain, 'MX')) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors([
-                    'error' => 'Registrasi gagal', 
-                    'keterangan' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
-                ]);
+        if(!in_array($domain, $this->accept_email)){
+            return response()->json([
+                'code' => 401,
+                'error' => true,
+                'title' => 'Perhatian',
+                'message' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+            ], 401);
         }
+        // if (!checkdnsrr($domain, 'MX')) {
 
         //print_r ($request->all()); die;
 
