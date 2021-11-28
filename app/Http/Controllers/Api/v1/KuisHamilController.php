@@ -20,6 +20,8 @@ use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
 use App\KuisHamilIbuJanin;
+use App\KuisHamilPersalinan;
+use App\KuisHamilNifas;
 
 class KuisHamilController extends Controller
 {
@@ -586,6 +588,167 @@ class KuisHamilController extends Controller
         }
     }
 
+    private function _getPersalinanResult($id)
+    {
+         $today = date("Y-m-d");
+         $base_url = env('BASE_URL_PDF');
+         #kontak-16-minggu
+         $dataPersalinan = KuisHamilPersalinan::where('id_user',$id)->first();
+         $answerPersalinan= array();
+         $pdfPersalinan = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+         if($dataPersalinan != null){
+             foreach( $dataPersalinan->toArray() as $key => $value )
+             {
+                 switch($key) {
+                     case 'tanggal_persalinan' : $singleData = [
+                                                                "question" => $key,
+                                                                "answer" => $value,
+                                                                "isRisky" => "-"
+                                                                ];
+                                                                array_push($answerPersalinan,$singleData);
+                                                                break;
+
+                     case 'kb'                            :  if($value == "1"){
+                                                                     $isRisky = false;
+                                                                 }else if($value == "0"){
+                                                                     $isRisky = true;
+                                                                 }
+                                                                $singleData = [
+                                                                    "question" => $key,
+                                                                    "answer" => $value,
+                                                                    "isRisky" => $isRisky
+                                                                ];
+                                                                array_push($answerPersalinan,$singleData);
+                                                                break;
+
+                    case 'usia'                            :   if($value >= 37 && $value <= 42){
+                                                                       $isRisky = false;
+                                                                    }else if($value < 37 || $value > 42){
+                                                                        $isRisky = true;
+                                                                    }
+                                                                    $singleData = [
+                                                                        "question" => $key,
+                                                                        "answer" => $value,
+                                                                        "isRisky" => $isRisky
+                                                                    ];
+                                                                    array_push($answerPersalinan,$singleData);
+                                                                    break;
+
+                    case 'berat'                            :   if($value >= 2500 && $value <= 3900){
+                                                                        $isRisky = false;
+                                                                     }else if($value < 2500 || $value > 3900){
+                                                                         $isRisky = true;
+                                                                     }
+                                                                     $singleData = [
+                                                                         "question" => $key,
+                                                                         "answer" => $value,
+                                                                         "isRisky" => $isRisky
+                                                                     ];
+                                                                     array_push($answerPersalinan,$singleData);
+                                                                     break;
+
+                   case 'panjang_badan'                :   if($value >= 48 && $value <= 53){
+                                                                        $isRisky = false;
+                                                                     }else if($value < 48 || $value > 53){
+                                                                         $isRisky = true;
+                                                                     }
+                                                                     $singleData = [
+                                                                         "question" => $key,
+                                                                         "answer" => $value,
+                                                                         "isRisky" => $isRisky
+                                                                     ];
+                                                                     array_push($answerPersalinan,$singleData);
+                                                                     break;
+
+                    case 'jumlah'                        :   if($value == 1){
+                                                                        $isRisky = false;
+                                                                     }else if($value > 1){
+                                                                         $isRisky = true;
+                                                                     }
+                                                                     $singleData = [
+                                                                         "question" => $key,
+                                                                         "answer" => $value,
+                                                                         "isRisky" => $isRisky
+                                                                     ];
+                                                                     array_push($answerPersalinan,$singleData);
+                                                                     break;
+
+                 }
+             }
+             $arrayPersalinan = array(
+               "id" => 'persalinan',
+               "answerDate" => \Carbon\Carbon::parse($dataPersalinan->created_at)->isoFormat('YYYY-MM-DD'),
+               "pdfUrl" =>  $base_url.$pdfPersalinan,
+               "answers" => $answerPersalinan
+             );
+             return $arrayPersalinan;
+         }
+    }
+
+
+    private function _getNifasResult($id)
+    {
+        $today = date("Y-m-d");
+        $base_url = env('BASE_URL_PDF');
+        #kontak-16-minggu
+        $dataNifas = KuisHamilNifas::where('id_user',$id)->first();
+        $answerNifas= array();
+        $pdfNifas = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+        if($dataNifas != null){
+            foreach( $dataNifas->toArray() as $key => $value )
+            {
+                switch($key) {
+                    case 'komplikasi' : if($value == "1"){
+                                                      $isRisky = true;
+                                                    }else if($value == "0"){
+                                                      $isRisky = false;
+                                                    }
+                                                    $singleData = [
+                                                    "question" => $key,
+                                                    "answer" => $value,
+                                                    "isRisky" => $isRisky
+                                                    ];
+                                                    array_push($answerNifas,$singleData);
+                                                    break;
+
+                      case 'asi' :  if($value == "1"){
+                                                        $isRisky = false;
+                                                      }else if($value == "0"){
+                                                        $isRisky = true;
+                                                      }
+                                                      $singleData = [
+                                                      "question" => $key,
+                                                      "answer" => $value,
+                                                      "isRisky" => $isRisky
+                                                      ];
+                                                      array_push($answerNifas,$singleData);
+                                                      break;
+
+                        case 'kbpp_mkjp' :  if($value == "1"){
+                                                        $isRisky = false;
+                                                      }else if($value == "0"){
+                                                        $isRisky = true;
+                                                      }
+                                                      $singleData = [
+                                                      "question" => $key,
+                                                      "answer" => $value,
+                                                      "isRisky" => $isRisky
+                                                      ];
+                                                      array_push($answerNifas,$singleData);
+                                                      break;
+
+                }
+            }
+            $arrayNifas = array(
+              "id" => 'nifas',
+              "answerDate" => \Carbon\Carbon::parse($dataNifas->created_at)->isoFormat('YYYY-MM-DD'),
+              "pdfUrl" =>  $base_url.$pdfNifas,
+              "answers" => $answerNifas
+            );
+            return $arrayNifas;
+        }
+    }
+
 
 
     public function getKuesionerHamilResult($id)
@@ -626,6 +789,14 @@ class KuisHamilController extends Controller
          #36 minggu
         $array36Minggu = $this->_getIbuJaninResult($id,36);
         array_push($finalData,$array36Minggu);
+
+        #persalinan
+        $arrayPersalinan = $this->_getPersalinanResult($id);
+        array_push($finalData,$arrayPersalinan);
+
+        #nifas
+        $arrayNifas = $this->_getNifasResult($id);
+        array_push($finalData,$arrayNifas);
 
         $finalResult = [
           "data" => $finalData
