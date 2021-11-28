@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions;
 
+use Illuminate\Support\Facades\Validator;
+
 use Image;
 use Helper;
 
@@ -25,6 +27,10 @@ class AuthController extends Controller
 
     public function register(Request $request) {
         try {
+            $messages = array(
+                'email.email' => 'Email tidak sesuai format.'
+            );
+
             if (empty($request->no_telp)) {
                 return response()->json([
                     'code' => 401,
@@ -43,14 +49,28 @@ class AuthController extends Controller
                 ], 401);
             }
 
+            $validators = Validator::make($request->all(), [
+                'email' => ['required', 'string', 'email', 'max:255']
+            ], $messages);
+
+            if ($validators->fails()) {
+                return response()->json([
+                    'code' => 401,
+                    'error' => true,
+                    'title' => 'Perhatian',
+                    'message' => $validators->errors()->first(),
+                ], 401);
+            }
+
             $email = $request->email;
+
             list($username, $domain) = explode('@', $email);
             if(!in_array($domain, $this->accept_email)){
                 return response()->json([
                     'code' => 401,
                     'error' => true,
                     'title' => 'Perhatian',
-                    'message' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                    'message' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
                 ], 401);
             }
 

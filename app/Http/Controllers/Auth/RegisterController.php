@@ -99,7 +99,7 @@ class RegisterController extends Controller
                 'code' => 401,
                 'error' => true,
                 'title' => 'Perhatian',
-                'message' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                'message' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
             ], 401);
         }
         // if (!checkdnsrr($domain, 'MX')) {
