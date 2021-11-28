@@ -19,6 +19,7 @@ use App\Member;
 use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
+use App\KuisHamilIbuJanin;
 
 class KuisHamilController extends Controller
 {
@@ -284,8 +285,8 @@ class KuisHamilController extends Controller
 
     private function _get16MingguResult($id)
     {
-        $today = date("Y-m-d");
-        $base_url = env('BASE_URL_PDF');
+         $today = date("Y-m-d");
+         $base_url = env('BASE_URL_PDF');
          #kontak-16-minggu
          $data16Minggu = KuisHamil16Minggu::where('id_user',$id)->first();
          $answer16Minggu= array();
@@ -343,6 +344,248 @@ class KuisHamilController extends Controller
          }
     }
 
+    private function _getIbuJaninResult($id,$periode)
+    {
+        $today = date("Y-m-d");
+        $base_url = env('BASE_URL_PDF');
+        $dataIbuJanin = KuisHamilIbuJanin::where('id_user',$id)->where('periode',$periode)->first();
+        $answerIbuJanin = array();
+        $pdfIbuJanin = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+        if($pdfIbuJanin != null){
+            foreach( $dataIbuJanin->toArray() as $key => $value )
+            {
+                switch($key) {
+                    case 'kenaikan_berat_badan' : $singleData = [
+                                                                        "question" => $key,
+                                                                        "answer" => $value,
+                                                                        "isRisky" => "-"
+                                                                    ];
+                                                                    array_push($answerIbuJanin,$singleData);
+                                                                    break;
+                    case 'hemoglobin'                :  if($value >= 11){
+                                                                       $isRisky = false;
+                                                                    }else if($value < 11){
+                                                                        $isRisky = true;
+                                                                    };
+                                                                    $singleData = [
+                                                                        "question" => $key,
+                                                                        "answer" => $value,
+                                                                        "isRisky" => $isRisky
+                                                                    ];
+                                                                    array_push($answerIbuJanin,$singleData);
+                                                                    break;
+                     case 'tensi_darah'                :  if($value <= 90){
+                                                                        $isRisky = false;
+                                                                     }else if($value > 90){
+                                                                         $isRisky = true;
+                                                                     };
+                                                                     $singleData = [
+                                                                         "question" => $key,
+                                                                         "answer" => $value,
+                                                                         "isRisky" => $isRisky
+                                                                     ];
+                                                                     array_push($answerIbuJanin,$singleData);
+                                                                     break;
+
+                    case 'gula_darah'                :   if($value >= 95 && $value <= 200){
+                                                                        $isRisky = false;
+                                                                     }else if($value < 95 || $value > 200){
+                                                                         $isRisky = true;
+                                                                     };
+                                                                     $singleData = [
+                                                                         "question" => $key,
+                                                                         "answer" => $value,
+                                                                         "isRisky" => $isRisky
+                                                                     ];
+                                                                     array_push($answerIbuJanin,$singleData);
+                                                                     break;
+
+                    case 'proteinuria'                :   if($value == "1"){
+                                                                        $isRisky = true;
+                                                                     }else if($value == "0"){
+                                                                         $isRisky = false;
+                                                                     };
+                                                                     $singleData = [
+                                                                         "question" => $key,
+                                                                         "answer" => $value,
+                                                                         "isRisky" => $isRisky
+                                                                     ];
+                                                                     array_push($answerIbuJanin,$singleData);
+                                                                     break;
+
+                     case 'denyut_jantung'          :   if($value >= 100 && $value <= 160){
+                                                                        $isRisky = false;
+                                                                      }else if($value < 100 || $value > 160){
+                                                                        $isRisky = true;
+                                                                      };
+                                                                     $singleData = [
+                                                                         "question" => $key,
+                                                                         "answer" => $value,
+                                                                         "isRisky" => $isRisky
+                                                                     ];
+                                                                     array_push($answerIbuJanin,$singleData);
+                                                                     break;
+
+                      case 'tinggi_fundus_uteri'          :   if($periode == 20)
+                                                                            {
+                                                                                if($value >= 17 && $value <= 23){
+                                                                                    $isRisky = false;
+                                                                                }else if($value < 17 || $value > 23){
+                                                                                    $isRisky = true;
+                                                                                };
+                                                                                $singleData = [
+                                                                                    "question" => $key,
+                                                                                    "answer" => $value,
+                                                                                    "isRisky" => $isRisky
+                                                                                ];
+                                                                            }else if($periode == 24){
+                                                                                if($value >= 20 && $value <= 26){
+                                                                                    $isRisky = false;
+                                                                                }else if($value < 20 || $value > 26){
+                                                                                    $isRisky = true;
+                                                                                };
+                                                                                $singleData = [
+                                                                                    "question" => $key,
+                                                                                    "answer" => $value,
+                                                                                    "isRisky" => $isRisky
+                                                                                ];
+                                                                            }else if($periode == 28){
+                                                                                if($value >= 24 && $value <= 30){
+                                                                                    $isRisky = false;
+                                                                                }else if($value < 24 || $value > 30){
+                                                                                    $isRisky = true;
+                                                                                };
+                                                                                $singleData = [
+                                                                                    "question" => $key,
+                                                                                    "answer" => $value,
+                                                                                    "isRisky" => $isRisky
+                                                                                ];
+                                                                            }else if($periode == 32){
+                                                                                if($value >= 27 && $value <= 33){
+                                                                                    $isRisky = false;
+                                                                                }else if($value < 27 || $value > 33){
+                                                                                    $isRisky = true;
+                                                                                };
+                                                                                $singleData = [
+                                                                                    "question" => $key,
+                                                                                    "answer" => $value,
+                                                                                    "isRisky" => $isRisky
+                                                                                ];
+                                                                            }else if($periode == 36){
+                                                                                if($value >= 31 && $value <= 37){
+                                                                                    $isRisky = false;
+                                                                                }else if($value < 31 || $value > 37){
+                                                                                    $isRisky = true;
+                                                                                };
+                                                                                $singleData = [
+                                                                                    "question" => $key,
+                                                                                    "answer" => $value,
+                                                                                    "isRisky" => $isRisky
+                                                                                ];
+                                                                            }
+                                                                            array_push($answerIbuJanin,$singleData);
+                                                                            break;
+
+                        case 'taksiran_berat_janin'          :   if($periode == 20)
+                                                                                {
+                                                                                    if($value >= 300 && $value <= 325){
+                                                                                        $isRisky = false;
+                                                                                    }else if($value < 300 || $value > 325){
+                                                                                        $isRisky = true;
+                                                                                    };
+                                                                                    $singleData = [
+                                                                                        "question" => $key,
+                                                                                        "answer" => $value,
+                                                                                        "isRisky" => $isRisky
+                                                                                    ];
+                                                                                }else if($periode == 24){
+                                                                                    if($value >= 550 && $value <= 685){
+                                                                                        $isRisky = false;
+                                                                                    }else if($value < 550 || $value > 685){
+                                                                                        $isRisky = true;
+                                                                                    };
+                                                                                    $singleData = [
+                                                                                        "question" => $key,
+                                                                                        "answer" => $value,
+                                                                                        "isRisky" => $isRisky
+                                                                                    ];
+                                                                                }else if($periode == 28){
+                                                                                    if($value >= 1000 && $value <= 1150){
+                                                                                        $isRisky = false;
+                                                                                    }else if($value < 1000 || $value > 1150){
+                                                                                        $isRisky = true;
+                                                                                    };
+                                                                                    $singleData = [
+                                                                                        "question" => $key,
+                                                                                        "answer" => $value,
+                                                                                        "isRisky" => $isRisky
+                                                                                    ];
+                                                                                }else if($periode == 32){
+                                                                                    if($value >= 1610 && $value <= 1810){
+                                                                                        $isRisky = false;
+                                                                                    }else if($value < 1610 || $value > 1810){
+                                                                                        $isRisky = true;
+                                                                                    };
+                                                                                    $singleData = [
+                                                                                        "question" => $key,
+                                                                                        "answer" => $value,
+                                                                                        "isRisky" => $isRisky
+                                                                                    ];
+                                                                                }else if($periode == 36){
+                                                                                    if($value >= 2500 && $value <= 2690){
+                                                                                        $isRisky = false;
+                                                                                    }else if($value < 2500 || $value > 2690){
+                                                                                        $isRisky = true;
+                                                                                    };
+                                                                                    $singleData = [
+                                                                                        "question" => $key,
+                                                                                        "answer" => $value,
+                                                                                        "isRisky" => $isRisky
+                                                                                    ];
+                                                                                }
+                                                                                array_push($answerIbuJanin,$singleData);
+                                                                                break;
+
+                            case 'gerak_janin'                      : if($value == "1"){
+                                                                                     $isRisky = false;
+                                                                                 }else if($value == "0"){
+                                                                                     $isRisky = true;
+                                                                                 }
+                                                                                 $singleData = [
+                                                                                    "question" => $key,
+                                                                                    "answer" => $value,
+                                                                                    "isRisky" => $isRisky
+                                                                                ];
+                                                                                array_push($answerIbuJanin,$singleData);
+                                                                                break;
+
+                            case 'gerak_janin'                      : if($value == 1){
+                                                                                    $isRisky = false;
+                                                                                }else if($value > 1){
+                                                                                    $isRisky = true;
+                                                                                }
+                                                                                $singleData = [
+                                                                                   "question" => $key,
+                                                                                   "answer" => $value,
+                                                                                   "isRisky" => $isRisky
+                                                                               ];
+                                                                               array_push($answerIbuJanin,$singleData);
+                                                                               break;
+
+
+                }
+            }
+
+            $arrayIbuJanin = array(
+                "id" => $periode .'-minggu',
+                "answerDate" => \Carbon\Carbon::parse($dataIbuJanin->created_at)->isoFormat('YYYY-MM-DD'),
+                "pdfUrl" =>  $base_url.$pdfIbuJanin,
+                "answers" => $answerIbuJanin
+            );
+            return $arrayIbuJanin;
+        }
+    }
+
 
 
     public function getKuesionerHamilResult($id)
@@ -363,6 +606,26 @@ class KuisHamilController extends Controller
         #16 minggu
         $array16Minggu = $this->_get16MingguResult($id);
         array_push($finalData,$array16Minggu);
+
+        #20 minggu
+        $array20Minggu = $this->_getIbuJaninResult($id,20);
+        array_push($finalData,$array20Minggu);
+
+        #24 minggu
+        $array24Minggu = $this->_getIbuJaninResult($id,24);
+        array_push($finalData,$array24Minggu);
+
+        #28 minggu
+        $array28Minggu = $this->_getIbuJaninResult($id,28);
+        array_push($finalData,$array28Minggu);
+
+        #32 minggu
+        $array32Minggu = $this->_getIbuJaninResult($id,32);
+        array_push($finalData,$array32Minggu);
+
+         #36 minggu
+        $array36Minggu = $this->_getIbuJaninResult($id,36);
+        array_push($finalData,$array36Minggu);
 
         $finalResult = [
           "data" => $finalData
