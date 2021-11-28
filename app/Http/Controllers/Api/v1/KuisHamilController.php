@@ -353,7 +353,7 @@ class KuisHamilController extends Controller
         $dataIbuJanin = KuisHamilIbuJanin::where('id_user',$id)->where('periode',$periode)->first();
         $answerIbuJanin = array();
         $pdfIbuJanin = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
-        if($pdfIbuJanin != null){
+        if($dataIbuJanin != null){
             foreach( $dataIbuJanin->toArray() as $key => $value )
             {
                 switch($key) {
