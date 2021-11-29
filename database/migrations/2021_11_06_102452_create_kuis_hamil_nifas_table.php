@@ -17,9 +17,9 @@ class CreateKuisHamilNifasTable extends Migration
             $table->id();
             $table->integer('id_user');
             $table->integer('id_member');
-            $table->boolean('komplikasi');
-            $table->boolean('asi');
-            $table->boolean('kbpp_mkjp');
+            $table->string('komplikasi');
+            $table->string('asi');
+            $table->string('kbpp_mkjp');
             $table->softDeletes();
             $table->timestamps();
         });

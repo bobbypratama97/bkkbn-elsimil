@@ -23,7 +23,7 @@ class CreateKuisHamil12MinggusTable extends Migration
             $table->integer('hemoglobin');
             $table->integer('tensi_darah');
             $table->integer('gula_darah');
-            $table->boolean('riwayat_sakit_kronik');
+            $table->string('riwayat_sakit_kronik');
             $table->softDeletes();
             $table->timestamps();
         });
