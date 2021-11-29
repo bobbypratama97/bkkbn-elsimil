@@ -132,13 +132,13 @@
                                 <div class="form-group">
                                     <label for="">5. Proteinuria</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="proteinuria"  <?php echo  isset($data_kuesioner->proteinuria) && $data_kuesioner->proteinuria =='1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="proteinuria"  <?php echo  isset($data_kuesioner->proteinuria) && $data_kuesioner->proteinuria == 'Positif' ? 'checked':'' ?>   value="Positif" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Positif
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="proteinuria" <?php   echo  isset($data_kuesioner->proteinuria) && $data_kuesioner->proteinuria =='0' ? 'checked':'' ?>  value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="proteinuria" <?php   echo  isset($data_kuesioner->proteinuria) && $data_kuesioner->proteinuria == 'Negatif' ? 'checked':'' ?>  value="Negatif" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                          Negatif
                                         </label>
@@ -160,13 +160,13 @@
                                 <div class="form-group">
                                     <label for="">9. Gerak Janin</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gerak_janin"  <?php echo  isset($data_kuesioner->gerak_janin) && $data_kuesioner->gerak_janin =='1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="gerak_janin"  <?php echo  isset($data_kuesioner->gerak_janin) && $data_kuesioner->gerak_janin == 'Positif' ? 'checked':'' ?>   value="Positif" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                          Positif
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gerak_janin" <?php   echo  isset($data_kuesioner->gerak_janin) && $data_kuesioner->gerak_janin =='0' ? 'checked':'' ?>  value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="gerak_janin" <?php   echo  isset($data_kuesioner->gerak_janin) && $data_kuesioner->gerak_janin == 'Negatif' ? 'checked':'' ?>  value="Negatif" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Negatif
                                         </label>

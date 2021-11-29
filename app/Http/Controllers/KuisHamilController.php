@@ -278,6 +278,7 @@ class KuisHamilController extends Controller
                 'anak_stunting' => $request->anak_stunting,
                 'hari_pertama_haid_terakhir' => $request->hari_pertama_haid_terakhir,
                 'sumber_air_bersih' => $request->sumber_air_bersih,
+                'jamban_sehat' => $request->jamban_sehat,
                 'rumah_layak_huni' => $request->rumah_layak_huni,
                 'bansos' => $request->bansos
             ]);
@@ -322,6 +323,7 @@ class KuisHamilController extends Controller
             $kontakAwal->anak_stunting = $request->anak_stunting;
             $kontakAwal->hari_pertama_haid_terakhir = $request->hari_pertama_haid_terakhir;
             $kontakAwal->sumber_air_bersih = $request->sumber_air_bersih;
+            $kontakAwal->jamban_sehat = $request->jamban_sehat;
             $kontakAwal->rumah_layak_huni = $request->rumah_layak_huni;
             $kontakAwal->bansos = $request->bansos;
             $kontakAwal->save();

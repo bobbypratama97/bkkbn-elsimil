@@ -22,11 +22,11 @@ class CreateKuisHamilIbuJaninsTable extends Migration
             $table->integer('hemoglobin');
             $table->integer('tensi_darah');
             $table->integer('gula_darah');
-            $table->boolean('proteinuria');
+            $table->string('proteinuria');
             $table->integer('denyut_jantung');
             $table->integer('tinggi_fundus_uteri');
             $table->integer('taksiran_berat_janin');
-            $table->boolean('gerak_janin');
+            $table->string('gerak_janin');
             $table->integer('jumlah_janin');
             $table->softDeletes();
             $table->timestamps();
