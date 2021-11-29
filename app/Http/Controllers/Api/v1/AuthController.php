@@ -104,7 +104,7 @@ class AuthController extends Controller
                     'code' => 401,
                     'error' => true,
                     'title' => 'Perhatian',
-                    'message' => 'KTP sudah terdaftar. Silahkan login.'
+                    'message' => 'No KTP yang anda berikan sudah pernah terdaftar, Silahkan Login atau Klik Lupa Password jika anda tidak mengingat nya.'
                 ], 401);
             }
 
@@ -224,13 +224,15 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $field = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'email';
+        $field = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'no_telp';
         $request->merge([$field => $request->input('username')]);
 
         $credentials = $request->only([$field, 'password']);
 
         $data = [];
 
+        if($field == 'no_telp') $credentials[$field] = (int)$request->input('username');
+        
         try {
             if (!$token = auth($this->guard)->attempt($credentials)) {
                 return response()->json([
@@ -389,18 +391,47 @@ class AuthController extends Controller
     }
 
     public function emailcheck(Request $request) {
+        $messages = array(
+            'email.email' => 'Email tidak sesuai format.'
+        );
+        $validators = Validator::make($request->all(), [
+            'email' => ['required', 'string', 'email', 'max:255']
+        ], $messages);
+
+        if ($validators->fails()) {
+            return response()->json([
+                'code' => 200,
+                'error' => true,
+                'continue' => false,
+                'message' => $validators->errors()->first(),
+            ], 200);
+        }
+
+        $email = $request->email;
+        list($username, $domain) = explode('@', $email);
+        if(!in_array($domain, $this->accept_email)){
+            return response()->json([
+                'code' => 200,
+                'error'   => true,
+                'continue' => true,
+                'message' => 'Mohon dipastikan email anda sudah benar!. Klik Lanjut jika yakin.'
+            ], 200);
+        }
+
         $check = Member::where('email', $request->email)->first();
 
         if ($check) {
             return response()->json([
                 'code' => 200,
                 'error'   => true,
+                'continue' => false,
                 'message' => 'Email sudah terdaftar. Silahkan login untuk menikmati layanan kami'
             ], 200);
         } else {
             return response()->json([
                 'code' => 200,
                 'error'   => false,
+                'continue' => true,
                 'message' => 'Email tersedia'
             ], 200);
         }
