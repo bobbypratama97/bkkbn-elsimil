@@ -120,13 +120,13 @@
                                 <div class="form-group">
                                     <label for="">2. KB Pasca Persalinan</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="kb"  <?php   echo  isset($data_kuesioner->kb) && $data_kuesioner->kb == '1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="kb"  <?php   echo  isset($data_kuesioner->kb) && $data_kuesioner->kb == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="kb" <?php   echo  isset($data_kuesioner->kb) && $data_kuesioner->kb =='0' ? 'checked':'' ?>   value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="kb" <?php   echo  isset($data_kuesioner->kb) && $data_kuesioner->kb == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>

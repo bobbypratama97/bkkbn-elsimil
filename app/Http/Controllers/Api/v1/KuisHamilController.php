@@ -95,9 +95,9 @@ class KuisHamilController extends Controller
                                                                         array_push($answerKontakAwal,$singleData);
                                                                         break;
 
-                    case 'anak_stunting'            :       if($value == 0){
+                    case 'anak_stunting'            :       if($value == "Tidak"){
                                                                             $isRisky = false;
-                                                                        }else if($value == 1){
+                                                                        }else if($value == "Ya"){
                                                                             $isRisky = true;
                                                                         }
                                                                         $singleData = [
@@ -108,9 +108,9 @@ class KuisHamilController extends Controller
                                                                         array_push($answerKontakAwal,$singleData);
                                                                         break;
 
-                    case 'sumber_air_bersih'      :     if($value == 0){
+                    case 'sumber_air_bersih'      :     if($value == "Ya"){
                                                                             $isRisky = false;
-                                                                        }else if($value == 1){
+                                                                        }else if($value == "Tidak"){
                                                                             $isRisky = true;
                                                                         }
                                                                         $singleData = [
@@ -121,9 +121,9 @@ class KuisHamilController extends Controller
                                                                         array_push($answerKontakAwal,$singleData);
                                                                         break;
 
-                    case 'jamban_sehat'      :             if($value == 0){
+                    case 'jamban_sehat'      :             if($value == "Ya"){
                                                                             $isRisky = false;
-                                                                        }else if($value == 1){
+                                                                        }else if($value == "Tidak"){
                                                                             $isRisky = true;
                                                                         }
                                                                         $singleData = [
@@ -134,9 +134,9 @@ class KuisHamilController extends Controller
                                                                         array_push($answerKontakAwal,$singleData);
                                                                         break;
 
-                    case 'rumah_layak_huni'      :      if($value == 0){
+                    case 'rumah_layak_huni'      :      if($value == "Ya"){
                                                                             $isRisky = false;
-                                                                            }else if($value == 1){
+                                                                            }else if($value == "Tidak"){
                                                                             $isRisky = true;
                                                                             }
                                                                             $singleData = [
@@ -147,10 +147,10 @@ class KuisHamilController extends Controller
                                                                             array_push($answerKontakAwal,$singleData);
                                                                             break;
 
-                    case 'bansos'      :                         if($value == 0){
-                                                                            $isRisky = true;
-                                                                            }else if($value == 1){
-                                                                            $isRisky = false;
+                    case 'bansos'                       :            if($value == "Ya"){
+                                                                                $isRisky = true;
+                                                                            }else if($value == "Tidak"){
+                                                                                $isRisky = false;
                                                                             }
                                                                             $singleData = [
                                                                             "question" => $key,
@@ -167,6 +167,14 @@ class KuisHamilController extends Controller
                 "answerDate" => \Carbon\Carbon::parse($dataKontakAwal->created_at)->isoFormat('YYYY-MM-DD'),
                 "pdfUrl" =>  $base_url.$pdfKontakAwal,
                 "answers" => $answerKontakAwal
+            );
+            return $arrayKontakAwal;
+        }else{
+            $arrayKontakAwal = array(
+                "id" => 'kontak-awal',
+                "answerDate" => null,
+                "pdfUrl" =>  null,
+                "answers" => null
             );
             return $arrayKontakAwal;
         }
@@ -261,9 +269,9 @@ class KuisHamilController extends Controller
                                                                             array_push($answer12Minggu,$singleData);
                                                                             break;
 
-                            case 'riwayat_sakit_kronik' :       if($value == 1){
+                            case 'riwayat_sakit_kronik' :       if($value == "Ada"){
                                                                                    $isRisky = true;
-                                                                                }else if($value == 0){
+                                                                                }else if($value == "Tidak Ada"){
                                                                                     $isRisky = false;
                                                                                 }
                                                                                 $singleData = [
@@ -282,6 +290,14 @@ class KuisHamilController extends Controller
                "answers" => $answer12Minggu
              );
              return $array12Minggu;
+         }else{
+            $array12Minggu = array(
+                "id" => '12-minggu',
+                "answerDate" => null,
+                "pdfUrl" =>  null,
+                "answers" => null
+            );
+            return $array12Minggu;
          }
     }
 
@@ -343,6 +359,14 @@ class KuisHamilController extends Controller
                "answers" => $answer16Minggu
              );
              return $array16Minggu;
+         }else{
+            $array16Minggu = array(
+                "id" => '16-minggu',
+                "answerDate" => null,
+                "pdfUrl" => null,
+                "answers" => null
+              );
+              return $array16Minggu;
          }
     }
 
@@ -402,9 +426,9 @@ class KuisHamilController extends Controller
                                                                      array_push($answerIbuJanin,$singleData);
                                                                      break;
 
-                    case 'proteinuria'                :   if($value == "1"){
+                    case 'proteinuria'                :   if($value == "Positif"){
                                                                         $isRisky = true;
-                                                                     }else if($value == "0"){
+                                                                     }else if($value == "Negatif"){
                                                                          $isRisky = false;
                                                                      };
                                                                      $singleData = [
@@ -548,9 +572,9 @@ class KuisHamilController extends Controller
                                                                                 array_push($answerIbuJanin,$singleData);
                                                                                 break;
 
-                            case 'gerak_janin'                      : if($value == "1"){
+                            case 'gerak_janin'                      : if($value == "Positif"){
                                                                                      $isRisky = false;
-                                                                                 }else if($value == "0"){
+                                                                                 }else if($value == "Negatif"){
                                                                                      $isRisky = true;
                                                                                  }
                                                                                  $singleData = [
@@ -561,7 +585,7 @@ class KuisHamilController extends Controller
                                                                                 array_push($answerIbuJanin,$singleData);
                                                                                 break;
 
-                            case 'gerak_janin'                      : if($value == 1){
+                            case 'jumlah_janin'                      : if($value == 1){
                                                                                     $isRisky = false;
                                                                                 }else if($value > 1){
                                                                                     $isRisky = true;
@@ -583,6 +607,14 @@ class KuisHamilController extends Controller
                 "answerDate" => \Carbon\Carbon::parse($dataIbuJanin->created_at)->isoFormat('YYYY-MM-DD'),
                 "pdfUrl" =>  $base_url.$pdfIbuJanin,
                 "answers" => $answerIbuJanin
+            );
+            return $arrayIbuJanin;
+        }else{
+            $arrayIbuJanin = array(
+                "id" => $periode .'-minggu',
+                "answerDate" => null,
+                "pdfUrl" =>  null,
+                "answers" => null
             );
             return $arrayIbuJanin;
         }
@@ -608,9 +640,9 @@ class KuisHamilController extends Controller
                                                                 array_push($answerPersalinan,$singleData);
                                                                 break;
 
-                     case 'kb'                            :  if($value == "1"){
+                     case 'kb'                            :  if($value == "Ya"){
                                                                      $isRisky = false;
-                                                                 }else if($value == "0"){
+                                                                 }else if($value == "Tidak"){
                                                                      $isRisky = true;
                                                                  }
                                                                 $singleData = [
@@ -682,6 +714,14 @@ class KuisHamilController extends Controller
                "answers" => $answerPersalinan
              );
              return $arrayPersalinan;
+         }else{
+             $arrayPersalinan = array(
+                "id" => 'persalinan',
+                "answerDate" => null,
+                "pdfUrl" =>  null,
+                "answers" => null
+              );
+              return $arrayPersalinan;
          }
     }
 
@@ -698,9 +738,9 @@ class KuisHamilController extends Controller
             foreach( $dataNifas->toArray() as $key => $value )
             {
                 switch($key) {
-                    case 'komplikasi' : if($value == "1"){
+                    case 'komplikasi' : if($value == "Ya"){
                                                       $isRisky = true;
-                                                    }else if($value == "0"){
+                                                    }else if($value == "Tidak"){
                                                       $isRisky = false;
                                                     }
                                                     $singleData = [
@@ -711,9 +751,9 @@ class KuisHamilController extends Controller
                                                     array_push($answerNifas,$singleData);
                                                     break;
 
-                      case 'asi' :  if($value == "1"){
+                      case 'asi' :                 if($value == "Ya"){
                                                         $isRisky = false;
-                                                      }else if($value == "0"){
+                                                      }else if($value == "Tidak"){
                                                         $isRisky = true;
                                                       }
                                                       $singleData = [
@@ -724,9 +764,9 @@ class KuisHamilController extends Controller
                                                       array_push($answerNifas,$singleData);
                                                       break;
 
-                        case 'kbpp_mkjp' :  if($value == "1"){
+                        case 'kbpp_mkjp' :  if($value == "MKJP"){
                                                         $isRisky = false;
-                                                      }else if($value == "0"){
+                                                      }else if($value == "Tidak"){
                                                         $isRisky = true;
                                                       }
                                                       $singleData = [
@@ -746,6 +786,14 @@ class KuisHamilController extends Controller
               "answers" => $answerNifas
             );
             return $arrayNifas;
+        }else{
+            $arrayNifas = array(
+                "id" => 'nifas',
+                "answerDate" => null,
+                "pdfUrl" =>  null,
+                "answers" => null
+              );
+              return $arrayNifas;
         }
     }
 
