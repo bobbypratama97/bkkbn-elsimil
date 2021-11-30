@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+// use App\Helpers\Helper as HelpersHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Helper;
 
 use App\Member;
 use App\MemberOnesignal;
+use App\Helpers;
 
 class AuthController extends Controller
 {
@@ -231,7 +233,11 @@ class AuthController extends Controller
 
         $data = [];
 
-        if($field == 'no_telp') $credentials[$field] = (int)$request->input('username');
+        if($field == 'no_telp') {
+            $no_telp = Helper::phoneNumber($request->input('username'));
+            $credentials[$field] = $no_telp;
+        }
+        return $credentials;
         
         try {
             if (!$token = auth($this->guard)->attempt($credentials)) {
