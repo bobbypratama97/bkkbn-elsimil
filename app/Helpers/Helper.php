@@ -727,4 +727,12 @@ class Helper {
 		return ['error' => true, 'code' => 500, 'message' => $msg, 'data' => $data];
 	}
 
+	public static function phoneNumber($phone)
+    {
+        $phone = preg_replace("/\D/", "", $phone);
+
+        return (substr($phone,0,2) == "62" || substr($phone,0,3) == "+62")
+            ? '0'. substr($phone,2)
+            : $phone;
+    }
 }
