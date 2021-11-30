@@ -434,7 +434,7 @@ class KuisHamilController extends Controller
                 'gerak_janin' => $request->gerak_janin,
                 'jumlah_janin' => $request->jumlah_janin
             ]);
-            $message = 'Kuesioner hamil periode ' +  $periode + ' minggu berhasil diperbaharui';
+            $message = 'Kuesioner hamil periode ' . $periode . ' minggu berhasil ditambahkan';
             return redirect()->route('admin.periodeIbuJanin-create',["id" => $request->id, "periode" => $periode])->with('success', $message);
         }else{
             $this->validate($request,[
