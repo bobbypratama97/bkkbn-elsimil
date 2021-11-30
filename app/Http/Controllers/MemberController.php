@@ -953,4 +953,58 @@ class MemberController extends Controller
 
     }
 
+    public function edit($id)
+    {
+        $this->authorize('access', [\App\Member::class, Auth::user()->role, 'edit']);
+
+        $baseurlmember = env('BASE_URL') . env('BASE_URL_PROFILE');
+        $baseurlavatar = env('BASE_URL') . env('BASE_URL_CHAT');
+
+        $member = Member::leftJoin('adms_provinsi', function($join) {
+            $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
+        })
+        ->leftJoin('adms_kabupaten', function($join) {
+            $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
+        })
+        ->leftJoin('adms_kecamatan', function($join) {
+            $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
+        })
+        ->leftJoin('adms_kelurahan', function($join) {
+            $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
+        })
+        ->select([
+            'members.*',
+            'adms_provinsi.nama as provinsi',
+            'adms_kabupaten.nama as kabupaten',
+            'adms_kecamatan.nama as kecamatan',
+            'adms_kelurahan.nama as kelurahan'
+        ])
+        ->where('members.id', $id)
+        ->first();
+
+
+        if (!empty($member->foto_pic)) {
+            if ($member->foto_pic == 'noimage.png') {
+                if ($member->gender == '2') {
+                    $member->gambar = $baseurlavatar . '018-girl-9.svg';
+                } else if ($member->gender == '1') {
+                    $member->gambar = $baseurlavatar . '009-boy-4.svg';
+                } else {
+                    $member->gambar = $baseurlavatar . '024-boy-9.svg';
+                }
+            } else {
+                $member->gambar = $baseurlmember . $member->foto_pic;
+            }
+        } else {
+            if ($member->gender == '2') {
+                $member->gambar = $baseurlavatar . '018-girl-9.svg';
+            } else if ($member->gender == '1') {
+                $member->gambar = $baseurlavatar . '009-boy-4.svg';
+            } else {
+                $member->gambar = $baseurlavatar . '024-boy-9.svg';
+            }
+        }
+
+        return view('member.edit', compact('member'));   
+    }
 }
