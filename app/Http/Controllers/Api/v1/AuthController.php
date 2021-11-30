@@ -420,10 +420,10 @@ class AuthController extends Controller
 
         if ($check) {
             return response()->json([
-                'code' => 200,
+                'code' => 401,
                 'error'   => true,
                 'message' => 'Email sudah terdaftar. Silahkan login untuk menikmati layanan kami'
-            ], 200);
+            ], 401);
         } else {
             return response()->json([
                 'code' => 200,
