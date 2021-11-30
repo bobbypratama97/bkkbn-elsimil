@@ -732,7 +732,7 @@ class Helper {
         $phone = preg_replace("/\D/", "", $phone);
 
         return (substr($phone,0,2) == "62" || substr($phone,0,3) == "+62")
-            ? '0'. substr($phone,2)
+            ? substr($phone,2)
             : $phone;
     }
 }
