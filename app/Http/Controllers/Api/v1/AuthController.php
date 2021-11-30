@@ -400,11 +400,10 @@ class AuthController extends Controller
 
         if ($validators->fails()) {
             return response()->json([
-                'code' => 200,
+                'code' => 401,
                 'error' => true,
-                'continue' => false,
                 'message' => $validators->errors()->first(),
-            ], 200);
+            ], 401);
         }
 
         $email = $request->email;
@@ -413,7 +412,6 @@ class AuthController extends Controller
             return response()->json([
                 'code' => 200,
                 'error'   => true,
-                'continue' => true,
                 'message' => 'Mohon dipastikan email anda sudah benar!. Klik Lanjut jika yakin.'
             ], 200);
         }
@@ -424,14 +422,12 @@ class AuthController extends Controller
             return response()->json([
                 'code' => 200,
                 'error'   => true,
-                'continue' => false,
                 'message' => 'Email sudah terdaftar. Silahkan login untuk menikmati layanan kami'
             ], 200);
         } else {
             return response()->json([
                 'code' => 200,
                 'error'   => false,
-                'continue' => true,
                 'message' => 'Email tersedia'
             ], 200);
         }
