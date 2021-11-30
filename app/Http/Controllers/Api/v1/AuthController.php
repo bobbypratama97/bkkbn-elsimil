@@ -237,7 +237,6 @@ class AuthController extends Controller
             $no_telp = Helper::phoneNumber($request->input('username'));
             $credentials[$field] = $no_telp;
         }
-        return $credentials;
         
         try {
             if (!$token = auth($this->guard)->attempt($credentials)) {
