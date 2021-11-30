@@ -400,11 +400,11 @@ class AuthController extends Controller
 
         if ($validators->fails()) {
             return response()->json([
-                'code' => 200,
+                'code' => 401,
                 'error' => true,
                 'continue' => false,
                 'message' => $validators->errors()->first(),
-            ], 200);
+            ], 401);
         }
 
         $email = $request->email;
