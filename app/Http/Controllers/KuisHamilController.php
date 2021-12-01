@@ -60,7 +60,7 @@ class KuisHamilController extends Controller
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',1]])
                 ->select(['nama', 'nik', 'usia',
                         'alamat', 'jumlah_anak','usia_anak_terakhir',
-                        'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih',
+                        'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih','jamban_sehat',
                         'rumah_layak_huni', 'bansos','created_at','updated_at'])->first();
         return view('kuis_ibuhamil.kontakawal_create',[
             "id" => $id,
