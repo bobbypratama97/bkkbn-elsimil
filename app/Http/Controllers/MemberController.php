@@ -34,8 +34,9 @@ use App\KuisHamil16Minggu;
 use App\KuisHamilIbuJanin;
 use App\KuisHamilPersalinan;
 use App\KuisHamilNifas;
+use App\KuesionerHamil;
 use Illuminate\Support\Facades\Log;
-// use Barryvdh\Debugbar\Facade as Debugbar;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class MemberController extends Controller
 {
@@ -779,11 +780,31 @@ class MemberController extends Controller
             #retrieve kuesioner data
             $kuesionerData = array();
 
-            for($i=0 ; $i<10 ; $i++)
+            /*
+            * Nanti semuanya masuk ke tabel kuesioner hamil dan dibedakan berdasarkan kolom periode
+            * Periode berdasarkan kuesionernya
+                Kontak awal                     = 1
+                12 Minggu                       = 2
+                16 Minggu                       = 3
+                20 Minggu                       = 4
+                24 Minggu                       = 5
+                28 Minggu                       = 6
+                32 Minggu                       = 7
+                36 Minggu                       = 8
+                Setelah Persalinan              = 9
+                Pasca Salin Akhir Masa Nifas    = 10
+            * dan seterusnya
+
+            */
+
+
+            // mengambil kuesioner yang sudah diisi sesuai dengan periodenya
+            $kuesionerChecked = KuesionerHamil::where('id_member',$id)->select('periode','created_at')->get()->groupBy('periode');
+            for($i=1 ; $i<=10 ; $i++)
             {
                 switch ($i){
-                    case '0' :
-                        $hamilkontakAwal = KuisHamilKontakAwal::where('id_member',$id)->first();
+                    case '1' :
+                        $hamilkontakAwal = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                         if($hamilkontakAwal != null){
                             $arrayKontakAwal = array(
                                 'id' => 'kontak-awal',
@@ -797,8 +818,8 @@ class MemberController extends Controller
                          }
                          array_push($kuesionerData,$arrayKontakAwal);
                          break;
-                    case '1' :
-                        $hamil12minggu = KuisHamil12Minggu::where('id_member',$id)->first();
+                    case '2' :
+                        $hamil12minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                         if($hamil12minggu != null){
                             $array12Minggu = array(
                                 'id' => '12-minggu',
@@ -812,8 +833,8 @@ class MemberController extends Controller
                          }
                          array_push($kuesionerData,$array12Minggu);
                          break;
-                    case '2' :
-                        $hamil16minggu = KuisHamil16Minggu::where('id_member',$id)->first();
+                    case '3' :
+                        $hamil16minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                         if($hamil16minggu != null){
                             $array16Minggu = array(
                                 'id' => '16-minggu',
@@ -827,8 +848,8 @@ class MemberController extends Controller
                             }
                         array_push($kuesionerData,$array16Minggu);
                         break;
-                    case '3' :
-                            $hamil20Minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',20)->first();
+                    case '4' :
+                            $hamil20Minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil20Minggu != null){
                                 $array20Minggu = array(
                                     'id' => '20-minggu',
@@ -839,28 +860,27 @@ class MemberController extends Controller
                                     'id' => '20-minggu',
                                     'created_at' => null
                                 );
-                            };
+                            }
                             array_push($kuesionerData,$array20Minggu);
-                            // dd($kuesionerData);
+
                             break;
-                    case '4' :
-                            $hamil24Minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',24)->first();
+                    case '5' :
+                            $hamil24Minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil24Minggu != null){
                                 $array24Minggu = array(
                                     'id' => '24-minggu',
                                     'created_at' => $hamil24Minggu->created_at
                                 );
-
                             }else{
                                 $array24Minggu = array(
                                     'id' => '24-minggu',
                                     'created_at' => null
                                 );
-                                }
+                            }
                             array_push($kuesionerData,$array24Minggu);
                             break;
-                    case '5' :
-                            $hamil28Minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',28)->first();
+                    case '6' :
+                            $hamil28Minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil28Minggu != null){
                                 $array28Minggu = array(
                                     'id' => '28-minggu',
@@ -874,8 +894,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array28Minggu);
                             break;
-                    case '6' :
-                            $hamil32Minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',32)->first();
+                    case '7' :
+                            $hamil32Minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil32Minggu != null){
                                 $array32Minggu = array(
                                     'id' => '32-minggu',
@@ -889,8 +909,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array32Minggu);
                             break;
-                     case '7' :
-                            $hamil36Minggu = KuisHamilIbuJanin::where('id_member',$id)->where('periode',36)->first();
+                     case '8' :
+                            $hamil36Minggu = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamil36Minggu != null){
                                 $array36Minggu = array(
                                     'id' => '36-minggu',
@@ -904,8 +924,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$array36Minggu);
                             break;
-                    case '8' :
-                            $hamilPersalinan = KuisHamilPersalinan::where('id_member',$id)->first();
+                    case '9' :
+                            $hamilPersalinan = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamilPersalinan != null){
                                 $arrayPersalinan = array(
                                     'id' => 'persalinan',
@@ -919,8 +939,8 @@ class MemberController extends Controller
                                 }
                             array_push($kuesionerData,$arrayPersalinan);
                             break;
-                     case '9' :
-                            $hamilNifas = KuisHamilNifas::where('id_member',$id)->first();
+                     case '10' :
+                            $hamilNifas = isset($kuesionerChecked[$i]) ? $kuesionerChecked[$i]->first() : null;
                             if($hamilNifas != null){
                                 $arrayNifas = array(
                                     'id' => 'nifas',
@@ -936,7 +956,6 @@ class MemberController extends Controller
                             break;
                 }
             }
-            // dd($kuesionerData);
             return view('kuis_ibuhamil.index',[
                 "id" => $id,
                 "name" => $name,

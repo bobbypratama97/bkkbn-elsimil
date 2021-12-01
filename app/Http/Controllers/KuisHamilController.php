@@ -11,6 +11,7 @@ use Helper;
 
 
 use App\Member;
+use App\KuesionerHamil;
 use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
@@ -56,7 +57,11 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamilKontakAwal::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',1]])
+                ->select(['nama', 'nik', 'usia',
+                        'alamat', 'jumlah_anak','usia_anak_terakhir',
+                        'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih',
+                        'rumah_layak_huni', 'bansos','created_at','updated_at'])->first();
         return view('kuis_ibuhamil.kontakawal_create',[
             "id" => $id,
             "name" => $name,
@@ -91,7 +96,7 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamil12Minggu::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])->first();
         return view('kuis_ibuhamil.periode12_create',[
             "id" => $id,
             "name" => $name,
@@ -126,7 +131,7 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamil16Minggu::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',3]])->first();
         return view('kuis_ibuhamil.periode16_create',[
             "id" => $id,
             "name" => $name,
@@ -139,6 +144,23 @@ class KuisHamilController extends Controller
             "data_kuesioner" => $data
         ]);
 
+    }
+
+    private function _getPeriodeID($periode)
+    {
+        if($periode == 20){
+            $id = 4;
+        }else if($periode == 24){
+            $id = 5;
+        }else if($periode == 28){
+            $id = 6;
+        }else if($periode == 32){
+            $id = 7;
+        }else if($periode == 36){
+            $id = 8;
+        }
+
+        return $id;
     }
 
     public function indexHamilIbuJanin($id,$periode)
@@ -161,7 +183,8 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamilIbuJanin::where('id_member',$id)->where('periode',$periode)->first();
+        $periode_id = $this->_getPeriodeID($periode);
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])->first();
         return view('kuis_ibuhamil.ibujanin_create',[
             "id" => $id,
             "periode" => $periode,
@@ -197,7 +220,7 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamilPersalinan::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',9]])->first();
         return view('kuis_ibuhamil.persalinan_create',[
             "id" => $id,
             "name" => $name,
@@ -232,7 +255,7 @@ class KuisHamilController extends Controller
 
         }
         #data kuesioner
-        $data = KuisHamilNifas::where('id_member',$id)->first();
+        $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',10]])->first();
         return view('kuis_ibuhamil.nifas_create',[
             "id" => $id,
             "name" => $name,
@@ -265,12 +288,12 @@ class KuisHamilController extends Controller
      */
     public function storeKontakAwal(Request $request)
     {
-        $checkExisting = KuisHamilKontakAwal::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',1]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamilKontakAwal::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',1]])
             ->update([
                 'nama' => $request->nama,
-                'nik' => $request->nik,
+                'nik' => Helper::encryptNik($request->nik),
                 'usia' => $request->usia,
                 'alamat' => $request->alamat,
                 'jumlah_anak' => $request->jumlah_anak,
@@ -280,7 +303,8 @@ class KuisHamilController extends Controller
                 'sumber_air_bersih' => $request->sumber_air_bersih,
                 'jamban_sehat' => $request->jamban_sehat,
                 'rumah_layak_huni' => $request->rumah_layak_huni,
-                'bansos' => $request->bansos
+                'bansos' => $request->bansos,
+                'periode' => 1
             ]);
             $message = 'Kuesioner hamil kontak awal berhasil diperbaharui';
             return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
@@ -311,11 +335,11 @@ class KuisHamilController extends Controller
                 'rumah_layak_huni.required' => 'Rumah layak huni bersih harus diisi.',
                 'bansos.required' => 'Bansos bersih harus diisi.',
             ]);
-            $kontakAwal = new KuisHamilKontakAwal;
+            $kontakAwal = new KuesionerHamil;
             $kontakAwal->id_user = Auth::user()->id;
             $kontakAwal->id_member = $request->id;
             $kontakAwal->nama = $request->nama;
-            $kontakAwal->nik = $request->nik;
+            $kontakAwal->nik = Helper::encryptNik($request->nik);
             $kontakAwal->usia = $request->usia;
             $kontakAwal->alamat = $request->alamat;
             $kontakAwal->jumlah_anak = $request->jumlah_anak;
@@ -326,6 +350,7 @@ class KuisHamilController extends Controller
             $kontakAwal->jamban_sehat = $request->jamban_sehat;
             $kontakAwal->rumah_layak_huni = $request->rumah_layak_huni;
             $kontakAwal->bansos = $request->bansos;
+            $kontakAwal->periode = 1;
             $kontakAwal->save();
             $message = 'Kuesioner hamil kontak awal berhasil ditambahkan';
             return redirect()->route('admin.kontakawal-create',["id" => $request->id])->with('success', $message);
@@ -334,9 +359,9 @@ class KuisHamilController extends Controller
 
     public function storePeriode12Minggu(Request $request)
     {
-        $checkExisting = KuisHamil12Minggu::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',2]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamil12Minggu::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',2]])
             ->update([
                 'berat_badan' => $request->berat_badan,
                 'tinggi_badan' => $request->tinggi_badan,
@@ -366,7 +391,8 @@ class KuisHamilController extends Controller
                 'tensi_darah.required' => 'Tensi Darah harus diisi.',
                 'gula_darah.required' => 'Gula Darah harus diisi.',
             ]);
-            $periode12Minggu = new KuisHamil12Minggu;
+            $periode12Minggu = new KuesionerHamil;
+            $periode12Minggu->periode = 2;
             $periode12Minggu->id_user = Auth::user()->id;
             $periode12Minggu->id_member = $request->id;
             $periode12Minggu->berat_badan = $request->berat_badan;
@@ -384,9 +410,9 @@ class KuisHamilController extends Controller
 
     public function storePeriode16Minggu(Request $request)
     {
-        $checkExisting = KuisHamil16Minggu::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',3]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamil16Minggu::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',3]])
             ->update([
                 'hemoglobin' => $request->hemoglobin,
                 'tensi_darah' => $request->tensi_darah,
@@ -405,7 +431,8 @@ class KuisHamilController extends Controller
                 'tensi_darah.required' => 'Tinggi Badan harus diisi.',
                 'gula_darah_sewaktu.required' => 'Gula Darah Sewaktu harus diisi.',
             ]);
-            $periode16Minggu = new KuisHamil16Minggu;
+            $periode16Minggu = new KuesionerHamil;
+            $periode16Minggu->periode = 3;
             $periode16Minggu->id_user = Auth::user()->id;
             $periode16Minggu->id_member = $request->id;
             $periode16Minggu->hemoglobin = $request->hemoglobin;
@@ -419,9 +446,10 @@ class KuisHamilController extends Controller
 
     public function storeHamilIbuJanin(Request $request,$id,$periode)
     {
-        $checkExisting = KuisHamilIbuJanin::where('id_member',$request->id)->where('periode',$periode)->first();
+        $periode_id = $this->_getPeriodeID($periode);
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',$periode_id]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamilIbuJanin::where('id_member', $request->id)->where('periode',$periode)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',$periode]])
             ->update([
                 'kenaikan_berat_badan' => $request->kenaikan_berat_badan,
                 'hemoglobin' => $request->hemoglobin,
@@ -434,7 +462,7 @@ class KuisHamilController extends Controller
                 'gerak_janin' => $request->gerak_janin,
                 'jumlah_janin' => $request->jumlah_janin
             ]);
-            $message = 'Kuesioner hamil periode ' . $periode . ' minggu berhasil ditambahkan';
+            $message = 'Kuesioner hamil periode ' .  $periode  . ' minggu berhasil diperbaharui';
             return redirect()->route('admin.periodeIbuJanin-create',["id" => $request->id, "periode" => $periode])->with('success', $message);
         }else{
             $this->validate($request,[
@@ -461,10 +489,11 @@ class KuisHamilController extends Controller
                 'gerak_janin.required' => 'Gerak janin harus diisi.',
                 'jumlah_janin.required' =>  'Jumlah janin harus diisi.',
             ]);
-            $hamilIbuJanin = new KuisHamilIbuJanin;
+            $periode_id = $this->_getPeriodeID($periode);
+            $hamilIbuJanin = new KuesionerHamil;
+            $hamilIbuJanin->periode = $periode_id;
             $hamilIbuJanin->id_user = Auth::user()->id;
             $hamilIbuJanin->id_member = $request->id;
-            $hamilIbuJanin->periode = $periode;
             $hamilIbuJanin->kenaikan_berat_badan = $request->kenaikan_berat_badan;
             $hamilIbuJanin->hemoglobin = $request->hemoglobin;
             $hamilIbuJanin->tensi_darah = $request->tensi_darah;
@@ -484,16 +513,16 @@ class KuisHamilController extends Controller
 
     public function storePersalinan(Request $request)
     {
-        $checkExisting = KuisHamilPersalinan::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',9]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamilPersalinan::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',9]])
             ->update([
                 'tanggal_persalinan' => $request->tanggal_persalinan,
                 'kb' => $request->kb,
-                'usia' => $request->usia,
-                'berat' => $request->berat,
-                'panjang_badan' => $request->panjang_badan,
-                'jumlah' => $request->jumlah
+                'usia_janin' => $request->usia_janin,
+                'berat_janin' => $request->berat_janin,
+                'panjang_badan_janin' => $request->panjang_badan_janin,
+                'jumlah_bayi' => $request->jumlah_bayi
             ]);
             $message = 'Kuesioner hamil pasca persalinan berhasil diperbaharui';
             return redirect()->route('admin.periodePersalinan-create',["id" => $request->id])->with('success', $message);
@@ -501,28 +530,29 @@ class KuisHamilController extends Controller
             $this->validate($request,[
                 'tanggal_persalinan' => 'required',
                 'kb' =>  'required',
-                'usia' => 'required',
-                'berat' => 'required',
-                'panjang_badan' =>  'required',
-                'jumlah' =>  'required',
+                'usia_janin' => 'required',
+                'berat_janin' => 'required',
+                'panjang_badan_janin' =>  'required',
+                'jumlah_bayi' =>  'required',
             ],
             [
                 'tanggal_persalinan.required' => 'Tanggal Persalinan harus diisi.',
                 'kb.required' => 'KB harus diisi.',
-                'usia.required.required' => 'Usia harus diisi.',
-                'berat.required.required' => 'Berat lahir harus diisi.',
-                'panjang_badan.required' => 'Panjang badan harus diisi.',
-                'jumlah.required' => 'Jumlah bayi harus diisi.'
+                'usia_janin.required.required' => 'Usia harus diisi.',
+                'berat_janin.required.required' => 'Berat lahir harus diisi.',
+                'panjang_badan_janin.required' => 'Panjang badan harus diisi.',
+                'jumlah_bayi.required' => 'Jumlah bayi harus diisi.'
             ]);
-            $periodePersalinan = new KuisHamilPersalinan;
+            $periodePersalinan = new KuesionerHamil;
             $periodePersalinan->id_user = Auth::user()->id;
             $periodePersalinan->id_member = $request->id;
             $periodePersalinan->tanggal_persalinan = $request->tanggal_persalinan;
             $periodePersalinan->kb = $request->kb;
-            $periodePersalinan->usia = $request->usia;
-            $periodePersalinan->berat = $request->berat;
-            $periodePersalinan->panjang_badan = $request->panjang_badan;
-            $periodePersalinan->jumlah = $request->jumlah;
+            $periodePersalinan->usia_janin = $request->usia_janin;
+            $periodePersalinan->berat_janin = $request->berat_janin;
+            $periodePersalinan->panjang_badan_janin = $request->panjang_badan_janin;
+            $periodePersalinan->jumlah_bayi = $request->jumlah_bayi;
+            $periodePersalinan->periode = 9;
             $periodePersalinan->save();
             $message = 'Kuesioner hamil pasca persalinan berhasil ditambahkan';
             return redirect()->route('admin.periodePersalinan-create',["id" => $request->id])->with('success', $message);
@@ -531,9 +561,9 @@ class KuisHamilController extends Controller
 
     public function storeNifas(Request $request)
     {
-        $checkExisting = KuisHamilNifas::where('id_member',$request->id)->first();
+        $checkExisting = KuesionerHamil::where([['id_member','=',$request->id],['periode','=',10]])->select('created_at')->first();
         if($checkExisting != null){
-            KuisHamilNifas::where('id_member', $request->id)
+            KuesionerHamil::where([['id_member','=',$request->id],['periode','=',10]])
             ->update([
                 'komplikasi' => $request->komplikasi,
                 'asi' => $request->asi,
@@ -552,12 +582,13 @@ class KuisHamilController extends Controller
                 'asi.required' => 'ASI harus diisi.',
                 'kbpp_mkjp.required' => 'KBPP - MKJP harus diisi.',
             ]);
-            $periodeNifas = new KuisHamilNifas;
+            $periodeNifas = new KuesionerHamil;
             $periodeNifas->id_user = Auth::user()->id;
             $periodeNifas->id_member = $request->id;
             $periodeNifas->komplikasi = $request->komplikasi;
             $periodeNifas->asi = $request->asi;
             $periodeNifas->kbpp_mkjp = $request->kbpp_mkjp;
+            $periodeNifas->periode = 10;
             $periodeNifas->save();
             $message = 'Kuesioner hamil periode pasca salin sampai akhir nifas berhasil ditambahkan';
             return redirect()->route('admin.periodeNifas-create',["id" => $request->id])->with('success', $message);

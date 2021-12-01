@@ -135,19 +135,19 @@
                                 <h3>Bayi</h3>
                                 <div class="form-group">
                                     <label for="nama"> 1. Usia Janin Dalam Kandungan</label>
-                                    <input type="number" class="number form-control" name="usia" value="@php echo isset($data_kuesioner->usia) ? ($data_kuesioner->usia) : null; @endphp">
+                                    <input type="number" class="number form-control" name="usia_janin" value="@php echo isset($data_kuesioner->usia_janin) ? ($data_kuesioner->usia_janin) : null; @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 2. Berat Lahir</label>
-                                    <input type="number" class="number form-control" name="berat" value="@php echo isset($data_kuesioner->berat) ? ($data_kuesioner->berat) : null; @endphp">
+                                    <input type="number" class="number form-control" name="berat_janin" value="@php echo isset($data_kuesioner->berat_janin) ? ($data_kuesioner->berat_janin) : null; @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 3. Panjang Badan</label>
-                                    <input type="number" class="number form-control" name="panjang_badan" value="@php echo isset($data_kuesioner->panjang_badan) ? ($data_kuesioner->panjang_badan) : null; @endphp">
+                                    <input type="number" class="number form-control" name="panjang_badan_janin" value="@php echo isset($data_kuesioner->panjang_badan_janin) ? ($data_kuesioner->panjang_badan_janin) : null; @endphp">
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"> 4. Jumlah Bayi</label>
-                                    <input type="number" class="number form-control" name="jumlah" value="@php echo isset($data_kuesioner->jumlah) ? ($data_kuesioner->jumlah) : null; @endphp">
+                                    <input type="number" class="number form-control" name="jumlah_bayi" value="@php echo isset($data_kuesioner->jumlah_bayi) ? ($data_kuesioner->jumlah_bayi) : null; @endphp">
                                 </div>
                                 <button type="submit">Submit</button>
                             </form>
