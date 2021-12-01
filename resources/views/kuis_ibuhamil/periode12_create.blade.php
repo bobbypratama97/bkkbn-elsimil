@@ -155,20 +155,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for=""><p class="font-weight-boldest m-0">7. Riwayat Sakit Kronik </p> </label>
-                                    <div class="input-group">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="riwayat_sakit_kronik"  <?php echo  isset($data_kuesioner->riwayat_sakit_kronik) && $data_kuesioner->riwayat_sakit_kronik =='1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                            Ada
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="riwayat_sakit_kronik" <?php   echo  isset($data_kuesioner->riwayat_sakit_kronik) && $data_kuesioner->riwayat_sakit_kronik =='0' ? 'checked':'' ?>  value="0" id="flexRadioDefault2">
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                            Tidak Ada
-                                            </label>
-                                        </div>
+                                    <label for="">7. Riwayat Sakit Kronik </label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="riwayat_sakit_kronik"  <?php echo  isset($data_kuesioner->riwayat_sakit_kronik) && $data_kuesioner->riwayat_sakit_kronik == 'Ada' ? 'checked':'' ?>   value="Ada" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                          Ada
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="riwayat_sakit_kronik" <?php   echo  isset($data_kuesioner->riwayat_sakit_kronik) && $data_kuesioner->riwayat_sakit_kronik == 'Tidak Ada' ? 'checked':'' ?>  value="Tidak Ada" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                          Tidak Ada
+                                        </label>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>

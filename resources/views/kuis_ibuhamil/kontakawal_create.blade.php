@@ -144,20 +144,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for=""><p class="font-weight-boldest m-0">7. Anak Stunting</p></label>
-                                    <div class="input-group">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="anak_stunting"  <?php echo  isset($data_kuesioner->usia_anak_terakhir) && $data_kuesioner->anak_stunting =='1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                            Ya
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="anak_stunting" <?php   echo  isset($data_kuesioner->usia_anak_terakhir) && $data_kuesioner->anak_stunting =='0' ? 'checked':'' ?>  value="0" id="flexRadioDefault2">
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                            Tidak
-                                            </label>
-                                        </div>
+                                    <label for="">7. Anak Stunting</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="anak_stunting"  <?php echo  isset($data_kuesioner->usia_anak_terakhir) && $data_kuesioner->anak_stunting == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                          Ya
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="anak_stunting" <?php   echo  isset($data_kuesioner->usia_anak_terakhir) && $data_kuesioner->anak_stunting == 'Tidak' ? 'checked':'' ?>  value="Tidak" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                          Tidak
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -165,63 +163,69 @@
                                     <input type="date" name="hari_pertama_haid_terakhir" class="form-control" value="@php echo isset($data_kuesioner->hari_pertama_haid_terakhir) ? ($data_kuesioner->hari_pertama_haid_terakhir) : date("Y-m-d"); @endphp">
                                 </div>
                                 <div class="form-group">
-                                    <label for=""><p class="font-weight-boldest m-0">9. Sumber Air Bersih</p></label>
-                                    <div class="input-group">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sumber_air_bersih"  <?php   echo  isset($data_kuesioner->sumber_air_bersih) && $data_kuesioner->sumber_air_bersih =='1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                              Ya
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sumber_air_bersih" <?php   echo  isset($data_kuesioner->sumber_air_bersih) && $data_kuesioner->sumber_air_bersih =='0' ? 'checked':'' ?>   value="0" id="flexRadioDefault2">
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                              Tidak
-                                            </label>
-                                        </div>
+
+                                    <label for="">9. Sumber Air Bersih</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sumber_air_bersih"  <?php   echo  isset($data_kuesioner->sumber_air_bersih) && $data_kuesioner->sumber_air_bersih =='Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                          Ya
+                                        </label>
                                     </div>
-                                    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sumber_air_bersih" <?php   echo  isset($data_kuesioner->sumber_air_bersih) && $data_kuesioner->sumber_air_bersih == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                          Tidak
+                                        </label>
+                                    </div>         
                                 </div>
                                 <div class="form-group">
-                                    <label for=""><p class="font-weight-boldest m-0">10. Rumah Layak Huni</p></label>
-                                    <div class="input-group">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="rumah_layak_huni"  <?php   echo  isset($data_kuesioner->rumah_layak_huni) && $data_kuesioner->rumah_layak_huni =='1' ? 'checked':'' ?> value="1" id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                            Ya
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="rumah_layak_huni"<?php   echo  isset($data_kuesioner->rumah_layak_huni) && $data_kuesioner->rumah_layak_huni =='0' ? 'checked':'' ?> value="0" id="flexRadioDefault2">
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                            Tidak
-                                            </label>
-                                        </div>
+                                    <label for="">10. Jamban Sehat</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="jamban_sehat"  <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat =='Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                          Ya
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="jamban_sehat" <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                          Tidak
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for=""><p class="font-weight-boldest m-0">11. Bansos</p></label>
-                                    <div class="input-group">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="bansos" <?php   echo  isset($data_kuesioner->bansos) && $data_kuesioner->bansos == '1' ? 'checked':'' ?> value="1" id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                            Ya
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="bansos"  <?php   echo  isset($data_kuesioner->bansos) && $data_kuesioner->bansos =='0' ? 'checked':'' ?> value="0" id="flexRadioDefault2">
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                            Tidak
-                                            </label>
-                                        </div>
+                                    <label for="">11. Rumah Layak Huni</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="rumah_layak_huni"  <?php   echo  isset($data_kuesioner->rumah_layak_huni) && $data_kuesioner->rumah_layak_huni == 'Ya' ? 'checked':'' ?> value="Ya" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                          Ya
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="rumah_layak_huni"<?php   echo  isset($data_kuesioner->rumah_layak_huni) && $data_kuesioner->rumah_layak_huni == 'Tidak' ? 'checked':'' ?> value="Tidak" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                          Tidak
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">12. Bansos</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="bansos" <?php   echo  isset($data_kuesioner->bansos) && $data_kuesioner->bansos == 'Ya' ? 'checked':'' ?> value="Ya" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                          Ya
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="bansos"  <?php   echo  isset($data_kuesioner->bansos) && $data_kuesioner->bansos == 'Tidak' ? 'checked':'' ?> value="Tidak" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                          Tidak
+                                        </label>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
-
                         </div>
-
-
                     </div>
                     </div>
                 </div>

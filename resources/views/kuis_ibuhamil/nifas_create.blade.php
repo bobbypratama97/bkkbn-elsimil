@@ -116,13 +116,13 @@
                                 <div class="form-group">
                                     <label for="">1. Komplikasi</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="komplikasi"  <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == '1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="komplikasi"  <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="komplikasi" <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == '0' ? 'checked':'' ?>   value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="komplikasi" <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
@@ -131,13 +131,13 @@
                                 <div class="form-group">
                                     <label for="">2. ASI Eksklusif</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="asi"  <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi =='1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="asi"  <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="asi" <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi =='0' ? 'checked':'' ?>   value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="asi" <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
@@ -146,13 +146,13 @@
                                 <div class="form-group">
                                     <label for="">3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="kbpp_mkjp"  <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp =='1' ? 'checked':'' ?>   value="1" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="kbpp_mkjp"  <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'MKJP' ? 'checked':'' ?>   value="MKJP" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                          Ya
+                                          MKJP
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="kbpp_mkjp" <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp =='0' ? 'checked':'' ?>   value="0" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="kbpp_mkjp" <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>

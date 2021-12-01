@@ -136,7 +136,7 @@ class HelperController extends Controller
         die();
     }
 
-    public function provinsi(Request $request) {
+    public function provinsi() {
         $data = Provinsi::whereNull('deleted_by')->orderBy('nama', 'asc')->get();
 
         $count = 0;
