@@ -176,18 +176,18 @@
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
-                                    </div>         
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">10. Jamban Sehat</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="jamban_sehat"  <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat =='Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="jamban_sehat"  <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="jamban_sehat" <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="jamban_sehat" <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat == 'Tidak' ? 'checked':'' ?>  value="Tidak" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
