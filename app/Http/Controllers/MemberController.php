@@ -982,29 +982,23 @@ class MemberController extends Controller
         ->where('members.id', $id)
         ->first();
 
-
-        if (!empty($member->foto_pic)) {
-            if ($member->foto_pic == 'noimage.png') {
-                if ($member->gender == '2') {
-                    $member->gambar = $baseurlavatar . '018-girl-9.svg';
-                } else if ($member->gender == '1') {
-                    $member->gambar = $baseurlavatar . '009-boy-4.svg';
-                } else {
-                    $member->gambar = $baseurlavatar . '024-boy-9.svg';
-                }
-            } else {
-                $member->gambar = $baseurlmember . $member->foto_pic;
-            }
-        } else {
-            if ($member->gender == '2') {
-                $member->gambar = $baseurlavatar . '018-girl-9.svg';
-            } else if ($member->gender == '1') {
-                $member->gambar = $baseurlavatar . '009-boy-4.svg';
-            } else {
-                $member->gambar = $baseurlavatar . '024-boy-9.svg';
-            }
-        }
-
         return view('member.edit', compact('member'));   
+    }
+
+    public function update(Request $request)
+    {
+        $member_upd = Member::where('id', $request->cid)->first();
+
+        $member_upd->name = $request->name;
+        $member_upd->alamat = $request->alamat;
+        $member_upd->rt = $request->rt;
+        $member_upd->rw = $request->rw;
+        $member_upd->kodepos = $request->kodepos;
+        $member_upd->gender = $request->gender;
+        $member_upd->tempat_lahir = $request->tempat_lahir;
+        $member_upd->tgl_lahir = $request->tgl_lahir;
+
+        $member_upd->update();
+        return redirect()->route('admin.member.index')->with('success', 'Data Catin berhasil diupdate.');
     }
 }
