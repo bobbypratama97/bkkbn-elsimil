@@ -98,7 +98,7 @@ class KuisHamilController extends Controller
         #data kuesioner
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])
         ->select(['berat_badan','tinggi_badan','lingkar_lengan_atas',
-        'hemoglobin','tensi_darah','gula_darah','riwayat_sakit_kronik'])->first();
+        'hemoglobin','tensi_darah','gula_darah','riwayat_sakit_kronik','created_at','updated_at'])->first();
         return view('kuis_ibuhamil.periode12_create',[
             "id" => $id,
             "name" => $name,
@@ -134,7 +134,7 @@ class KuisHamilController extends Controller
         }
         #data kuesioner
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',3]])
-        ->select(['hemoglobin','tensi_darah','gula_darah_sewaktu'])->first();
+        ->select(['hemoglobin','tensi_darah','gula_darah_sewaktu','created_at','updated_at'])->first();
         return view('kuis_ibuhamil.periode16_create',[
             "id" => $id,
             "name" => $name,
@@ -189,7 +189,7 @@ class KuisHamilController extends Controller
         $periode_id = $this->_getPeriodeID($periode);
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])
         ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah',
-        'proteinuria','denyut_jantung','tinggi_fundus_uteri','taksiran_berat_janin','gerak_janin','jumlah_janin'
+        'proteinuria','denyut_jantung','tinggi_fundus_uteri','taksiran_berat_janin','gerak_janin','jumlah_janin','created_at','updated_at'
         ])->first();
         return view('kuis_ibuhamil.ibujanin_create',[
             "id" => $id,
@@ -227,7 +227,7 @@ class KuisHamilController extends Controller
         }
         #data kuesioner
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',9]])
-        ->select(['tanggal_persalinan','kb','usia_janin','berat_janin','panjang_badan_janin','jumlah_bayi'
+        ->select(['tanggal_persalinan','kb','usia_janin','berat_janin','panjang_badan_janin','jumlah_bayi','created_at','updated_at'
         ])->first();
         return view('kuis_ibuhamil.persalinan_create',[
             "id" => $id,
@@ -264,7 +264,7 @@ class KuisHamilController extends Controller
         }
         #data kuesioner
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',10]])
-        ->select(['komplikasi','asi','kbpp_mkjp'
+        ->select(['komplikasi','asi','kbpp_mkjp','created_at','updated_at'
         ])->first();
         return view('kuis_ibuhamil.nifas_create',[
             "id" => $id,
