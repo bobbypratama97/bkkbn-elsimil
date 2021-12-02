@@ -49,8 +49,8 @@ class KuisHamilController extends Controller
             {
                 switch($key)
                 {
+
                     case 'nama' :
-                    case 'nik' :
                     case 'alamat' :
                     case 'hari_pertama_haid_terakhir' :
                             $singleData = [
@@ -61,6 +61,13 @@ class KuisHamilController extends Controller
                             array_push($answerKontakAwal,$singleData);
                             break;
 
+                    case 'nik' : $singleData = [
+                                            "question" => $key,
+                                            "answer" => Helper::decryptNik($value),
+                                            "isRisky" => "-"
+                                        ];
+                                        array_push($answerKontakAwal,$singleData);
+                                        break;
                     case 'usia'                             :    if($value>=20 && $value<=35){
                                                                         $isRisky = false;
                                                                       }else if($value<20 || $value>35){

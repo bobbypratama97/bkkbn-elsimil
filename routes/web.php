@@ -127,7 +127,8 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::get('member/{id}/logbook', 'MemberController@logbook')->name('member.logbook');
 		Route::post('member/logbook-update', 'MemberController@logbookUpdate')->name('member.logbook_update');
 		Route::post('member/kelola', 'MemberController@kelola')->name('member.kelola');
-		Route::resource('member', 'MemberController')->except(['create', 'store', 'destroy']);
+		Route::put('member/update/{id}', 'MemberController@update')->name('member.update');
+		Route::resource('member', 'MemberController')->except(['create', 'store', 'destroy', 'update']);
 
         Route::prefix('member/{id}/kuesioner-ibu-hamil')->group(function(){
             #halaman index

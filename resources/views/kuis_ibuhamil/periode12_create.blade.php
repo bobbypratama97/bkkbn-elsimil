@@ -155,7 +155,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">7. Riwayat Sakit Kronik </label>
+                                    <label for="nama"><p class="font-weight-boldest m-0">7. Riwayat Sakit Kronik</p></label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="riwayat_sakit_kronik"  <?php echo  isset($data_kuesioner->riwayat_sakit_kronik) && $data_kuesioner->riwayat_sakit_kronik == 'Ada' ? 'checked':'' ?>   value="Ada" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
