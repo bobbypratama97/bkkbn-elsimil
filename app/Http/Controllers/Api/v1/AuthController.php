@@ -180,7 +180,7 @@ class AuthController extends Controller
             $user->rt = $request->rt;
             $user->rw = $request->rw;
             $user->kodepos = $request->kodepos;
-            $user->is_active = 4;
+            $user->is_active = 1; //urgent auto active // $user->is_active = 4 waiting verify;
             $user->profile_code = $profile_code;
             $user->rencana_pernikahan;
             $user->created_at = date('Y-m-d H:i:s');
@@ -197,19 +197,20 @@ class AuthController extends Controller
 
                 $onesignal->save();
 
-                Helper::sendMail([
-                    'id' => $user->id, 
-                    'tipe' => 2, 
-                    'name' => $user->name, 
-                    'email' => $user->email, 
-                    'url' => 'vrf'
-                ]);
+                // Helper::sendMail([
+                //     'id' => $user->id, 
+                //     'tipe' => 2, 
+                //     'name' => $user->name, 
+                //     'email' => $user->email, 
+                //     'url' => 'vrf'
+                // ]);
             }
 
             return response()->json([
                 'code' => 200,
                 'error'   => false,
-                'message' => 'Registrasi berhasil. Kami telah mengirimkan link verifikasi ke email Anda. Silahkan login untuk memulai penggunaan aplikasi.'
+                // 'message' => 'Registrasi berhasil. Kami telah mengirimkan link verifikasi ke email Anda. Silahkan login untuk memulai penggunaan aplikasi.'
+                'message' => 'Selamat akun anda sudah aktif silahkan login dengan email/no tlp dan pasword anda.'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
