@@ -132,7 +132,7 @@
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="gula_darah_sewaktu" value="@php echo isset($data_kuesioner->gula_darah_sewaktu) ? ($data_kuesioner->gula_darah_sewaktu) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mg/dl</span>
-                                    </div>    
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>

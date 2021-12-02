@@ -94,27 +94,27 @@
 
                     <div class="row">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             @if ( Session::has( 'success' ))
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
-                            @elseif ( $errors->any())
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
-                            @else
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
-                            @endif
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
+                        @elseif ( $errors->any())
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
+                        @else
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
+                        @endif
                         </div>
                     </div>
                     <div class="row" style="margin-top: 1%">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             <form action="{{route('admin.periodeNifas-save',$id)}}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="">1. Komplikasi</label>
+                                    <label for="nama"><p class="font-weight-boldest m-0">1. Komplikasi</p></label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="komplikasi"  <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">2. ASI Eksklusif</label>
+                                    <label for="nama"><p class="font-weight-boldest m-0">2. ASI Eksklusif</p></label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="asi"  <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</label>
+                                    <label for="nama"><p class="font-weight-boldest m-0">3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</p></label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="kbpp_mkjp"  <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'MKJP' ? 'checked':'' ?>   value="MKJP" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
@@ -158,7 +158,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
                         </div>
                     </div>
