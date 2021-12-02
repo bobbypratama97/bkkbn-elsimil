@@ -196,7 +196,8 @@ class KuisHamilController extends Controller
          $pdf12Minggu = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
         //  dd($data12Minggu);
          if($data12Minggu != null){
-            $imtCalculation = $data12Minggu->berat_badan / ($data12Minggu->tinggi_badan ^ 2);
+            $tinggiBadanMeter = $data12Minggu->tinggi_badan / 100;
+            $imtCalculation = $data12Minggu->berat_badan / ($tinggiBadanMeter ^ 2);
             foreach( $data12Minggu->toArray() as $key => $value )
              {
                  switch($key) {
