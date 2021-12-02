@@ -91,51 +91,68 @@
                         </ul>
                     </div>
                   @endif
-
                     <div class="row">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             @if ( Session::has( 'success' ))
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
+                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
                             @elseif ( $errors->any())
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
+                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
                             @else
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
+                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
                             @endif
                         </div>
                     </div>
                     <div class="row" style="margin-top: 1%">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             <form action="{{route('admin.periode12minggu-save',$id)}}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="nama"> 1. Berat Badan </label>
-                                    <input type="number" class="text form-control" name="berat_badan" value="@php echo isset($data_kuesioner->berat_badan) ? ($data_kuesioner->berat_badan) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0">1. Berat Badan </p></label>
+                                    <div class="input-group">
+                                        <input type="number" class="text form-control" name="berat_badan" value="@php echo isset($data_kuesioner->berat_badan) ? ($data_kuesioner->berat_badan) : null; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">kg</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 2. Tinggi Badan </label>
-                                    <input type="number" class="text form-control" name="tinggi_badan" value="@php echo isset($data_kuesioner->tinggi_badan) ? ($data_kuesioner->tinggi_badan) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 2. Tinggi Badan </p> </label>
+                                    <div class="input-group">
+                                        <input type="number" class="text form-control" name="tinggi_badan" value="@php echo isset($data_kuesioner->tinggi_badan) ? ($data_kuesioner->tinggi_badan) : null; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 3. Lingkar Lengan Atas</label>
-                                    <input type="number" class="number form-control" name="lingkar_lengan_atas" value="@php echo isset($data_kuesioner->lingkar_lengan_atas) ? ($data_kuesioner->lingkar_lengan_atas) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 3. Lingkar Lengan Atas </p></label>
+                                    <div class="input-group">
+                                        <input type="number" class="number form-control" name="lingkar_lengan_atas" value="@php echo isset($data_kuesioner->lingkar_lengan_atas) ? ($data_kuesioner->lingkar_lengan_atas) : null; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 4. Hemoglobin </label>
-                                    <input type="number" class="number form-control" name="hemoglobin" value="@php echo isset($data_kuesioner->hemoglobin) ? ($data_kuesioner->hemoglobin) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 4. Hemoglobin </p> </label>
+                                    <div class="input-group">
+                                        <input type="number" class="number form-control" name="hemoglobin" value="@php echo isset($data_kuesioner->hemoglobin) ? ($data_kuesioner->hemoglobin) : null; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">gr/dl</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 5. Tensi Darah </label>
-                                    <input type="number" class="number form-control" name="tensi_darah" value="@php echo isset($data_kuesioner->tensi_darah) ? ($data_kuesioner->tensi_darah) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 5. Tensi Darah </p> </label>
+                                    <div class="input-group">
+                                        <input type="number" class="number form-control" name="tensi_darah" value="@php echo isset($data_kuesioner->tensi_darah) ? ($data_kuesioner->tensi_darah) : null; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">mmHg</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 6. Gula Darah </label>
-                                    <input type="number" class="number form-control" name="gula_darah" value="@php echo isset($data_kuesioner->gula_darah) ? ($data_kuesioner->gula_darah) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 6. Gula Darah </p> </label>
+                                    <div class="input-group">
+                                        <input type="number" class="number form-control" name="gula_darah" value="@php echo isset($data_kuesioner->gula_darah) ? ($data_kuesioner->gula_darah) : null; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">mg/dl</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">7. Riwayat Sakit Kronik </label>
@@ -152,7 +169,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
                         </div>
                     </div>

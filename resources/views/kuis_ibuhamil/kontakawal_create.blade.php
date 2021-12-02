@@ -94,48 +94,54 @@
 
                     <div class="row">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color: white; width: 75%">Tgl Pengisian : @php echo isset($data_kuesioner->created_at) ? ($data_kuesioner->created_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             @if ( Session::has( 'success' ))
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
+                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
                             @elseif ( $errors->any())
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
+                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
                             @else
-                                <button type="button" class="btn btn-sm btn-block" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
+                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
                             @endif
                         </div>
                     </div>
                     <div class="row" style="margin-top: 1%">
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-sm btn-block" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
                             <form action="{{route('admin.kontakawal-save',$id)}}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="nama"> 1. Nama</label>
-                                    <input type="text" class="text form-control" name="nama" value="@php echo isset($data_kuesioner->nama) ? ($data_kuesioner->nama) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 1. Nama</p></label>
+                                    <input type="text" class="text form-control" name="nama" value="@php echo isset($data_kuesioner->nama) ? ($data_kuesioner->nama) : $name; @endphp">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 2. NIK</label>
-                                    <input type="text" class="text form-control" name="nik" value="@php echo isset($data_kuesioner->nik) ? ($data_kuesioner->nik) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 2. NIK</p></label>
+                                    <input type="text" class="text form-control" name="nik" value="@php echo isset($data_kuesioner->nik) ? Helper::decryptNik($data_kuesioner->nik) : ""; @endphp">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 3. Usia</label>
-                                    <input type="number" class="number form-control" name="usia" value="@php echo isset($data_kuesioner->usia) ? ($data_kuesioner->usia) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 3. Usia</p></label>
+                                    <div class="input-group">
+                                        <input type="number" class="number form-control" name="usia" value="@php echo isset($data_kuesioner->usia) ? ($data_kuesioner->usia) : $umur; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">Tahun</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 4. Alamat</label>
-                                    <input type="text" class="text form-control" name="alamat" value=@php echo isset($data_kuesioner->alamat) ? ($data_kuesioner->alamat) : null; @endphp>
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 4. Alamat</p></label>
+                                    <input type="text" class="text form-control" name="alamat" value=@php echo isset($data_kuesioner->alamat) ? ($data_kuesioner->alamat) : $alamat; @endphp>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 5. Jumlah Anak</label>
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 5. Jumlah Anak</p></label>
                                     <input type="number" class="number form-control" name="jumlah_anak" value="@php echo isset($data_kuesioner->jumlah_anak) ? ($data_kuesioner->jumlah_anak) : null; @endphp">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"> 6. Usia Anak Terakhir</label>
-                                    <input type="number" class="number form-control" name="usia_anak_terakhir" value="@php echo isset($data_kuesioner->usia_anak_terakhir) ? ($data_kuesioner->usia_anak_terakhir) : null; @endphp">
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 6. Usia Anak Terakhir</p></label>
+                                    <div class="input-group">
+                                        <input type="number" class="number form-control" name="usia_anak_terakhir" value="@php echo isset($data_kuesioner->usia_anak_terakhir) ? ($data_kuesioner->usia_anak_terakhir) : null; @endphp">
+                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">Tahun</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">7. Anak Stunting</label>
@@ -153,10 +159,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">8. Hari Pertama Haid Terakhir</label>
-                                    <input type="date" name="hari_pertama_haid_terakhir" class="form-control" value="@php echo isset($data_kuesioner->hari_pertama_haid_terakhir) ? ($data_kuesioner->hari_pertama_haid_terakhir) : null; @endphp">
+                                    <label for=""><p class="font-weight-boldest m-0">8. Hari Pertama Haid Terakhir</p></label>
+                                    <input type="date" name="hari_pertama_haid_terakhir" class="form-control" value="@php echo isset($data_kuesioner->hari_pertama_haid_terakhir) ? ($data_kuesioner->hari_pertama_haid_terakhir) : date("Y-m-d"); @endphp">
                                 </div>
                                 <div class="form-group">
+
                                     <label for="">9. Sumber Air Bersih</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="sumber_air_bersih"  <?php   echo  isset($data_kuesioner->sumber_air_bersih) && $data_kuesioner->sumber_air_bersih =='Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
@@ -174,13 +181,13 @@
                                 <div class="form-group">
                                     <label for="">10. Jamban Sehat</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="jamban_sehat"  <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat =='Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="jamban_sehat"  <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                           Ya
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="jamban_sehat" <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="jamban_sehat" <?php   echo  isset($data_kuesioner->jamban_sehat) && $data_kuesioner->jamban_sehat == 'Tidak' ? 'checked':'' ?>  value="Tidak" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                           Tidak
                                         </label>
@@ -216,7 +223,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
                         </div>
                     </div>
@@ -230,84 +237,6 @@
 @push('script')
 <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
-
-{{-- <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
-    });
-
-    $('#kt_datatable tbody').on('click', '.hapus', function () {
-        var id = $(this).attr('data-id');
-
-        bootbox.confirm({
-            title: 'Perhatian',
-            message: "<p class='text-center'>Apakah Anda yakin menghapus data ini ?</p>",
-            centerVertical: true,
-            closeButton: false,
-            buttons: {
-                confirm: { label: 'Yakin', className: 'btn-success' },
-                cancel: { label: 'Batalkan', className: 'btn-danger' }
-            },
-            callback: function (result) {
-                if (result == true) {
-                    $.preloader.start({
-                        modal:true,
-                        src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
-                    });
-
-                    $.ajax({
-                        url: '{{ route('admin.kuis.delete') }}',
-                        type: 'POST',
-                        data: {id : id, '_token': "{{ csrf_token() }}"},
-                        dataType: 'json',
-                        success: function( data ) {
-                            $.preloader.stop();
-                            bootbox.dialog({
-                                title: 'Perhatian',
-                                centerVertical: true,
-                                closeButton: false,
-                                message: "<p class='text-center'>" + data.message + "</p>",
-                                buttons: {
-                                    ok: {
-                                        label: "OK",
-                                        className: 'btn-info',
-                                        callback: function() {
-                                            window.location.href = '{{ route('admin.kuis.index') }}';
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    })
-                }
-            }
-        });
-    });
-</script> --}}
 @endpush
 
 @endsection

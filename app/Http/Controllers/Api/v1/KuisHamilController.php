@@ -16,6 +16,7 @@ use Helper;
 
 use App\Member;
 
+use App\KuesionerHamil;
 use App\KuisHamilKontakAwal;
 use App\KuisHamil12Minggu;
 use App\KuisHamil16Minggu;
@@ -35,7 +36,11 @@ class KuisHamilController extends Controller
         $today = date("Y-m-d");
         $base_url = env('BASE_URL_PDF');
         #kontak-awal
-        $dataKontakAwal = KuisHamilKontakAwal::where('id_user',$id)->first();
+        $dataKontakAwal = KuesionerHamil::where([['id_member','=',$id],['periode','=',1]])
+        ->select(['nama', 'nik', 'usia',
+                'alamat', 'jumlah_anak','usia_anak_terakhir',
+                'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih','jamban_sehat',
+                'rumah_layak_huni', 'bansos','created_at','updated_at'])->first();
         $answerKontakAwal= array();
         $pdfKontakAwal = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
 
@@ -184,12 +189,16 @@ class KuisHamilController extends Controller
     {
          $base_url = env('BASE_URL_PDF');
          #kontak-16-minggu
-         $data12Minggu = KuisHamil12Minggu::where('id_user',$id)->first();
+         $data12Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])
+         ->select(['berat_badan','tinggi_badan','lingkar_lengan_atas',
+         'hemoglobin','tensi_darah','gula_darah','riwayat_sakit_kronik'])->first();
          $answer12Minggu= array();
          $pdf12Minggu = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+        //  dd($data12Minggu);
          if($data12Minggu != null){
-             $imtCalculation = $data12Minggu->berat_badan / ($data12Minggu->tinggi_badan ^ 2);
-             foreach( $data12Minggu->toArray() as $key => $value )
+            $tinggiBadanMeter = $data12Minggu->tinggi_badan / 100;
+            $imtCalculation = $data12Minggu->berat_badan / ($tinggiBadanMeter ^ 2);
+            foreach( $data12Minggu->toArray() as $key => $value )
              {
                  switch($key) {
                      case 'berat_badan' : if($imtCalculation >= 19 && $imtCalculation <= 29){
@@ -306,7 +315,8 @@ class KuisHamilController extends Controller
          $today = date("Y-m-d");
          $base_url = env('BASE_URL_PDF');
          #kontak-16-minggu
-         $data16Minggu = KuisHamil16Minggu::where('id_user',$id)->first();
+         $data16Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',3]])
+         ->select(['hemoglobin','tensi_darah','gula_darah_sewaktu'])->first();
          $answer16Minggu= array();
          $pdf16Minggu = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
          if($data16Minggu != null){
@@ -370,11 +380,32 @@ class KuisHamilController extends Controller
          }
     }
 
+    private function _getPeriodeID($periode)
+    {
+        if($periode == 20){
+            $id = 4;
+        }else if($periode == 24){
+            $id = 5;
+        }else if($periode == 28){
+            $id = 6;
+        }else if($periode == 32){
+            $id = 7;
+        }else if($periode == 36){
+            $id = 8;
+        }
+
+        return $id;
+    }
+
     private function _getIbuJaninResult($id,$periode)
     {
         $today = date("Y-m-d");
         $base_url = env('BASE_URL_PDF');
-        $dataIbuJanin = KuisHamilIbuJanin::where('id_user',$id)->where('periode',$periode)->first();
+        $periode_id = $this->_getPeriodeID($periode);
+        $dataIbuJanin = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])
+        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah',
+        'proteinuria','denyut_jantung','tinggi_fundus_uteri','taksiran_berat_janin','gerak_janin','jumlah_janin'
+        ])->first();
         $answerIbuJanin = array();
         $pdfIbuJanin = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
         if($dataIbuJanin != null){
@@ -625,7 +656,9 @@ class KuisHamilController extends Controller
          $today = date("Y-m-d");
          $base_url = env('BASE_URL_PDF');
          #kontak-16-minggu
-         $dataPersalinan = KuisHamilPersalinan::where('id_user',$id)->first();
+         $dataPersalinan = KuesionerHamil::where([['id_member','=',$id],['periode','=',9]])
+         ->select(['tanggal_persalinan','kb','usia_janin','berat_janin','panjang_badan_janin','jumlah_bayi'
+         ])->first();
          $answerPersalinan= array();
          $pdfPersalinan = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
          if($dataPersalinan != null){
@@ -653,7 +686,7 @@ class KuisHamilController extends Controller
                                                                 array_push($answerPersalinan,$singleData);
                                                                 break;
 
-                    case 'usia'                            :   if($value >= 37 && $value <= 42){
+                    case 'usia_janin'                            :   if($value >= 37 && $value <= 42){
                                                                        $isRisky = false;
                                                                     }else if($value < 37 || $value > 42){
                                                                         $isRisky = true;
@@ -666,7 +699,7 @@ class KuisHamilController extends Controller
                                                                     array_push($answerPersalinan,$singleData);
                                                                     break;
 
-                    case 'berat'                            :   if($value >= 2500 && $value <= 3900){
+                    case 'berat_janin'                            :   if($value >= 2500 && $value <= 3900){
                                                                         $isRisky = false;
                                                                      }else if($value < 2500 || $value > 3900){
                                                                          $isRisky = true;
@@ -679,7 +712,7 @@ class KuisHamilController extends Controller
                                                                      array_push($answerPersalinan,$singleData);
                                                                      break;
 
-                   case 'panjang_badan'                :   if($value >= 48 && $value <= 53){
+                   case 'panjang_badan_janin'                :   if($value >= 48 && $value <= 53){
                                                                         $isRisky = false;
                                                                      }else if($value < 48 || $value > 53){
                                                                          $isRisky = true;
@@ -692,7 +725,7 @@ class KuisHamilController extends Controller
                                                                      array_push($answerPersalinan,$singleData);
                                                                      break;
 
-                    case 'jumlah'                        :   if($value == 1){
+                    case 'jumlah_bayi'                        :   if($value == 1){
                                                                         $isRisky = false;
                                                                      }else if($value > 1){
                                                                          $isRisky = true;
@@ -731,7 +764,9 @@ class KuisHamilController extends Controller
         $today = date("Y-m-d");
         $base_url = env('BASE_URL_PDF');
         #kontak-16-minggu
-        $dataNifas = KuisHamilNifas::where('id_user',$id)->first();
+        $dataNifas = KuesionerHamil::where([['id_member','=',$id],['periode','=',10]])
+        ->select(['komplikasi','asi','kbpp_mkjp'
+        ])->first();
         $answerNifas= array();
         $pdfNifas = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
         if($dataNifas != null){
