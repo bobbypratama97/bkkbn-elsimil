@@ -115,48 +115,88 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0">1. Komplikasi</p></label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="komplikasi"  <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                          Ya
-                                        </label>
+                                    <div class="input-group">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="komplikasi"  <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                              Ya
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="komplikasi" <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                              Tidak
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="komplikasi" <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                          Tidak
-                                        </label>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Tidak </span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Ya </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0">2. ASI Eksklusif</p></label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="asi"  <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                          Ya
-                                        </label>
+                                    <div class="input-group">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="asi"  <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                              Ya
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="asi" <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                              Tidak
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="asi" <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                          Tidak
-                                        </label>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Ya </span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Tidak </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0">3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</p></label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="kbpp_mkjp"  <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'MKJP' ? 'checked':'' ?>   value="MKJP" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                          MKJP
-                                        </label>
+                                    <div class="input-group">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="kbpp_mkjp"  <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'MKJP' ? 'checked':'' ?>   value="MKJP" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                              MKJP
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="kbpp_mkjp" <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                              Tidak
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="kbpp_mkjp" <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                          Tidak
-                                        </label>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> MKJP </span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Tidak </span>
+                                        </div>
                                     </div>
+
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>

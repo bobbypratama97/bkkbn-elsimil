@@ -118,6 +118,17 @@
                                         <input type="number" class="text form-control" name="berat_badan" value="@php echo isset($data_kuesioner->berat_badan) ? ($data_kuesioner->berat_badan) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">kg</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Rumus IMT (19-29)</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Rumus IMT ( < 19 atau > 29) </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0"> 2. Tinggi Badan </p> </label>
@@ -125,48 +136,115 @@
                                         <input type="number" class="text form-control" name="tinggi_badan" value="@php echo isset($data_kuesioner->tinggi_badan) ? ($data_kuesioner->tinggi_badan) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> >= 145 cm</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> < 145 cm </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 3. Lingkar Lengan Atas </p></label>
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 3. Lingkar Lengan Atas (LiLA) </p></label>
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="lingkar_lengan_atas" value="@php echo isset($data_kuesioner->lingkar_lengan_atas) ? ($data_kuesioner->lingkar_lengan_atas) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> >= 23,5 cm</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> < 23,5 cm </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 4. Hemoglobin </p> </label>
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 4. Kadar Hemoglobin (Hb) </p> </label>
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="hemoglobin" value="@php echo isset($data_kuesioner->hemoglobin) ? ($data_kuesioner->hemoglobin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">gr/dl</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> >= 11 gr/dl</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> < 11 gr/dl </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 5. Tensi Darah </p> </label>
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 5. Tensi Darah (Rumus MAP) </p> </label>
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="tensi_darah" value="@php echo isset($data_kuesioner->tensi_darah) ? ($data_kuesioner->tensi_darah) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mmHg</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> <= 90 mmHg</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> > 90 mmHg </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 6. Gula Darah </p> </label>
+                                    <label for="nama"><p class="font-weight-boldest m-0"> 6. Gula Darah Sewaktu </p> </label>
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="gula_darah" value="@php echo isset($data_kuesioner->gula_darah) ? ($data_kuesioner->gula_darah) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mg/dl</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> 95 - 200 mg/dl</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> < 95 mg/dl atau > 200 mg/dl </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">7. Riwayat Sakit Kronik</p></label>
-                                    <div class="form-check">
+                                <label for=""><p class="font-weight-boldest m-0">7. Riwayat Sakit Kronik </p></label>
+                                <div class="input-group">
+                                    <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="riwayat_sakit_kronik"  <?php echo  isset($data_kuesioner->riwayat_sakit_kronik) && $data_kuesioner->riwayat_sakit_kronik == 'Ada' ? 'checked':'' ?>   value="Ada" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                          Ada
+                                        Ada
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="riwayat_sakit_kronik" <?php   echo  isset($data_kuesioner->riwayat_sakit_kronik) && $data_kuesioner->riwayat_sakit_kronik == 'Tidak Ada' ? 'checked':'' ?>  value="Tidak Ada" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
-                                          Tidak Ada
+                                        Tidak Ada
                                         </label>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-5">
+                                    <div class="col-sm-3">
+                                        <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                        <span class="text-muted mr-2 font-weight-bolder"> Tidak Ada</span>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                        <span class="text-muted mr-2 font-weight-bolder"> Ada </span>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
