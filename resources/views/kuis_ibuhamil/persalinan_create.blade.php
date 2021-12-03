@@ -137,23 +137,25 @@
                                     </div>
                                     <div class="row mt-5">
                                         <div class="col-sm-3">
-                                            {{-- <div style="float: left"> --}}
-                                                <span class="badge p-2 mr-2 inline" style="background-color: #1CC574;" style="display: contents"> </span>
-                                                <span class="text-muted mr-2 font-weight-bolder inline" style="display: contents">
-                                                    <ol class="inline">
-                                                        <li>MOW (Metode Operasi Wanita)</li>
-                                                        <li>IUD</li>
-                                                        <li>Implan</li>
-                                                        <li>Suntik KB</li>
-                                                        <li>POP (Pil Progrestin Only)</li>
-                                                        <li>Kondom</li>
-                                                    </ol>
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;" style="display: block"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder">
+                                                    <div style="margin-top: -8%">
+                                                        <ol style="margin-left: 0px; margin-bottom: 10px">
+                                                            <li>MOW (Metode Operasi Wanita)</li>
+                                                            <li>IUD</li>
+                                                            <li>Implan</li>
+                                                            <li>Suntik KB</li>
+                                                            <li>POP (Pil Progrestin Only)</li>
+                                                            <li>Kondom</li>
+                                                        </ol>
+                                                    </div>
                                                 </span>
-                                            {{-- </div> --}}
                                         </div>
                                         <div class="col-sm-4">
                                             <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder" style="text-align: left"> Jika belum ber-KB maka perlu alert khusus agar menjadi perhatian petugas pendamping </span>
+                                            <span class="text-muted mr-2 font-weight-bolder" style="text-align: left">Jika belum ber-KB maka perlu alert khusus </span>
+                                            <span class="text-muted mr-2 font-weight-bolder" style="margin-left: 7%">agar menjadi perhatian petugas pendamping. </span>
+
                                         </div>
                                     </div>
 
