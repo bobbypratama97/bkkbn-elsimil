@@ -119,6 +119,17 @@
                                         <input type="number" class="text form-control" name="hemoglobin" value="@php echo isset($data_kuesioner->hemoglobin) ? ($data_kuesioner->hemoglobin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">gr/dl</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> >= 11 gr/dl</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> < 11 gr/dl </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0"> 2. Tensi Darah (Rumus MAP) </p></label>
@@ -126,12 +137,34 @@
                                         <input type="number" class="text form-control" name="tensi_darah" value="@php echo isset($data_kuesioner->tensi_darah) ? ($data_kuesioner->tensi_darah) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mmHg</span>
                                     </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"><= 90 mmHg</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> >90 mmHg </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0"> 3. Gula Darah Sewaktu (GDS)</p></label>
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="gula_darah_sewaktu" value="@php echo isset($data_kuesioner->gula_darah_sewaktu) ? ($data_kuesioner->gula_darah_sewaktu) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mg/dl</span>
+                                    </div>
+                                    <div class="row mt-5">
+                                        <div class="col-sm-3">
+                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> 95 - 200 mg/dl</span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> < 95 mg/dl atau > 200 mg/dl </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
