@@ -699,16 +699,15 @@ class DashboardController extends Controller
             //         WHERE kuisioner.id = {$row->id} AND kuisioner_summary.deleted_by IS NULL
             //     ) AND kuisioner_result.kuis_id = {$row->id} AND kuisioner_result.status = 1 {$whereReview}
             // ";
-            $sql5 = "SELECT kuisioner_summary.`label`, kuisioner_summary.`rating_color`,COUNT(kuisioner_result.id) AS total
+            $sql5 = "SELECT max(kuisioner_summary.`label`) as label, max(kuisioner_summary.`rating_color`) as rating_color, COUNT(kuisioner_result.id) AS total
                     FROM
                         kuisioner_result  
                         JOIN members ON members.id =kuisioner_result.`member_id`
                         JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id`
                     WHERE kuisioner_result.label IS NOT NULL
-                        AND kuisioner_summary.deleted_at is null
                         AND kuisioner_result.kuis_id = ".$row->id."
                         AND kuisioner_result.status = 1 {$whereReview}
-                        GROUP BY kuisioner_summary.`label`;
+                        GROUP BY kuisioner_summary.`kondisi`;
                         ";
             $summ = DB::select($sql5);
 
