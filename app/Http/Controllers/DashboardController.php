@@ -591,7 +591,7 @@ class DashboardController extends Controller
         $i = 0;
         $finTop = [];
         foreach ($res as $key => $row) {
-            $persen = round($row->kuis_total / $total, 1) * 100;
+            $persen = round(($row->kuis_total / $total) * 100, 2);
             $finTop['label'][$i] = $row->nama;
             $finTop['data'][$i] = $persen;
             $i++;
@@ -651,7 +651,7 @@ class DashboardController extends Controller
         $i = 0;
         $finBottom = [];
         foreach ($res as $key => $row) {
-            $persen = round($row->kuis_total / $total, 1) * 100;
+            $persen = round(($row->kuis_total / $total) * 100, 2);
             $finBottom['label'][$i] = $row->nama;
             $finBottom['data'][$i] = $persen;
             $i++;
@@ -727,7 +727,7 @@ class DashboardController extends Controller
                 // $count = DB::select($sql6);
 
                 $rows->count = $rows->total;
-                $rows->persen = ($total == '0') ? 0 : round($$rows->total / $total, 1) * 100;
+                $rows->persen = ($total == '0') ? 0 : round($rows->total ?? 0 / $total, 1) * 100;
             }
 
             $list[$key]->label = $summ;
