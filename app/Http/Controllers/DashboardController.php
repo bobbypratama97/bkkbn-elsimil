@@ -703,7 +703,7 @@ class DashboardController extends Controller
                     FROM
                         kuisioner_result  
                         JOIN members ON members.id =kuisioner_result.`member_id`
-                        JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id` AND kuisioner_summary.`deleted_at` is null
+                        JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id`
                     WHERE kuisioner_result.label IS NOT NULL
                         AND kuisioner_result.kuis_id = ".$row->id."
                         AND kuisioner_result.status = 1 {$whereReview}
@@ -726,8 +726,8 @@ class DashboardController extends Controller
                 // ";
                 // $count = DB::select($sql6);
 
-                $rows->count = $rows->total;
-                $rows->persen = ($total == '0') ? 0 : round($rows->total ?? 0 / $total, 1) * 100;
+                $rows->count = $rows->total ?? 0;
+                $rows->persen = ($total == '0') ? 0 : round($rows->count / $total, 1) * 100;
             }
 
             $list[$key]->label = $summ;
