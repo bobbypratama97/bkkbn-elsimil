@@ -668,35 +668,48 @@ class DashboardController extends Controller
         $list = DB::select($sql4);
 
         foreach ($list as $key => $row) {
-            $sql5 = "
-                SELECT COUNT(*) AS total FROM kuisioner_result  
-                LEFT JOIN members ON kuisioner_result.member_id = members.id
-                WHERE kuisioner_result.label IN (
-                    SELECT kuisioner_summary.label FROM kuisioner 
-                    LEFT JOIN kuisioner_summary ON kuisioner_summary.kuis_id = kuisioner.id
-                    WHERE kuisioner.id = {$row->id} AND kuisioner_summary.deleted_by IS NULL
-                ) AND kuisioner_result.kuis_id = {$row->id} AND kuisioner_result.status = 1 {$whereReview}
-            ";
-            $total = DB::select($sql5);
-
-            $list[$key]->total = $total[0]->total;
-
-            $sql5 = "SELECT label, rating_color FROM kuisioner_summary WHERE kuis_id = '{$row->id}' AND deleted_by IS NULL";
+            // $sql5 = "
+            //     SELECT COUNT(*) AS total FROM kuisioner_result  
+            //     LEFT JOIN members ON kuisioner_result.member_id = members.id
+            //     WHERE kuisioner_result.label IN (
+            //         SELECT kuisioner_summary.label FROM kuisioner 
+            //         LEFT JOIN kuisioner_summary ON kuisioner_summary.kuis_id = kuisioner.id
+            //         WHERE kuisioner.id = {$row->id} AND kuisioner_summary.deleted_by IS NULL
+            //     ) AND kuisioner_result.kuis_id = {$row->id} AND kuisioner_result.status = 1 {$whereReview}
+            // ";
+            $sql5 = "SELECT kuisioner_summary.`label`, kuisioner_summary.`rating_color`,COUNT(kuisioner_result.id) AS total
+                    FROM
+                        kuisioner_result  
+                        INNER JOIN members ON members.id =kuisioner_result.`member_id`
+                        INNER JOIN kuisioner_summary ON kuisioner_summary.id =kuisioner_result.`summary_id`
+                    WHERE kuisioner_result.label IS NOT NULL
+                        AND kuisioner_result.kuis_id = ".$row->id."
+                        AND kuisioner_result.status = 1
+                        GROUP BY kuisioner_summary.`label`;
+                        ";
             $summ = DB::select($sql5);
 
+            $total = array_sum(array_column($summ, 'total'));
+
+            // $list[$key]->total = $total[0]->total;
+
+            // $sql5 = "SELECT label, rating_color FROM kuisioner_summary WHERE kuis_id = '{$row->id}' AND deleted_by IS NULL";
+            // $summ = DB::select($sql5);
+
             foreach ($summ as $keys => $rows) {
-                $sql6 = "
-                    SELECT count(*) AS jumlah FROM kuisioner_result 
-                    LEFT JOIN members ON members.id = kuisioner_result.member_id
-                    WHERE kuisioner_result.kuis_id = '{$row->id}' AND kuisioner_result.status = 1 AND kuisioner_result.label = '{$rows->label}' {$whereReview}
-                ";
-                $count = DB::select($sql6);
+            //     $sql6 = "
+            //         SELECT count(*) AS jumlah FROM kuisioner_result 
+            //         LEFT JOIN members ON members.id = kuisioner_result.member_id
+            //         WHERE kuisioner_result.kuis_id = '{$row->id}' AND kuisioner_result.status = 1 AND kuisioner_result.label = '{$rows->label}' {$whereReview}
+            //     ";
+            //     $count = DB::select($sql6);
 
-                $rows->count = $count[0]->jumlah;
-                $rows->persen = ($total[0]->total == '0') ? 0 : round($count[0]->jumlah / $total[0]->total, 1) * 100;
+                $rows->count = $rows->total;
+                $rows->persen = ($rows->total == '0') ? 0 : round($rows->total / $total, 1) * 100;
             }
-
             $list[$key]->label = $summ;
+            $list[$key]->total = $total;
+
         }
 
         $finKuis = [];
