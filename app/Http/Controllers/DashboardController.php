@@ -575,14 +575,13 @@ class DashboardController extends Controller
         //         ON l.kecamatan_id = m.kecamatan_id
         //     ) a ORDER BY persen DESC LIMIT 10
         // ";
-        $sql = "SELECT 
-                adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total
-                FROM kuisioner_result kr
-                JOIN members mb ON  kr.`member_id`=mb.`id`
-                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id`
-                GROUP BY kr.`member_id`
-                ORDER BY kuis_total DESC
-                LIMIT 10 ;
+        $sql = "SELECT adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total 
+                FROM kuisioner_result kr 
+                JOIN members mb ON kr.`member_id`=mb.`id` 
+                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id` 
+                WHERE kr.status = 1 
+                GROUP BY adk.`kecamatan_kode` 
+                ORDER BY kuis_total DESC LIMIT 10;
             ";
 
         $res = DB::select($sql);
@@ -635,14 +634,13 @@ class DashboardController extends Controller
         // ";
 
         //echo $sql;
-        $sql = "SELECT 
-                adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total
-                FROM kuisioner_result kr
-                JOIN members mb ON  kr.`member_id`=mb.`id`
-                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id`
-                GROUP BY kr.`member_id`
-                ORDER BY kuis_total ASC
-                LIMIT 10 ;
+        $sql = "SELECT adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total 
+                FROM kuisioner_result kr 
+                JOIN members mb ON kr.`member_id`=mb.`id` 
+                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id` 
+                WHERE kr.status = 1 
+                GROUP BY adk.`kecamatan_kode` 
+                ORDER BY kuis_total ASC LIMIT 10;
             ";
 
         $res = DB::select($sql);
