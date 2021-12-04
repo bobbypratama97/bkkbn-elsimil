@@ -705,6 +705,7 @@ class DashboardController extends Controller
                         JOIN members ON members.id =kuisioner_result.`member_id`
                         JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id`
                     WHERE kuisioner_result.label IS NOT NULL
+                        AND kuisioner_summary.deleted_at is null
                         AND kuisioner_result.kuis_id = ".$row->id."
                         AND kuisioner_result.status = 1 {$whereReview}
                         GROUP BY kuisioner_summary.`label`;
@@ -743,6 +744,7 @@ class DashboardController extends Controller
                 $finKuis[$key]['label'][$keys] = $rows->label . ' ' . $rows->persen . ' %';
                 $finKuis[$key]['color'][$keys] = $rows->rating_color;
                 $finKuis[$key]['value'][$keys] = $rows->persen;
+                $finKuis[$key]['raw'][$keys] = $rows->count;
             }
         }
 
