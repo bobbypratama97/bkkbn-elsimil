@@ -578,8 +578,8 @@ class DashboardController extends Controller
         $sql = "SELECT 
                 adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total
                 FROM kuisioner_result kr
-                INNER JOIN members mb ON  kr.`member_id`=mb.`id`
-                INNER JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id`
+                JOIN members mb ON  kr.`member_id`=mb.`id`
+                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id`
                 GROUP BY kr.`member_id`
                 ORDER BY kuis_total DESC
                 LIMIT 10 ;
@@ -639,8 +639,8 @@ class DashboardController extends Controller
         $sql = "SELECT 
                 adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total
                 FROM kuisioner_result kr
-                INNER JOIN members mb ON  kr.`member_id`=mb.`id`
-                INNER JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id`
+                JOIN members mb ON  kr.`member_id`=mb.`id`
+                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id`
                 GROUP BY kr.`member_id`
                 ORDER BY kuis_total ASC
                 LIMIT 10 ;
@@ -704,8 +704,8 @@ class DashboardController extends Controller
             $sql5 = "SELECT kuisioner_summary.`label`, kuisioner_summary.`rating_color`,COUNT(kuisioner_result.id) AS total
                     FROM
                         kuisioner_result  
-                        INNER JOIN members ON members.id =kuisioner_result.`member_id`
-                        INNER JOIN kuisioner_summary ON kuisioner_summary.id =kuisioner_result.`summary_id`
+                        JOIN members ON members.id =kuisioner_result.`member_id`
+                        JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id` AND kuisioner_summary.`deleted_at` is null
                     WHERE kuisioner_result.label IS NOT NULL
                         AND kuisioner_result.kuis_id = ".$row->id."
                         AND kuisioner_result.status = 1 {$whereReview}
