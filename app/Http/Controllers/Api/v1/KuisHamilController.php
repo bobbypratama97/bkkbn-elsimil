@@ -77,7 +77,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 												"question" => "Usia",
-												"answer" => $value,
+												"answer" => $value . " Tahun",
 												"isRisky" => $isRisky
 											];
 											array_push($answerKontakAwal,$singleData);
@@ -97,14 +97,14 @@ class KuisHamilController extends Controller
 											break;
 
                     case 'usia_anak_terakhir'     :      
-											if($value>=0 && $value<=2){
+											if($value>=4){
 													$isRisky = false;
-											}else if($value>2){
+											}else if($value<4){
 													$isRisky = true;
 											}
 											$singleData = [
 													"question" => "Usia Anak Terakhir",
-													"answer" => $value,
+													"answer" => $value . " Tahun",
 													"isRisky" => $isRisky
 											];
 											array_push($answerKontakAwal,$singleData);
@@ -224,7 +224,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 											"question" => "Berat Badan",
-											"answer" => $value,
+											"answer" => $value . " Kg",
 											"isRisky" => $isRisky
 											];
 											array_push($answer12Minggu,$singleData);
@@ -237,7 +237,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 											"question" => "Tinggi Badan",
-											"answer" => $value,
+											"answer" => $value . " cm",
 											"isRisky" => $isRisky
 											];
 											array_push($answer12Minggu,$singleData);
@@ -251,7 +251,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 											"question" => "Lingkar Lengan Atas",
-											"answer" => $value,
+											"answer" => $value . " cm",
 											"isRisky" => $isRisky
 											];
 											array_push($answer12Minggu,$singleData);
@@ -265,7 +265,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 											"question" => "Kadar Hemoglobin",
-											"answer" => $value,
+											"answer" => $value . " gr/dl",
 											"isRisky" => $isRisky
 											];
 											array_push($answer12Minggu,$singleData);
@@ -279,13 +279,13 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 											"question" => "Tensi Darah",
-											"answer" => $value,
+											"answer" => $value . " mmHg",
 											"isRisky" => $isRisky
 											];
 											array_push($answer12Minggu,$singleData);
 											break;
 
-										case 'gula_darah_sewaktu' :       
+										case 'gula_darah' :       
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200){
@@ -293,7 +293,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 											"question" => "Gula Darah Sewaktu",
-											"answer" => $value,
+											"answer" => $value . " mg/dl",
 											"isRisky" => $isRisky
 											];
 											array_push($answer12Minggu,$singleData);
@@ -353,7 +353,7 @@ class KuisHamilController extends Controller
 										}
 										$singleData = [
 										"question" => "Kadar Hemoglobin",
-										"answer" => $value,
+										"answer" => $value . " gr/dl",
 										"isRisky" => $isRisky
 										];
 										array_push($answer16Minggu,$singleData);
@@ -366,7 +366,7 @@ class KuisHamilController extends Controller
 										}
 										$singleData = [
 										"question" => "Tensi Darah",
-										"answer" => $value,
+										"answer" => $value . " mmHg",
 										"isRisky" => $isRisky
 										];
 										array_push($answer16Minggu,$singleData);
@@ -380,7 +380,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 											"question" => "Gula Darah Sewaktu",
-											"answer" => $value,
+											"answer" => $value . " mg/dl",
 											"isRisky" => $isRisky
 											];
 											array_push($answer16Minggu,$singleData);
@@ -440,7 +440,7 @@ class KuisHamilController extends Controller
                     case 'kenaikan_berat_badan' : 
 											$singleData = [
 												"question" => "Kenaikan Berat Badan",
-												"answer" => $value,
+												"answer" => $value . " kg",
 												"isRisky" => "-"
 											];
 											array_push($answerIbuJanin,$singleData);
@@ -453,7 +453,7 @@ class KuisHamilController extends Controller
 											};
 											$singleData = [
 												"question" => "Kadar Hemoglobin",
-												"answer" => $value,
+												"answer" => $value . " gr/dl",
 												"isRisky" => $isRisky
 											];
 											array_push($answerIbuJanin,$singleData);
@@ -466,7 +466,7 @@ class KuisHamilController extends Controller
 											};
 											$singleData = [
 													"question" => "Tensi Darah",
-													"answer" => $value,
+													"answer" => $value . " mmHg",
 													"isRisky" => $isRisky
 											];
 											array_push($answerIbuJanin,$singleData);
@@ -479,7 +479,7 @@ class KuisHamilController extends Controller
 											};
 											$singleData = [
 													"question" => "Kadar Gula Darah",
-													"answer" => $value,
+													"answer" => $value . " mg/dl",
 													"isRisky" => $isRisky
 											];
 											array_push($answerIbuJanin,$singleData);
@@ -506,7 +506,7 @@ class KuisHamilController extends Controller
 											};
 											$singleData = [
 													"question" => "Tingkat Denyut Jantung",
-													"answer" => $value,
+													"answer" => $value . " bpm",
 													"isRisky" => $isRisky
 											];
 											array_push($answerIbuJanin,$singleData);
@@ -520,56 +520,40 @@ class KuisHamilController extends Controller
 												}else if($value < 17 || $value > 23){
 														$isRisky = true;
 												};
-												$singleData = [
-														"question" => "Tinggi Fundus Uteri",
-														"answer" => $value,
-														"isRisky" => $isRisky
-												];
+												
 											}else if($periode == 24){
 													if($value >= 20 && $value <= 26){
 															$isRisky = false;
 													}else if($value < 20 || $value > 26){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Tinggi Fundus Uteri",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+												
 											}else if($periode == 28){
 													if($value >= 24 && $value <= 30){
 															$isRisky = false;
 													}else if($value < 24 || $value > 30){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Tinggi Fundus Uteri",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+												
 											}else if($periode == 32){
 													if($value >= 27 && $value <= 33){
 															$isRisky = false;
 													}else if($value < 27 || $value > 33){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Tinggi Fundus Uteri",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+													
 											}else if($periode == 36){
 													if($value >= 31 && $value <= 37){
 															$isRisky = false;
 													}else if($value < 31 || $value > 37){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Tinggi Fundus Uteri",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
 											}
+											$singleData = [
+												"question" => "Tinggi Fundus Uteri",
+												"answer" => $value . " cm",
+												"isRisky" => $isRisky
+											];
 											array_push($answerIbuJanin,$singleData);
 											break;
 
@@ -581,56 +565,41 @@ class KuisHamilController extends Controller
 													}else if($value < 300 || $value > 325){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Taksiran Berat Janin",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+													
 											}else if($periode == 24){
 													if($value >= 550 && $value <= 685){
 															$isRisky = false;
 													}else if($value < 550 || $value > 685){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Taksiran Berat Janin",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+												
 											}else if($periode == 28){
 													if($value >= 1000 && $value <= 1150){
 															$isRisky = false;
 													}else if($value < 1000 || $value > 1150){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Taksiran Berat Janin",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+													
 											}else if($periode == 32){
 													if($value >= 1610 && $value <= 1810){
 															$isRisky = false;
 													}else if($value < 1610 || $value > 1810){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Taksiran Berat Janin",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+													
 											}else if($periode == 36){
 													if($value >= 2500 && $value <= 2690){
 															$isRisky = false;
 													}else if($value < 2500 || $value > 2690){
 															$isRisky = true;
 													};
-													$singleData = [
-															"question" => "Taksiran Berat Janin",
-															"answer" => $value,
-															"isRisky" => $isRisky
-													];
+													
 											}
+											$singleData = [
+												"question" => "Taksiran Berat Janin",
+												"answer" => $value . " gr",
+												"isRisky" => $isRisky
+											];
 											array_push($answerIbuJanin,$singleData);
 											break;
 
@@ -707,6 +676,7 @@ class KuisHamilController extends Controller
                     //                                             break;
 
                     case 'kb'   :  
+											$isRisky = false;
 											if($value == "Ya"){
 												$isRisky = false;
 											}else if($value == "Tidak"){
@@ -728,7 +698,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 													"question" => "Usia Janin",
-													"answer" => $value,
+													"answer" => $value .' minggu',
 													"isRisky" => $isRisky
 											];
 											array_push($answerPersalinan,$singleData);
@@ -742,7 +712,7 @@ class KuisHamilController extends Controller
 											}
 											$singleData = [
 													"question" => "Berat Janin",
-													"answer" => $value,
+													"answer" => $value . ' gr',
 													"isRisky" => $isRisky
 											];
 											array_push($answerPersalinan,$singleData);
@@ -756,7 +726,7 @@ class KuisHamilController extends Controller
 										}
 										$singleData = [
 												"question" => "Panjang Badan Janin",
-												"answer" => $value,
+												"answer" => $value . ' cm',
 												"isRisky" => $isRisky
 										];
 										array_push($answerPersalinan,$singleData);
@@ -812,6 +782,7 @@ class KuisHamilController extends Controller
             {
                 switch($key) {
                     case 'komplikasi' : 
+											$isRisky= false;
 											if($value == "Ya"){
 												$isRisky = true;
 											}else if($value == "Tidak"){
