@@ -597,7 +597,7 @@ class DashboardController extends Controller
         $i = 0;
         $finTop = [];
         foreach ($res as $key => $row) {
-            $persen = round(($row->kuis_total / $total) * 100, 2);
+            $persen = ceil(round($row->kuis_total / $total, 2) * 100);
             $finTop['label'][$i] = $row->nama;
             $finTop['data'][$i] = $persen;
             $i++;
@@ -656,7 +656,8 @@ class DashboardController extends Controller
         $i = 0;
         $finBottom = [];
         foreach ($res as $key => $row) {
-            $persen = round(($row->kuis_total / $total) * 100, 2);
+            // $persen = round(($row->kuis_total / $total) * 100, 2);
+            $persen = ceil(round($row->kuis_total / $total, 2) * 100);
             $finBottom['label'][$i] = $row->nama;
             $finBottom['data'][$i] = $persen;
             $i++;
