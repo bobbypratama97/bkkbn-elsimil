@@ -419,11 +419,15 @@ class DashboardController extends Controller
 
         $jumlah = 0;
         // gender
-        $totalgender = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $totalgender = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $gender = Member::select([
+        //     'gender', 
+        //     DB::raw('count(*) AS total'),
+        //     DB::raw("round(count(*) / {$totalgender->jumlah}, 1) * 100 as persen")
+        // ]);
         $gender = Member::select([
             'gender', 
-            DB::raw('count(*) AS total'),
-            DB::raw("round(count(*) / {$totalgender->jumlah}, 1) * 100 as persen")
+            DB::raw('count(*) AS total')
         ]);
 
         if ($role->role_id == '2') {
@@ -439,21 +443,23 @@ class DashboardController extends Controller
         }
 
         $gender = $gender->groupBy('gender')->get();
-
+        $total = 0;
         if ($gender->isNotEmpty()) {
             $gender = $gender->toArray();
+            $total = array_sum(array_column($gender,'total'));
         }
 
         $i = 0;
         $finGender = [];
         foreach ($gender as $key => $row) {
-            $finGender['label'][$i] = Helper::statusGender($row['gender']) . ' ' . round($row['persen']) . ' %';
-            $finGender['data'][$i] = round($row['persen']);
+            $persen = round($row['total'] / $total, 2) * 100;
+            $finGender['label'][$i] = Helper::statusGender($row['gender']) . ' ' . $persen . ' %';
+            $finGender['data'][$i] = $persen;
             $i++;
         }
 
         return response()->json([
-            'count' => $totalgender->jumlah,
+            'count' => $total,
             'data' => $finGender
         ]);
 
@@ -465,7 +471,7 @@ class DashboardController extends Controller
         $role = UserRole::where('user_id', Auth::id())->first();
 
         $jumlah = 0;
-        $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
         $usia = Member::select([
             DB::raw('count(*) AS total'),
             DB::raw("FLOOR(DATEDIFF(now(), tgl_lahir) / 365) as umur")
@@ -484,9 +490,10 @@ class DashboardController extends Controller
         }
 
         $usia = $usia->groupBy('umur')->get();
-
+        $totalmember = 0;
         if ($usia->isNotEmpty()) {
             $usia = $usia->toArray();
+            $totalmember = array_sum(array_column($usia, 'total'));
         }
 
         $compare = [
@@ -494,7 +501,7 @@ class DashboardController extends Controller
             '21 - 35',
             '36 - 1000'
         ];
-
+        
         foreach ($usia as $key => $row) {
             $value = $row['umur'];
             $total = 0;
@@ -528,7 +535,7 @@ class DashboardController extends Controller
             } else {
                 $fin[$key]['label'] = '> 35';
             }
-            $fin[$key]['data'] = round($sum / $totalmember->jumlah, 1) * 100;
+            $fin[$key]['data'] = round($sum / $totalmember, 1) * 100;
         }
 
         $i = 0;
@@ -540,7 +547,7 @@ class DashboardController extends Controller
         }
 
         return response()->json([
-            'count' => $totalmember->jumlah,
+            'count' => $totalmember,
             'data' => $finUsia
         ]);
 
@@ -552,7 +559,7 @@ class DashboardController extends Controller
         $role = UserRole::where('user_id', Auth::id())->first();
 
         $jumlah = 0;
-        $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
 
         // $sql = "
         //     SELECT a.*, ROUND(ROUND(a.kuis_total / a.member_total, 1) * 100) AS persen FROM (
@@ -597,7 +604,7 @@ class DashboardController extends Controller
         }
 
         return response()->json([
-            'count' => $totalmember->jumlah,
+            'count' => $total,//$totalmember->jumlah,
             'data' => $finTop
         ]);
 
@@ -605,11 +612,11 @@ class DashboardController extends Controller
     }
 
     public function bottom(Request $request) {
-        $auth = Auth::user();
-        $role = UserRole::where('user_id', Auth::id())->first();
+        // $auth = Auth::user();
+        // $role = UserRole::where('user_id', Auth::id())->first();
 
-        $jumlah = 0;
-        $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $jumlah = 0;
+        // $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
 
         // $sql = "
         //     SELECT a.*, ABS(ROUND(100 - (ROUND(a.kuis_total / a.member_total, 1) * 100))) AS persen FROM (
@@ -656,7 +663,7 @@ class DashboardController extends Controller
         }
 
         return response()->json([
-            'count' => $totalmember->jumlah,
+            'count' => $total,
             'data' => $finBottom
         ]);
 
