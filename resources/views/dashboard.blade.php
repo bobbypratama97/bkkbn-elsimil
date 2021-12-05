@@ -693,15 +693,21 @@
                                 "onComplete": function() {
                                     var chartInstance = this.chart,
                                     ctx = chartInstance.ctx;
-                                    //ctx.font = '14px "Helvetica Neue", Helvetica, Arial, sans-serif';
+                                    ctx.font = '10px sans-serif';
                                     ctx.textAlign = 'center';
                                     ctx.textBaseline = 'bottom';
-                                    ctx.fillStyle = '#fff';
                                     this.data.datasets.forEach(function(dataset, i) {
                                         var meta = chartInstance.controller.getDatasetMeta(i);
                                         meta.data.forEach(function(bar, index) {
                                             var data = dataset.data[index] + '%';
-                                            ctx.fillText(data, bar._model.x - 25, bar._model.y + 5);
+                                            if(dataset.data[index] > 0 && dataset.data[index] <= 80){
+                                                ctx.fillText(data, bar._model.x + 25, bar._model.y + 5);    
+                                            }else if(dataset.data[index] > 80){
+                                                // ctx.fillStyle = '#fff';
+                                                ctx.fillText(data, bar._model.x - 25, bar._model.y + 5);
+                                            }
+                                            // ctx.fillStyle = '#000';
+                                            // ctx.fillText(data, bar._model.x - 25, bar._model.y + 5);
                                         });
                                     });
                                 }
@@ -778,15 +784,20 @@
                                 "onComplete": function() {
                                     var chartInstance = this.chart,
                                     ctx = chartInstance.ctx;
-                                    //ctx.font = '14px "Helvetica Neue", Helvetica, Arial, sans-serif';
+                                    ctx.font = '10px sans-serif';
                                     ctx.textAlign = 'center';
                                     ctx.textBaseline = 'bottom';
-                                    ctx.fillStyle = '#fff';
+                                    ctx.fillStyle = '#000';
                                     this.data.datasets.forEach(function(dataset, i) {
                                         var meta = chartInstance.controller.getDatasetMeta(i);
                                         meta.data.forEach(function(bar, index) {
                                             var data = dataset.data[index] + '%';
-                                            ctx.fillText(data, bar._model.x - 25, bar._model.y + 5);
+                                            if(dataset.data[index] > 0 && dataset.data[index] <= 80){
+                                                ctx.fillText(data, bar._model.x + 25, bar._model.y + 5);    
+                                            }else if(dataset.data[index] > 80){
+                                                ctx.fillText(data, bar._model.x - 25, bar._model.y + 5);
+                                            }
+                                            // ctx.fillText(data, bar._model.x - 25, bar._model.y + 5);
                                         });
                                     });
                                 }
