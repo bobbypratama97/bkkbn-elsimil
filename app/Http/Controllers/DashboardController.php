@@ -489,11 +489,15 @@ class DashboardController extends Controller
 
         $jumlah = 0;
         // gender
-        $totalgender = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $totalgender = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $gender = Member::select([
+        //     'gender', 
+        //     DB::raw('count(*) AS total'),
+        //     DB::raw("round(count(*) / {$totalgender->jumlah}, 1) * 100 as persen")
+        // ]);
         $gender = Member::select([
             'gender', 
-            DB::raw('count(*) AS total'),
-            DB::raw("round(count(*) / {$totalgender->jumlah}, 1) * 100 as persen")
+            DB::raw('count(*) AS total')
         ]);
 
         if ($role->role_id == '2') {
@@ -509,21 +513,23 @@ class DashboardController extends Controller
         }
 
         $gender = $gender->groupBy('gender')->get();
-
+        $total = 0;
         if ($gender->isNotEmpty()) {
             $gender = $gender->toArray();
+            $total = array_sum(array_column($gender,'total'));
         }
 
         $i = 0;
         $finGender = [];
         foreach ($gender as $key => $row) {
-            $finGender['label'][$i] = Helper::statusGender($row['gender']) . ' ' . round($row['persen']) . ' %';
-            $finGender['data'][$i] = round($row['persen']);
+            $persen = round($row['total'] / $total, 2) * 100;
+            $finGender['label'][$i] = Helper::statusGender($row['gender']) . ' ' . $persen . ' %';
+            $finGender['data'][$i] = $persen;
             $i++;
         }
 
         return response()->json([
-            'count' => $totalgender->jumlah,
+            'count' => $total,
             'data' => $finGender
         ]);
 
@@ -535,7 +541,7 @@ class DashboardController extends Controller
         $role = UserRole::where('user_id', Auth::id())->first();
 
         $jumlah = 0;
-        $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
         $usia = Member::select([
             DB::raw('count(*) AS total'),
             DB::raw("FLOOR(DATEDIFF(now(), tgl_lahir) / 365) as umur")
@@ -554,9 +560,10 @@ class DashboardController extends Controller
         }
 
         $usia = $usia->groupBy('umur')->get();
-
+        $totalmember = 0;
         if ($usia->isNotEmpty()) {
             $usia = $usia->toArray();
+            $totalmember = array_sum(array_column($usia, 'total'));
         }
 
         $compare = [
@@ -564,7 +571,7 @@ class DashboardController extends Controller
             '21 - 35',
             '36 - 1000'
         ];
-
+        
         foreach ($usia as $key => $row) {
             $value = $row['umur'];
             $total = 0;
@@ -598,7 +605,7 @@ class DashboardController extends Controller
             } else {
                 $fin[$key]['label'] = '> 35';
             }
-            $fin[$key]['data'] = round($sum / $totalmember->jumlah, 1) * 100;
+            $fin[$key]['data'] = round($sum / $totalmember, 1) * 100;
         }
 
         $i = 0;
@@ -610,7 +617,7 @@ class DashboardController extends Controller
         }
 
         return response()->json([
-            'count' => $totalmember->jumlah,
+            'count' => $totalmember,
             'data' => $finUsia
         ]);
 
@@ -622,42 +629,52 @@ class DashboardController extends Controller
         $role = UserRole::where('user_id', Auth::id())->first();
 
         $jumlah = 0;
-        $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
 
-        $sql = "
-            SELECT a.*, ROUND(ROUND(a.kuis_total / a.member_total, 1) * 100) AS persen FROM (
-                SELECT 
-                    l.kecamatan_id AS kecamatan_id, 
-                    l.nama AS nama, 
-                    l.total AS kuis_total, 
-                    m.total AS member_total
-                FROM (
-                    SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM kuisioner_result 
-                    LEFT JOIN members ON members.id = kuisioner_result.member_id 
-                    LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
-                    WHERE kuisioner_result.status = 1
-                    GROUP BY members.kecamatan_id
-                ) AS l JOIN (
-                    SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM members 
-                    LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
-                    GROUP BY members.kecamatan_id
-                ) AS m
-                ON l.kecamatan_id = m.kecamatan_id
-            ) a ORDER BY persen DESC LIMIT 10
-        ";
+        // $sql = "
+        //     SELECT a.*, ROUND(ROUND(a.kuis_total / a.member_total, 1) * 100) AS persen FROM (
+        //         SELECT 
+        //             l.kecamatan_id AS kecamatan_id, 
+        //             l.nama AS nama, 
+        //             l.total AS kuis_total, 
+        //             m.total AS member_total
+        //         FROM (
+        //             SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM kuisioner_result 
+        //             LEFT JOIN members ON members.id = kuisioner_result.member_id 
+        //             LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
+        //             WHERE kuisioner_result.status = 1
+        //             GROUP BY members.kecamatan_id
+        //         ) AS l JOIN (
+        //             SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM members 
+        //             LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
+        //             GROUP BY members.kecamatan_id
+        //         ) AS m
+        //         ON l.kecamatan_id = m.kecamatan_id
+        //     ) a ORDER BY persen DESC LIMIT 10
+        // ";
+        $sql = "SELECT adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total 
+                FROM kuisioner_result kr 
+                JOIN members mb ON kr.`member_id`=mb.`id` 
+                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id` 
+                WHERE kr.status = 1 
+                GROUP BY adk.`kecamatan_kode` 
+                ORDER BY kuis_total DESC LIMIT 10;
+            ";
 
         $res = DB::select($sql);
+        $total = array_sum(array_column($res, 'kuis_total'));
 
         $i = 0;
         $finTop = [];
         foreach ($res as $key => $row) {
+            $persen = ceil(round($row->kuis_total / $total, 2) * 100);
             $finTop['label'][$i] = $row->nama;
-            $finTop['data'][$i] = $row->persen;
+            $finTop['data'][$i] = $persen;
             $i++;
         }
 
         return response()->json([
-            'count' => $totalmember->jumlah,
+            'count' => $total,//$totalmember->jumlah,
             'data' => $finTop
         ]);
 
@@ -665,48 +682,59 @@ class DashboardController extends Controller
     }
 
     public function bottom(Request $request) {
-        $auth = Auth::user();
-        $role = UserRole::where('user_id', Auth::id())->first();
+        // $auth = Auth::user();
+        // $role = UserRole::where('user_id', Auth::id())->first();
 
-        $jumlah = 0;
-        $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
+        // $jumlah = 0;
+        // $totalmember = Member::select(DB::raw('count(*) as jumlah'))->first();
 
-        $sql = "
-            SELECT a.*, ABS(ROUND(100 - (ROUND(a.kuis_total / a.member_total, 1) * 100))) AS persen FROM (
-                SELECT 
-                    l.kecamatan_id AS kecamatan_id, 
-                    l.nama AS nama, 
-                    l.total AS kuis_total, 
-                    m.total AS member_total
-                FROM (
-                    SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM kuisioner_result 
-                    LEFT JOIN members ON members.id = kuisioner_result.member_id 
-                    LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
-                    WHERE kuisioner_result.status = 1
-                    GROUP BY members.kecamatan_id
-                ) AS l JOIN (
-                    SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM members 
-                    LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
-                    GROUP BY members.kecamatan_id
-                ) AS m
-                ON l.kecamatan_id = m.kecamatan_id
-            ) a ORDER BY persen ASC LIMIT 10
-        ";
+        // $sql = "
+        //     SELECT a.*, ABS(ROUND(100 - (ROUND(a.kuis_total / a.member_total, 1) * 100))) AS persen FROM (
+        //         SELECT 
+        //             l.kecamatan_id AS kecamatan_id, 
+        //             l.nama AS nama, 
+        //             l.total AS kuis_total, 
+        //             m.total AS member_total
+        //         FROM (
+        //             SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM kuisioner_result 
+        //             LEFT JOIN members ON members.id = kuisioner_result.member_id 
+        //             LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
+        //             WHERE kuisioner_result.status = 1
+        //             GROUP BY members.kecamatan_id
+        //         ) AS l JOIN (
+        //             SELECT count(*) AS total, kecamatan_id, adms_kecamatan.nama FROM members 
+        //             LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
+        //             GROUP BY members.kecamatan_id
+        //         ) AS m
+        //         ON l.kecamatan_id = m.kecamatan_id
+        //     ) a ORDER BY persen ASC LIMIT 10
+        // ";
 
         //echo $sql;
+        $sql = "SELECT adk.`kecamatan_kode`,adk.`nama`,COUNT(kr.id) AS kuis_total 
+                FROM kuisioner_result kr 
+                JOIN members mb ON kr.`member_id`=mb.`id` 
+                JOIN adms_kecamatan adk ON adk.`kecamatan_kode`=mb.`kecamatan_id` 
+                WHERE kr.status = 1 
+                GROUP BY adk.`kecamatan_kode` 
+                ORDER BY kuis_total ASC LIMIT 10;
+            ";
 
         $res = DB::select($sql);
+        $total = array_sum(array_column($res, 'kuis_total'));
 
         $i = 0;
         $finBottom = [];
         foreach ($res as $key => $row) {
+            // $persen = round(($row->kuis_total / $total) * 100, 2);
+            $persen = ceil(round($row->kuis_total / $total, 2) * 100);
             $finBottom['label'][$i] = $row->nama;
-            $finBottom['data'][$i] = $row->persen;
+            $finBottom['data'][$i] = $persen;
             $i++;
         }
 
         return response()->json([
-            'count' => $totalmember->jumlah,
+            'count' => $total,
             'data' => $finBottom
         ]);
 
@@ -738,35 +766,48 @@ class DashboardController extends Controller
         $list = DB::select($sql4);
 
         foreach ($list as $key => $row) {
-            $sql5 = "
-                SELECT COUNT(*) AS total FROM kuisioner_result  
-                LEFT JOIN members ON kuisioner_result.member_id = members.id
-                WHERE kuisioner_result.label IN (
-                    SELECT kuisioner_summary.label FROM kuisioner 
-                    LEFT JOIN kuisioner_summary ON kuisioner_summary.kuis_id = kuisioner.id
-                    WHERE kuisioner.id = {$row->id} AND kuisioner_summary.deleted_by IS NULL
-                ) AND kuisioner_result.kuis_id = {$row->id} AND kuisioner_result.status = 1 {$whereReview}
-            ";
-            $total = DB::select($sql5);
-
-            $list[$key]->total = $total[0]->total;
-
-            $sql5 = "SELECT label, rating_color FROM kuisioner_summary WHERE kuis_id = '{$row->id}' AND deleted_by IS NULL";
+            // $sql5 = "
+            //     SELECT COUNT(*) AS total FROM kuisioner_result  
+            //     LEFT JOIN members ON kuisioner_result.member_id = members.id
+            //     WHERE kuisioner_result.label IN (
+            //         SELECT kuisioner_summary.label FROM kuisioner 
+            //         LEFT JOIN kuisioner_summary ON kuisioner_summary.kuis_id = kuisioner.id
+            //         WHERE kuisioner.id = {$row->id} AND kuisioner_summary.deleted_by IS NULL
+            //     ) AND kuisioner_result.kuis_id = {$row->id} AND kuisioner_result.status = 1 {$whereReview}
+            // ";
+            $sql5 = "SELECT max(kuisioner_summary.`label`) as label, max(kuisioner_summary.`rating_color`) as rating_color, COUNT(kuisioner_result.id) AS total
+                    FROM
+                        kuisioner_result  
+                        JOIN members ON members.id =kuisioner_result.`member_id`
+                        JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id`
+                    WHERE kuisioner_result.label IS NOT NULL
+                        AND kuisioner_result.kuis_id = ".$row->id."
+                        AND kuisioner_result.status = 1 {$whereReview}
+                        GROUP BY kuisioner_summary.`kondisi`;
+                        ";
             $summ = DB::select($sql5);
 
-            foreach ($summ as $keys => $rows) {
-                $sql6 = "
-                    SELECT count(*) AS jumlah FROM kuisioner_result 
-                    LEFT JOIN members ON members.id = kuisioner_result.member_id
-                    WHERE kuisioner_result.kuis_id = '{$row->id}' AND kuisioner_result.status = 1 AND kuisioner_result.label = '{$rows->label}' {$whereReview}
-                ";
-                $count = DB::select($sql6);
+            $total = array_sum(array_column($summ, 'total'));
 
-                $rows->count = $count[0]->jumlah;
-                $rows->persen = ($total[0]->total == '0') ? 0 : round($count[0]->jumlah / $total[0]->total, 1) * 100;
+            // $list[$key]->total = $total[0]->total;
+
+            // $sql5 = "SELECT label, rating_color FROM kuisioner_summary WHERE kuis_id = '{$row->id}' AND deleted_by IS NULL";
+            // $summ = DB::select($sql5);
+
+            foreach ($summ as $keys => $rows) {
+                // $sql6 = "
+                //     SELECT count(*) AS jumlah FROM kuisioner_result 
+                //     LEFT JOIN members ON members.id = kuisioner_result.member_id
+                //     WHERE kuisioner_result.kuis_id = '{$row->id}' AND kuisioner_result.status = 1 AND kuisioner_result.label = '{$rows->label}' {$whereReview}
+                // ";
+                // $count = DB::select($sql6);
+
+                $rows->count = $rows->total ?? 0;
+                $rows->persen = ($total == '0') ? 0 : round($rows->count / $total, 1) * 100;
             }
 
             $list[$key]->label = $summ;
+            $list[$key]->total = $total;
         }
 
         $finKuis = [];
@@ -778,6 +819,7 @@ class DashboardController extends Controller
                 $finKuis[$key]['label'][$keys] = $rows->label . ' ' . $rows->persen . ' %';
                 $finKuis[$key]['color'][$keys] = $rows->rating_color;
                 $finKuis[$key]['value'][$keys] = $rows->persen;
+                $finKuis[$key]['raw'][$keys] = $rows->count;
             }
         }
 

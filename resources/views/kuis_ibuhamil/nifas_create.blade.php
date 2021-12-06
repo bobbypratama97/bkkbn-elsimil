@@ -56,7 +56,7 @@
                                 <div class="form-group row my-0">
                                     <label class="col-1 col-form-label"><i class="flaticon2-user"></i></label>
                                     <div class="col-11">
-                                        <span class="form-control-plaintext font-weight-bolder">Usia :  {{$umur}} Tahun</span>
+                                    <span class="form-control-plaintext font-weight-bolder">Usia :  {{$umur}} Tahun</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-0">
@@ -79,7 +79,7 @@
             </div>
             <div class="card card-custom">
                 <div class="card-body">
-                   <h4>Usia Hamil 16 Minggu</h4>
+                   <h4>Pasca Salin sampai Akhir Masa Nifas</h4>
                     <p>Pengisian kuesioner ini dilakukan oleh Faskes / Posyandu.</p>
 
                     @if ($errors->any())
@@ -98,12 +98,12 @@
                         </div>
                         <div class="col-lg-8">
                             @if ( Session::has( 'success' ))
-                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
-                            @elseif ( $errors->any())
-                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
-                            @else
-                                <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
-                            @endif
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Pengisian Kuesioner Berhasil</button>
+                        @elseif ( $errors->any())
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #F64F61; color:white">Pengisian Kuesioner Gagal</button>
+                        @else
+                            <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1CC5BE; color:white">Silahkan Mengisi Kuesioner</button>
+                        @endif
                         </div>
                     </div>
                     <div class="row" style="margin-top: 1%">
@@ -111,61 +111,92 @@
                             <button type="button" class="btn btn-sm btn-block font-weight-boldest" style="background-color: #1C7EC5; color: white; width: 75%">Tgl Update : @php echo isset($data_kuesioner->updated_at) ? ($data_kuesioner->updated_at) : null; @endphp </button>
                         </div>
                         <div class="col-lg-8">
-                            <form action="{{route('admin.periode16minggu-save',$id)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('admin.periodeNifas-save',$id)}}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 1. Kadar Hemoglobin (Hb) </p></label>
+                                    <label for="nama"><p class="font-weight-boldest m-0">1. Komplikasi</p></label>
                                     <div class="input-group">
-                                        <input type="number" class="text form-control" name="hemoglobin" value="@php echo isset($data_kuesioner->hemoglobin) ? ($data_kuesioner->hemoglobin) : null; @endphp">
-                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">gr/dl</span>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="komplikasi"  <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                              Ya
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="komplikasi" <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                              Tidak
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="row mt-5">
                                         <div class="col-sm-3">
                                             <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> >= 11 gr/dl</span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Tidak </span>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> < 11 gr/dl </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Ya </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 2. Tensi Darah (Rumus MAP) </p></label>
+                                    <label for="nama"><p class="font-weight-boldest m-0">2. ASI Eksklusif</p></label>
                                     <div class="input-group">
-                                        <input type="number" class="text form-control" name="tensi_darah" value="@php echo isset($data_kuesioner->tensi_darah) ? ($data_kuesioner->tensi_darah) : null; @endphp">
-                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">mmHg</span>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="asi"  <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                              Ya
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="asi" <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                              Tidak
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="row mt-5">
                                         <div class="col-sm-3">
                                             <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"><= 90 mmHg</span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Ya </span>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> >90 mmHg </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Tidak </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 3. Gula Darah Sewaktu (GDS)</p></label>
+                                    <label for="nama"><p class="font-weight-boldest m-0">3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</p></label>
                                     <div class="input-group">
-                                        <input type="number" class="number form-control" name="gula_darah_sewaktu" value="@php echo isset($data_kuesioner->gula_darah_sewaktu) ? ($data_kuesioner->gula_darah_sewaktu) : null; @endphp">
-                                        <span class="input-group-text rounded-0 bg-white font-weight-boldest">mg/dl</span>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="kbpp_mkjp"  <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'MKJP' ? 'checked':'' ?>   value="MKJP" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                              MKJP
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="kbpp_mkjp" <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'Tidak' ? 'checked':'' ?>   value="Tidak" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                              Tidak
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="row mt-5">
                                         <div class="col-sm-3">
                                             <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> 95 - 200 mg/dl</span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> MKJP </span>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> < 95 mg/dl atau > 200 mg/dl </span>
+                                            <span class="text-muted mr-2 font-weight-bolder"> Tidak </span>
                                         </div>
                                     </div>
+
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>

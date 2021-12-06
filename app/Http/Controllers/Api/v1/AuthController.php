@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+// use App\Helpers\Helper as HelpersHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -10,11 +11,14 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions;
 
+use Illuminate\Support\Facades\Validator;
+
 use Image;
 use Helper;
 
 use App\Member;
 use App\MemberOnesignal;
+use App\Helpers;
 
 class AuthController extends Controller
 {
@@ -25,6 +29,10 @@ class AuthController extends Controller
 
     public function register(Request $request) {
         try {
+            $messages = array(
+                'email.email' => 'Email tidak sesuai format.'
+            );
+
             if (empty($request->no_telp)) {
                 return response()->json([
                     'code' => 401,
@@ -43,14 +51,28 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $email = $request->email;
-            list($username, $domain) = explode('@', $email);
-            if (!checkdnsrr($domain, 'MX')) {
+            $validators = Validator::make($request->all(), [
+                'email' => ['required', 'string', 'email', 'max:255']
+            ], $messages);
+
+            if ($validators->fails()) {
                 return response()->json([
                     'code' => 401,
                     'error' => true,
                     'title' => 'Perhatian',
-                    'message' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                    'message' => $validators->errors()->first(),
+                ], 401);
+            }
+
+            $email = $request->email;
+
+            list($username, $domain) = explode('@', $email);
+            if(!in_array($domain, $this->accept_email)){
+                return response()->json([
+                    'code' => 401,
+                    'error' => true,
+                    'title' => 'Perhatian',
+                    'message' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
                 ], 401);
             }
 
@@ -84,7 +106,7 @@ class AuthController extends Controller
                     'code' => 401,
                     'error' => true,
                     'title' => 'Perhatian',
-                    'message' => 'KTP sudah terdaftar. Silahkan login.'
+                    'message' => 'No KTP yang anda berikan sudah pernah terdaftar, Silahkan Login atau Klik Lupa Password jika anda tidak mengingat nya.'
                 ], 401);
             }
 
@@ -158,7 +180,7 @@ class AuthController extends Controller
             $user->rt = $request->rt;
             $user->rw = $request->rw;
             $user->kodepos = $request->kodepos;
-            $user->is_active = 4;
+            $user->is_active = 1; //urgent auto active // $user->is_active = 4 waiting verify;
             $user->profile_code = $profile_code;
             $user->rencana_pernikahan;
             $user->created_at = date('Y-m-d H:i:s');
@@ -175,19 +197,20 @@ class AuthController extends Controller
 
                 $onesignal->save();
 
-                Helper::sendMail([
-                    'id' => $user->id, 
-                    'tipe' => 2, 
-                    'name' => $user->name, 
-                    'email' => $user->email, 
-                    'url' => 'vrf'
-                ]);
+                // Helper::sendMail([
+                //     'id' => $user->id, 
+                //     'tipe' => 2, 
+                //     'name' => $user->name, 
+                //     'email' => $user->email, 
+                //     'url' => 'vrf'
+                // ]);
             }
 
             return response()->json([
                 'code' => 200,
                 'error'   => false,
-                'message' => 'Registrasi berhasil. Kami telah mengirimkan link verifikasi ke email Anda. Silahkan login untuk memulai penggunaan aplikasi.'
+                // 'message' => 'Registrasi berhasil. Kami telah mengirimkan link verifikasi ke email Anda. Silahkan login untuk memulai penggunaan aplikasi.'
+                'message' => 'Selamat akun anda sudah aktif silahkan login dengan email/no tlp dan pasword anda.'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -204,13 +227,18 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $field = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'email';
+        $field = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'no_telp';
         $request->merge([$field => $request->input('username')]);
 
         $credentials = $request->only([$field, 'password']);
 
         $data = [];
 
+        if($field == 'no_telp') {
+            $no_telp = Helper::phoneNumber($request->input('username'));
+            $credentials[$field] = (int)$no_telp;
+        }
+        // return $credentials;
         try {
             if (!$token = auth($this->guard)->attempt($credentials)) {
                 return response()->json([
@@ -369,14 +397,39 @@ class AuthController extends Controller
     }
 
     public function emailcheck(Request $request) {
+        $messages = array(
+            'email.email' => 'Email tidak sesuai format.'
+        );
+        $validators = Validator::make($request->all(), [
+            'email' => ['required', 'string', 'email', 'max:255']
+        ], $messages);
+
+        if ($validators->fails()) {
+            return response()->json([
+                'code' => 401,
+                'error' => true,
+                'message' => $validators->errors()->first(),
+            ], 401);
+        }
+
+        $email = $request->email;
+        list($username, $domain) = explode('@', $email);
+        if(!in_array($domain, $this->accept_email)){
+            return response()->json([
+                'code' => 200,
+                'error'   => true,
+                'message' => 'Mohon dipastikan email anda sudah benar!. Klik Lanjut jika yakin.'
+            ], 200);
+        }
+
         $check = Member::where('email', $request->email)->first();
 
         if ($check) {
             return response()->json([
-                'code' => 200,
+                'code' => 401,
                 'error'   => true,
                 'message' => 'Email sudah terdaftar. Silahkan login untuk menikmati layanan kami'
-            ], 200);
+            ], 401);
         } else {
             return response()->json([
                 'code' => 200,

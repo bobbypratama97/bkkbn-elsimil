@@ -18,7 +18,7 @@ class CreateKuisHamilPersalinansTable extends Migration
             $table->integer('id_user');
             $table->integer('id_member');
             $table->date('tanggal_persalinan');
-            $table->boolean('kb');
+            $table->string('kb');
             $table->integer('usia');
             $table->integer('berat');
             $table->integer('panjang_badan');

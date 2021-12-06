@@ -23,12 +23,12 @@ class CreateKuisHamilKontakAwalsTable extends Migration
             $table->string('alamat');
             $table->integer('jumlah_anak');
             $table->integer('usia_anak_terakhir');
-            $table->boolean('anak_stunting');
+            $table->string('anak_stunting');
             $table->date('hari_pertama_haid_terakhir');
-            $table->boolean('sumber_air_bersih');
-            $table->boolean('rumah_layak_huni');
-            $table->boolean('jamban_sehat');
-            $table->boolean('bansos');
+            $table->string('sumber_air_bersih');
+            $table->string('rumah_layak_huni');
+            $table->string('jamban_sehat');
+            $table->string('bansos');
             $table->softDeletes();
             $table->timestamps();
         });

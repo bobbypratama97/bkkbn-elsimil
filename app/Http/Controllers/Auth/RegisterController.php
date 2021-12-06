@@ -94,14 +94,15 @@ class RegisterController extends Controller
         //validasi email domain
         $email = $request->email;
         list($username, $domain) = explode('@', $email);
-        if (!checkdnsrr($domain, 'MX')) {
+        if(!in_array($domain, $this->accept_email)){
             return redirect()->back()
                 ->withInput()
                 ->withErrors([
                     'error' => 'Registrasi gagal', 
-                    'keterangan' => 'Data Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                    'keterangan' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
                 ]);
         }
+        // if (!checkdnsrr($domain, 'MX')) {
 
         //print_r ($request->all()); die;
 
@@ -111,7 +112,7 @@ class RegisterController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->is_active = 3;
+        $user->is_active = 1;
         $user->provinsi_id = $request->provinsi_id;
         $user->kabupaten_id = $request->kabupaten_id;
         $user->kecamatan_id = $request->kecamatan_id;
@@ -127,6 +128,7 @@ class RegisterController extends Controller
         $insert->save();
 
         $output = [];
+        //remark send email verify
         /*if ($user->save()) {
             Helper::sendMail([
                 'id' => $user->id, 
@@ -139,7 +141,11 @@ class RegisterController extends Controller
             $output['email'] = $user->email;
         }*/
 
-        return view('auth.suksesreg', compact('output'));
+        $data['status'] = 1;
+        $data['tipe'] = 1;
+        $data['is_active'] = 1;
+        return view('auth.suksesverify', compact('data'));
+        // return view('auth.suksesreg', compact('output'));
 
         //return redirect($this->redirectPath());
     }
