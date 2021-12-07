@@ -120,7 +120,29 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">2. KB Pasca Persalinan</p></label>
+                                    @if (isset($data_kuesioner->kb))
+                                        @if ($data_kuesioner->kb == "Ya")
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 2. KB Pasca Persalinan</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->kb == "Tidak")
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 2. KB Pasca Persalinan</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 2. KB Pasca Persalinan</p></label>
+                                    @endif
                                     <div class="input-group">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="kb"  <?php   echo  isset($data_kuesioner->kb) && $data_kuesioner->kb == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
@@ -163,7 +185,29 @@
                                 </div>
                                 <h3>Bayi</h3>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">1. Usia Janin Dalam Kandungan</p></label>
+                                    @if (isset($data_kuesioner->usia_janin))
+                                        @if ($data_kuesioner->usia_janin >= 37 && $data_kuesioner->usia_janin <= 42)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 1. Usia Janin Dalam Kandungan</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->usia_janin < 37 || $data_kuesioner->usia_janin > 42)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 1. Usia Janin Dalam Kandungan</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 1. Usia Janin Dalam Kandungan</p></label>
+                                    @endif
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="usia_janin" value="@php echo isset($data_kuesioner->usia_janin) ? ($data_kuesioner->usia_janin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">minggu</span>
@@ -182,7 +226,29 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">2. Berat Lahir</p></label>
+                                    @if (isset($data_kuesioner->berat_janin))
+                                        @if ($data_kuesioner->berat_janin >= 2500 && $data_kuesioner->berat_janin <= 3900)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 2. Berat Lahir</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->berat_janin < 2500 || $data_kuesioner > 3900)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 2. Berat Lahir</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 2. Berat Lahir</p></label>
+                                    @endif
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="berat_janin" value="@php echo isset($data_kuesioner->berat_janin) ? ($data_kuesioner->berat_janin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">gram</span>
@@ -201,7 +267,29 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">3. Panjang Badan</p></label>
+                                    @if (isset($data_kuesioner->panjang_badan_janin))
+                                        @if ($data_kuesioner->panjang_badan_janin >= 48 && $data_kuesioner->panjang_badan_janin <= 53)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 3. Panjang Badan</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @else
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 3. Panjang Badan</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 3. Panjang Badan</p></label>
+                                    @endif
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="panjang_badan_janin" value="@php echo isset($data_kuesioner->panjang_badan_janin) ? ($data_kuesioner->panjang_badan_janin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
@@ -220,7 +308,29 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">4. Jumlah Bayi</p></label>
+                                    @if (isset($data_kuesioner->jumlah_bayi))
+                                        @if ($data_kuesioner->jumlah_bayi == 1)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 4. Jumlah Bayi</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->jumlah_bayi > 1)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 4. Jumlah Bayi</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 4. Jumlah Bayi</p></label>
+                                    @endif
                                     <div class="input-group">
                                       <input type="number" class="number form-control" name="jumlah_bayi" value="@php echo isset($data_kuesioner->jumlah_bayi) ? ($data_kuesioner->jumlah_bayi) : null; @endphp">
                                     </div>

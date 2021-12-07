@@ -188,7 +188,7 @@ class KuisHamilController extends Controller
         #data kuesioner
         $periode_id = $this->_getPeriodeID($periode);
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])
-        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah',
+        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah_sewaktu',
         'proteinuria','denyut_jantung','tinggi_fundus_uteri','taksiran_berat_janin','gerak_janin','jumlah_janin','created_at','updated_at'
         ])->first();
         return view('kuis_ibuhamil.ibujanin_create',[
@@ -464,7 +464,7 @@ class KuisHamilController extends Controller
                 'kenaikan_berat_badan' => $request->kenaikan_berat_badan,
                 'hemoglobin' => $request->hemoglobin,
                 'tensi_darah' => $request->tensi_darah,
-                'gula_darah' => $request->gula_darah,
+                'gula_darah_sewaktu' => $request->gula_darah_sewaktu,
                 'proteinuria' => $request->proteinuria,
                 'denyut_jantung' => $request->denyut_jantung,
                 'tinggi_fundus_uteri' => $request->tinggi_fundus_uteri,
@@ -479,7 +479,7 @@ class KuisHamilController extends Controller
                 'kenaikan_berat_badan' => 'required',
                 'hemoglobin' =>  'required',
                 'tensi_darah' => 'required',
-                'gula_darah' => 'required',
+                'gula_darah_sewaktu' => 'required',
                 'proteinuria' =>  'required',
                 'denyut_jantung' =>  'required',
                 'tinggi_fundus_uteri' =>  'required',
@@ -491,7 +491,7 @@ class KuisHamilController extends Controller
                 'kenaikan_berat_badan.required' => 'Kenaikan berat badan harus diisi.',
                 'hemoglobin.required' => 'Hemoglobin harus diisi.',
                 'tensi_darah.required' => 'Tinggi Badan harus diisi.',
-                'gula_darah.required' => 'Gula Darah harus diisi.',
+                'gula_darah_sewaktu.required' => 'Gula Darah harus diisi.',
                 'proteinuria.required' =>  'Proteinuria harus diisi.',
                 'denyut_jantung.required' =>  'Denyut jantung haris diisi.',
                 'tinggi_fundus_uteri.required' =>  'Tinggi Fundus Uteri harus diisi.',
@@ -507,7 +507,7 @@ class KuisHamilController extends Controller
             $hamilIbuJanin->kenaikan_berat_badan = $request->kenaikan_berat_badan;
             $hamilIbuJanin->hemoglobin = $request->hemoglobin;
             $hamilIbuJanin->tensi_darah = $request->tensi_darah;
-            $hamilIbuJanin->gula_darah = $request->gula_darah;
+            $hamilIbuJanin->gula_darah_sewaktu = $request->gula_darah_sewaktu;
             $hamilIbuJanin->proteinuria = $request->proteinuria;
             $hamilIbuJanin->denyut_jantung = $request->denyut_jantung;
             $hamilIbuJanin->tinggi_fundus_uteri = $request->tinggi_fundus_uteri;

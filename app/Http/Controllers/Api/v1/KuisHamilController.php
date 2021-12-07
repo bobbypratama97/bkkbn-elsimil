@@ -208,7 +208,7 @@ class KuisHamilController extends Controller
          #kontak-16-minggu
          $data12Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])
          ->select(['berat_badan','tinggi_badan','lingkar_lengan_atas',
-         'hemoglobin','tensi_darah','gula_darah','riwayat_sakit_kronik'])->first();
+         'hemoglobin','tensi_darah','gula_darah_sewaktu','riwayat_sakit_kronik'])->first();
          $answer12Minggu= array();
          $oriPath = public_path('uploads/pdf');
          $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
@@ -288,7 +288,7 @@ class KuisHamilController extends Controller
 											array_push($answer12Minggu,$singleData);
 											break;
 
-										case 'gula_darah' :
+										case 'gula_darah_sewaktu' :
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200){
@@ -433,7 +433,7 @@ class KuisHamilController extends Controller
         $base_url = env('BASE_URL_PDF');
         $periode_id = $this->_getPeriodeID($periode);
         $dataIbuJanin = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])
-        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah',
+        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah_sewaktu',
         'proteinuria','denyut_jantung','tinggi_fundus_uteri','taksiran_berat_janin','gerak_janin','jumlah_janin'
         ])->first();
         $answerIbuJanin = array();
@@ -478,7 +478,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answerIbuJanin,$singleData);
 											break;
-                    case 'gula_darah' :
+                    case 'gula_darah_sewaktu' :
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200){

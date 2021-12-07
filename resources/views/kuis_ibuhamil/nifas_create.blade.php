@@ -114,7 +114,29 @@
                             <form action="{{route('admin.periodeNifas-save',$id)}}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">1. Komplikasi</p></label>
+                                    @if (isset($data_kuesioner->komplikasi))
+                                        @if ($data_kuesioner->komplikasi == "Tidak")
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 1. Komplikasi</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->komplikasi == "Ya")
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 1. Komplikasi </p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 1. Komplikasi </p></label>
+                                    @endif
                                     <div class="input-group">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="komplikasi"  <?php   echo  isset($data_kuesioner->komplikasi) && $data_kuesioner->komplikasi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
@@ -143,7 +165,29 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">2. ASI Eksklusif</p></label>
+                                    @if (isset($data_kuesioner->asi))
+                                        @if ($data_kuesioner->asi == "Ya")
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 2. ASI Eksklusif </p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->asi == "Tidak")
+                                            <label for="nama"><p class="font-weight-boldest m-0">2. ASI Eksklusif </p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 2. ASI Eksklusif </p></label>
+                                    @endif
                                     <div class="input-group">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="asi"  <?php   echo  isset($data_kuesioner->asi) && $data_kuesioner->asi == 'Ya' ? 'checked':'' ?>   value="Ya" id="flexRadioDefault1">
@@ -172,7 +216,29 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0">3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</p></label>
+                                    @if (isset($data_kuesioner->kbpp_mkjp))
+                                        @if ($data_kuesioner->kbpp_mkjp == "MKJP")
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->kbpp_mkjp == "Tidak")
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 3. Ganti KBPP ke MKJP (Metode Kontrasepsi Jangka Panjang)</p></label>
+                                    @endif
                                     <div class="input-group">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="kbpp_mkjp"  <?php   echo  isset($data_kuesioner->kbpp_mkjp) && $data_kuesioner->kbpp_mkjp == 'MKJP' ? 'checked':'' ?>   value="MKJP" id="flexRadioDefault1">
