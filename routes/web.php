@@ -212,6 +212,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::resource('kelurahan', 'KelurahanController')->except(['create', 'show', 'destroy']);
 
 		Route::get('penduduk/upload', 'PendudukController@upload')->name('penduduk.upload');
+		Route::get('penduduk/template', 'PendudukController@downloadExcel')->name('penduduk.template');
 		Route::post('penduduk/delete', 'PendudukController@delete')->name('penduduk.delete');
 		Route::resource('penduduk', 'PendudukController')->except(['create', 'edit', 'update', 'show', 'destroy']);
 	});
