@@ -114,58 +114,127 @@
                             <form action="{{route('admin.periode16minggu-save',$id)}}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 1. Kadar Hemoglobin (Hb) </p></label>
+                                    @if (isset($data_kuesioner->hemoglobin))
+                                        @if ($data_kuesioner->hemoglobin  >= 11)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 1. Kadar Hemoglobin (Hb) </p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->hemoglobin < 11)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 1. Kadar Hemoglobin (Hb) </p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 1. Kadar Hemoglobin (Hb) </p></label>
+                                    @endif
                                     <div class="input-group">
                                         <input type="number" class="text form-control" name="hemoglobin" value="@php echo isset($data_kuesioner->hemoglobin) ? ($data_kuesioner->hemoglobin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">gr/dl</span>
                                     </div>
-                                    <div class="row mt-5">
-                                        <div class="col-sm-3">
-                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> >= 11 gr/dl</span>
+                                    @if ($data_kuesioner->created_at == null)
+                                        <div class="row mt-5">
+                                            <div class="col-sm-3">
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> >= 11 gr/dl</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> < 11 gr/dl </span>
+                                            </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> < 11 gr/dl </span>
-                                        </div>
-                                    </div>
+                                   @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 2. Tensi Darah (Rumus MAP) </p></label>
+                                    @if (isset($data_kuesioner->tensi_darah))
+                                        @if ($data_kuesioner->tensi_darah <= 90)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 2. Tensi Darah (Rumus MAP)</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->tensi_darah > 90)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 2. Tensi Darah (Rumus MAP)</p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 2. Tensi Darah (Rumus MAP)</p></label>
+                                    @endif
                                     <div class="input-group">
                                         <input type="number" class="text form-control" name="tensi_darah" value="@php echo isset($data_kuesioner->tensi_darah) ? ($data_kuesioner->tensi_darah) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mmHg</span>
                                     </div>
-                                    <div class="row mt-5">
-                                        <div class="col-sm-3">
-                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"><= 90 mmHg</span>
+                                    @if ($data_kuesioner->created_at == null)
+                                        <div class="row mt-5">
+                                            <div class="col-sm-3">
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"><= 90 mmHg</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> >90 mmHg </span>
+                                            </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> >90 mmHg </span>
-                                        </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama"><p class="font-weight-boldest m-0"> 3. Gula Darah Sewaktu (GDS)</p></label>
+                                    @if (isset($data_kuesioner->gula_darah_sewaktu))
+                                        @if ($data_kuesioner->gula_darah_sewaktu >= 95 && $data_kuesioner->gula_darah_sewaktu <= 200)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 3. Gula Darah Sewaktu (GDS) </p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#1CC574;
+                                            color:white">
+                                            Ideal
+                                            </span>
+                                        @elseif($data_kuesioner->gula_darah_sewaktu < 95 || $data_kuesioner->gula_darah_sewaktu > 200)
+                                            <label for="nama"><p class="font-weight-boldest m-0"> 3. Gula Darah Sewaktu (GDS) </p></label>
+                                            <span style=
+                                            "margin-left: 1%; padding-left:1%;padding-right:1%;
+                                            border-radius: 25px ;
+                                            background:#F64F61;
+                                            color:white">
+                                            Berisiko
+                                            </span>
+                                        @endif
+                                    @else
+                                        <label for="nama"><p class="font-weight-boldest m-0"> 3. Gula Darah Sewaktu (GDS) </p></label>
+                                    @endif
                                     <div class="input-group">
                                         <input type="number" class="number form-control" name="gula_darah_sewaktu" value="@php echo isset($data_kuesioner->gula_darah_sewaktu) ? ($data_kuesioner->gula_darah_sewaktu) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mg/dl</span>
                                     </div>
-                                    <div class="row mt-5">
-                                        <div class="col-sm-3">
-                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> 95 - 200 mg/dl</span>
+                                    @if ($data_kuesioner->created_at == null)
+                                        <div class="row mt-5">
+                                            <div class="col-sm-3">
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> 95 - 200 mg/dl</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> < 95 mg/dl atau > 200 mg/dl </span>
+                                            </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> < 95 mg/dl atau > 200 mg/dl </span>
-                                        </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
