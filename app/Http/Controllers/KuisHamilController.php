@@ -98,7 +98,7 @@ class KuisHamilController extends Controller
         #data kuesioner
         $data = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])
         ->select(['berat_badan','tinggi_badan','lingkar_lengan_atas',
-        'hemoglobin','tensi_darah','gula_darah','riwayat_sakit_kronik','created_at','updated_at'])->first();
+        'hemoglobin','tensi_darah','gula_darah_sewaktu','riwayat_sakit_kronik','created_at','updated_at'])->first();
         return view('kuis_ibuhamil.periode12_create',[
             "id" => $id,
             "name" => $name,
@@ -378,7 +378,7 @@ class KuisHamilController extends Controller
                 'lingkar_lengan_atas' => $request->lingkar_lengan_atas,
                 'hemoglobin' => $request->hemoglobin,
                 'tensi_darah' => $request->tensi_darah,
-                'gula_darah' => $request->gula_darah,
+                'gula_darah_sewaktu' => $request->gula_darah_sewaktu,
                 'riwayat_sakit_kronik' => $request->riwayat_sakit_kronik
             ]);
             $message = 'Kuesioner hamil periode 12 minggu berhasil diperbaharui';
@@ -390,7 +390,7 @@ class KuisHamilController extends Controller
                 'lingkar_lengan_atas' => 'required',
                 'hemoglobin' => 'required',
                 'tensi_darah' => 'required',
-                'gula_darah' => 'required',
+                'gula_darah_sewaktu' => 'required',
                 'riwayat_sakit_kronik' => 'required'
             ],
             [
@@ -399,7 +399,7 @@ class KuisHamilController extends Controller
                 'lingkar_lengan_atas.required' => 'Lingkar Lengan Atas harus diisi.',
                 'hemoglobin.required' => 'Hemoglobin harus diisi.',
                 'tensi_darah.required' => 'Tensi Darah harus diisi.',
-                'gula_darah.required' => 'Gula Darah harus diisi.',
+                'gula_darah_sewaktu.required' => 'Gula Darah harus diisi.',
             ]);
             $periode12Minggu = new KuesionerHamil;
             $periode12Minggu->periode = 2;
@@ -410,7 +410,7 @@ class KuisHamilController extends Controller
             $periode12Minggu->lingkar_lengan_atas = $request->lingkar_lengan_atas;
             $periode12Minggu->hemoglobin = $request->hemoglobin;
             $periode12Minggu->tensi_darah = $request->tensi_darah;
-            $periode12Minggu->gula_darah = $request->gula_darah;
+            $periode12Minggu->gula_darah_sewaktu = $request->gula_darah_sewaktu;
             $periode12Minggu->riwayat_sakit_kronik = $request->riwayat_sakit_kronik;
             $periode12Minggu->save();
             $message = 'Kuesioner hamil periode 12 minggu berhasil ditambahkan';

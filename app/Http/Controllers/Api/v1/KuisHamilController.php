@@ -187,7 +187,7 @@ class KuisHamilController extends Controller
             $arrayKontakAwal = array(
                 "id" => 'kontak-awal',
                 "answerDate" => \Carbon\Carbon::parse($dataKontakAwal->created_at)->isoFormat('YYYY-MM-DD'),
-                "pdfUrl" =>  $finalUrl,
+                "pdfUrl" =>  $base_url.$filename,
                 "answers" => $answerKontakAwal
             );
             return $arrayKontakAwal;

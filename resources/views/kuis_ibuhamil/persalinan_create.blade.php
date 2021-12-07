@@ -135,6 +135,7 @@
                                             </label>
                                         </div>
                                     </div>
+                                    @if ($data_kuesioner->created_at == null)
                                     <div class="row mt-5">
                                         <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;" style="display: block"> </span>
@@ -155,9 +156,9 @@
                                             <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
                                             <span class="text-muted mr-2 font-weight-bolder" style="text-align: left">Jika belum ber-KB maka perlu alert khusus </span>
                                             <span class="text-muted mr-2 font-weight-bolder" style="margin-left: 7%">agar menjadi perhatian petugas pendamping. </span>
-
                                         </div>
                                     </div>
+                                    @endif
 
                                 </div>
                                 <h3>Bayi</h3>
@@ -167,17 +168,18 @@
                                         <input type="number" class="number form-control" name="usia_janin" value="@php echo isset($data_kuesioner->usia_janin) ? ($data_kuesioner->usia_janin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">minggu</span>
                                     </div>
-                                    <div class="row mt-5">
-                                        <div class="col-sm-3">
-                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> 37 - 42 Minggu</span>
+                                    @if ($data_kuesioner->created_at == null)
+                                        <div class="row mt-5">
+                                            <div class="col-sm-3">
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> 37 - 42 Minggu</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> < 37 Minggu atau > 42 Minggu </span>
+                                            </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> < 37 Minggu atau > 42 Minggu </span>
-                                        </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0">2. Berat Lahir</p></label>
@@ -185,17 +187,18 @@
                                         <input type="number" class="number form-control" name="berat_janin" value="@php echo isset($data_kuesioner->berat_janin) ? ($data_kuesioner->berat_janin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">gram</span>
                                     </div>
-                                    <div class="row mt-5">
-                                        <div class="col-sm-3">
-                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> 2500 - 3900 gr</span>
+                                    @if ($data_kuesioner->created_at == null)
+                                        <div class="row mt-5">
+                                            <div class="col-sm-3">
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> 2500 - 3900 gr</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> < 2500 gr atau > 3900 gr </span>
+                                            </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> < 2500 gr atau > 3900 gr </span>
-                                        </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0">3. Panjang Badan</p></label>
@@ -203,34 +206,36 @@
                                         <input type="number" class="number form-control" name="panjang_badan_janin" value="@php echo isset($data_kuesioner->panjang_badan_janin) ? ($data_kuesioner->panjang_badan_janin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
                                     </div>
-                                    <div class="row mt-5">
-                                        <div class="col-sm-3">
-                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> 48-53 cm</span>
+                                    @if ($data_kuesioner->created_at == null)
+                                        <div class="row mt-5">
+                                            <div class="col-sm-3">
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> 48-53 cm</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> < 48 atau > 53 cm </span>
+                                            </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> < 48 atau > 53 cm </span>
-                                        </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="nama"><p class="font-weight-boldest m-0">4. Jumlah Bayi</p></label>
                                     <div class="input-group">
                                       <input type="number" class="number form-control" name="jumlah_bayi" value="@php echo isset($data_kuesioner->jumlah_bayi) ? ($data_kuesioner->jumlah_bayi) : null; @endphp">
                                     </div>
-                                    <div class="row mt-5">
-                                        <div class="col-sm-3">
-                                            <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> 1 </span>
+                                    @if ($data_kuesioner->created_at == null)
+                                        <div class="row mt-5">
+                                            <div class="col-sm-3">
+                                                <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> 1 </span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
+                                                <span class="text-muted mr-2 font-weight-bolder"> > 1 </span>
+                                            </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <span class="badge p-2 mr-2" style="background-color: #F64F61;"> </span>
-                                            <span class="text-muted mr-2 font-weight-bolder"> > 1 </span>
-                                        </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
                             </form>
