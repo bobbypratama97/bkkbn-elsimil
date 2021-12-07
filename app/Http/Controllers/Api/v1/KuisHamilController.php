@@ -187,7 +187,7 @@ class KuisHamilController extends Controller
             $arrayKontakAwal = array(
                 "id" => 'kontak-awal',
                 "answerDate" => \Carbon\Carbon::parse($dataKontakAwal->created_at)->isoFormat('YYYY-MM-DD'),
-                "pdfUrl" =>  $finalUrl,
+                "pdfUrl" =>  $base_url.$filename,
                 "answers" => $answerKontakAwal
             );
             return $arrayKontakAwal;
@@ -208,7 +208,7 @@ class KuisHamilController extends Controller
          #kontak-16-minggu
          $data12Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])
          ->select(['berat_badan','tinggi_badan','lingkar_lengan_atas',
-         'hemoglobin','tensi_darah','gula_darah','riwayat_sakit_kronik'])->first();
+         'hemoglobin','tensi_darah','gula_darah_sewaktu','riwayat_sakit_kronik'])->first();
          $answer12Minggu= array();
          $oriPath = public_path('uploads/pdf');
          $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
@@ -288,7 +288,7 @@ class KuisHamilController extends Controller
 											array_push($answer12Minggu,$singleData);
 											break;
 
-										case 'gula_darah' :
+										case 'gula_darah_sewaktu' :
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200){
@@ -320,7 +320,7 @@ class KuisHamilController extends Controller
              $array12Minggu = array(
                "id" => '12-minggu',
                "answerDate" => \Carbon\Carbon::parse($data12Minggu->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $finalUrl,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answer12Minggu
              );
              return $array12Minggu;
@@ -395,7 +395,7 @@ class KuisHamilController extends Controller
              $array16Minggu = array(
                "id" => '16-minggu',
                "answerDate" => \Carbon\Carbon::parse($data16Minggu->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $finalUrl,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answer16Minggu
              );
              return $array16Minggu;
@@ -433,7 +433,7 @@ class KuisHamilController extends Controller
         $base_url = env('BASE_URL_PDF');
         $periode_id = $this->_getPeriodeID($periode);
         $dataIbuJanin = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])
-        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah',
+        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah_sewaktu',
         'proteinuria','denyut_jantung','tinggi_fundus_uteri','taksiran_berat_janin','gerak_janin','jumlah_janin'
         ])->first();
         $answerIbuJanin = array();
@@ -645,7 +645,7 @@ class KuisHamilController extends Controller
             $arrayIbuJanin = array(
                 "id" => $periode .'-minggu',
                 "answerDate" => \Carbon\Carbon::parse($dataIbuJanin->created_at)->isoFormat('YYYY-MM-DD'),
-                "pdfUrl" =>  $finalUrl,
+                "pdfUrl" =>  $base_url.$filename,
                 "answers" => $answerIbuJanin
             );
             return $arrayIbuJanin;
@@ -760,7 +760,7 @@ class KuisHamilController extends Controller
              $arrayPersalinan = array(
                "id" => 'persalinan',
                "answerDate" => \Carbon\Carbon::parse($dataPersalinan->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $finalUrl,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answerPersalinan
              );
              return $arrayPersalinan;
@@ -840,7 +840,7 @@ class KuisHamilController extends Controller
             $arrayNifas = array(
               "id" => 'nifas',
               "answerDate" => \Carbon\Carbon::parse($dataNifas->created_at)->isoFormat('YYYY-MM-DD'),
-              "pdfUrl" =>  $finalUrl,
+              "pdfUrl" =>  $base_url.$filename,
               "answers" => $answerNifas
             );
             return $arrayNifas;
