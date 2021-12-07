@@ -320,7 +320,7 @@ class KuisHamilController extends Controller
              $array12Minggu = array(
                "id" => '12-minggu',
                "answerDate" => \Carbon\Carbon::parse($data12Minggu->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $finalUrl,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answer12Minggu
              );
              return $array12Minggu;
@@ -395,7 +395,7 @@ class KuisHamilController extends Controller
              $array16Minggu = array(
                "id" => '16-minggu',
                "answerDate" => \Carbon\Carbon::parse($data16Minggu->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $finalUrl,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answer16Minggu
              );
              return $array16Minggu;
@@ -478,7 +478,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answerIbuJanin,$singleData);
 											break;
-                    case 'gula_darah_sewaktu' :
+                    case 'gula_darah' :
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200){
@@ -645,7 +645,7 @@ class KuisHamilController extends Controller
             $arrayIbuJanin = array(
                 "id" => $periode .'-minggu',
                 "answerDate" => \Carbon\Carbon::parse($dataIbuJanin->created_at)->isoFormat('YYYY-MM-DD'),
-                "pdfUrl" =>  $finalUrl,
+                "pdfUrl" =>  $base_url.$filename,
                 "answers" => $answerIbuJanin
             );
             return $arrayIbuJanin;
@@ -760,7 +760,7 @@ class KuisHamilController extends Controller
              $arrayPersalinan = array(
                "id" => 'persalinan',
                "answerDate" => \Carbon\Carbon::parse($dataPersalinan->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $finalUrl,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answerPersalinan
              );
              return $arrayPersalinan;
@@ -840,7 +840,7 @@ class KuisHamilController extends Controller
             $arrayNifas = array(
               "id" => 'nifas',
               "answerDate" => \Carbon\Carbon::parse($dataNifas->created_at)->isoFormat('YYYY-MM-DD'),
-              "pdfUrl" =>  $finalUrl,
+              "pdfUrl" =>  $base_url.$filename,
               "answers" => $answerNifas
             );
             return $arrayNifas;
