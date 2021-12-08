@@ -109,7 +109,7 @@
                             <h3 class="card-label">Grafik - Hasil Kuesioner
                         </div>
                         <div class="card-toolbar">
-                            <form method="POST" action="{{ route('admin.repkuis.download') }}" target="_blank" class="mr-3">
+                            <!-- <form method="POST" action="{{ route('admin.repkuis.download') }}" target="_blank" class="mr-3">
                                 @csrf
                                 <input type="hidden" name="kuesioner" id="detail-download-kuesioner">
                                 <input type="hidden" name="tanggal" id="detail-download-tanggal">
@@ -121,7 +121,7 @@
                                 <input type="hidden" name="nama" id ="detail-download-nama">
                                 <input type="hidden" name="gender" id="detail-download-gender">
                                 <button type="submit" class="btn btn-success"><i class="flaticon-notepad"></i> Download Report</button>
-                            </form>
+                            </form> -->
                             <form method="GET" action="{{ route('admin.repkuis.detail') }}" target="_blank">
                                 @csrf
                                 <input type="hidden" name="kuesioner" id="detail-kuesioner">
