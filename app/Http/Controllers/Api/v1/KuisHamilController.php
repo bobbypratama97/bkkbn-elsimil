@@ -42,7 +42,9 @@ class KuisHamilController extends Controller
                 'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih','jamban_sehat',
                 'rumah_layak_huni', 'bansos','created_at','updated_at'])->first();
         $answerKontakAwal= array();
-        $pdfKontakAwal = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+        $oriPath = public_path('uploads/pdf');
+        $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
+        $finalUrl = $oriPath."/".$filename;
 
         if($dataKontakAwal != null){
             foreach( $dataKontakAwal->toArray() as $key => $value )
@@ -61,7 +63,7 @@ class KuisHamilController extends Controller
 										// 		array_push($answerKontakAwal,$singleData);
 										// 		break;
 
-                    // case 'nik' : 
+                    // case 'nik' :
 										// 		$singleData = [
 										// 			"question" => "NIK",
 										// 			"answer" => Helper::decryptNik($value),
@@ -69,7 +71,7 @@ class KuisHamilController extends Controller
 										// 		];
 										// 		array_push($answerKontakAwal,$singleData);
 										// 		break;
-                    case 'usia' :    
+                    case 'usia' :
 											if($value>=20 && $value<=35){
 												$isRisky = false;
 											}else if($value<20 || $value>35){
@@ -82,7 +84,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answerKontakAwal,$singleData);
 											break;
-                    case 'jumlah_anak'              :    
+                    case 'jumlah_anak'              :
 											if($value>=0 && $value<=2){
 													$isRisky = false;
 											}else if($value>2){
@@ -96,7 +98,7 @@ class KuisHamilController extends Controller
 											array_push($answerKontakAwal,$singleData);
 											break;
 
-                    case 'usia_anak_terakhir'     :      
+                    case 'usia_anak_terakhir'     :
 											if($value>=4){
 													$isRisky = false;
 											}else if($value<4){
@@ -110,7 +112,7 @@ class KuisHamilController extends Controller
 											array_push($answerKontakAwal,$singleData);
 											break;
 
-                    case 'anak_stunting':       
+                    case 'anak_stunting':
 											if($value == "Tidak"){
 													$isRisky = false;
 											}else if($value == "Ya"){
@@ -124,7 +126,7 @@ class KuisHamilController extends Controller
 											array_push($answerKontakAwal,$singleData);
 											break;
 
-                    case 'sumber_air_bersih'      :     
+                    case 'sumber_air_bersih'      :
 											if($value == "Ya"){
 													$isRisky = false;
 											}else if($value == "Tidak"){
@@ -138,7 +140,7 @@ class KuisHamilController extends Controller
 											array_push($answerKontakAwal,$singleData);
 											break;
 
-                    case 'jamban_sehat'      :             
+                    case 'jamban_sehat'      :
 											if($value == "Ya"){
 													$isRisky = false;
 											}else if($value == "Tidak"){
@@ -152,7 +154,7 @@ class KuisHamilController extends Controller
 											array_push($answerKontakAwal,$singleData);
 											break;
 
-                    case 'rumah_layak_huni' :      
+                    case 'rumah_layak_huni' :
 											if($value == "Ya"){
 												$isRisky = false;
 											}else if($value == "Tidak"){
@@ -166,7 +168,7 @@ class KuisHamilController extends Controller
 											array_push($answerKontakAwal,$singleData);
 											break;
 
-                    case 'bansos' :            
+                    case 'bansos' :
 											if($value == "Ya"){
 													$isRisky = true;
 											}else if($value == "Tidak"){
@@ -185,7 +187,7 @@ class KuisHamilController extends Controller
             $arrayKontakAwal = array(
                 "id" => 'kontak-awal',
                 "answerDate" => \Carbon\Carbon::parse($dataKontakAwal->created_at)->isoFormat('YYYY-MM-DD'),
-                "pdfUrl" =>  $base_url.$pdfKontakAwal,
+                "pdfUrl" =>  $base_url.$filename,
                 "answers" => $answerKontakAwal
             );
             return $arrayKontakAwal;
@@ -206,17 +208,18 @@ class KuisHamilController extends Controller
          #kontak-16-minggu
          $data12Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])
          ->select(['berat_badan','tinggi_badan','lingkar_lengan_atas',
-         'hemoglobin','tensi_darah','gula_darah','riwayat_sakit_kronik'])->first();
+         'hemoglobin','tensi_darah','gula_darah_sewaktu','riwayat_sakit_kronik'])->first();
          $answer12Minggu= array();
-         $pdf12Minggu = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
-        //  dd($data12Minggu);
+         $oriPath = public_path('uploads/pdf');
+         $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
+         $finalUrl = $oriPath."/".$filename;
          if($data12Minggu != null){
             $tinggiBadanMeter = $data12Minggu->tinggi_badan / 100;
             $imtCalculation = $data12Minggu->berat_badan / ($tinggiBadanMeter ^ 2);
             foreach( $data12Minggu->toArray() as $key => $value )
              {
                  switch($key) {
-                    case 'berat_badan' : 
+                    case 'berat_badan' :
 											if($imtCalculation >= 19 && $imtCalculation <= 29){
 												$isRisky = false;
 											}else if($imtCalculation < 19 || $imtCalculation > 29){
@@ -229,7 +232,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answer12Minggu,$singleData);
 											break;
-                    case 'tinggi_badan' : 
+                    case 'tinggi_badan' :
 											if($value >= 145){
 												$isRisky = false;
 											}else if($value < 145){
@@ -243,7 +246,7 @@ class KuisHamilController extends Controller
 											array_push($answer12Minggu,$singleData);
 											break;
 
-                    case 'lingkar_lengan_atas' : 
+                    case 'lingkar_lengan_atas' :
 											if($value >= 23.5){
 													$isRisky = false;
 											}else if($value < 23.5){
@@ -257,7 +260,7 @@ class KuisHamilController extends Controller
 											array_push($answer12Minggu,$singleData);
 											break;
 
-										case 'hemoglobin' :             
+										case 'hemoglobin' :
 											if($value >= 11){
 												$isRisky = false;
 											}else if($value < 11){
@@ -271,7 +274,7 @@ class KuisHamilController extends Controller
 											array_push($answer12Minggu,$singleData);
 											break;
 
-                    case 'tensi_darah' :             
+                    case 'tensi_darah' :
 											if($value <= 90){
 												$isRisky = false;
 											}else if($value > 90){
@@ -285,7 +288,7 @@ class KuisHamilController extends Controller
 											array_push($answer12Minggu,$singleData);
 											break;
 
-										case 'gula_darah' :       
+										case 'gula_darah_sewaktu' :
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200){
@@ -299,7 +302,7 @@ class KuisHamilController extends Controller
 											array_push($answer12Minggu,$singleData);
 											break;
 
-										case 'riwayat_sakit_kronik' :       
+										case 'riwayat_sakit_kronik' :
 											if($value == "Ada"){
 												$isRisky = true;
 											}else if($value == "Tidak Ada"){
@@ -317,7 +320,7 @@ class KuisHamilController extends Controller
              $array12Minggu = array(
                "id" => '12-minggu',
                "answerDate" => \Carbon\Carbon::parse($data12Minggu->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $base_url.$pdf12Minggu,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answer12Minggu
              );
              return $array12Minggu;
@@ -340,12 +343,14 @@ class KuisHamilController extends Controller
          $data16Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',3]])
          ->select(['hemoglobin','tensi_darah','gula_darah_sewaktu'])->first();
          $answer16Minggu= array();
-         $pdf16Minggu = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+         $oriPath = public_path('uploads/pdf');
+         $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
+         $finalUrl = $oriPath."/".$filename;
          if($data16Minggu != null){
              foreach( $data16Minggu->toArray() as $key => $value )
              {
 								switch($key) {
-									case 'hemoglobin' : 
+									case 'hemoglobin' :
 										if($value >= 11){
 											$isRisky = false;
 										}else if($value < 11){
@@ -358,7 +363,7 @@ class KuisHamilController extends Controller
 										];
 										array_push($answer16Minggu,$singleData);
 										break;
-									case 'tensi_darah' : 
+									case 'tensi_darah' :
 										if($value <= 90){
 											$isRisky = false;
 										}else if($value > 90){
@@ -372,7 +377,7 @@ class KuisHamilController extends Controller
 										array_push($answer16Minggu,$singleData);
 										break;
 
-										case 'gula_darah_sewaktu' : 
+										case 'gula_darah_sewaktu' :
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200 ){
@@ -390,7 +395,7 @@ class KuisHamilController extends Controller
              $array16Minggu = array(
                "id" => '16-minggu',
                "answerDate" => \Carbon\Carbon::parse($data16Minggu->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $base_url.$pdf16Minggu,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answer16Minggu
              );
              return $array16Minggu;
@@ -428,16 +433,18 @@ class KuisHamilController extends Controller
         $base_url = env('BASE_URL_PDF');
         $periode_id = $this->_getPeriodeID($periode);
         $dataIbuJanin = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])
-        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah',
+        ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah_sewaktu',
         'proteinuria','denyut_jantung','tinggi_fundus_uteri','taksiran_berat_janin','gerak_janin','jumlah_janin'
         ])->first();
         $answerIbuJanin = array();
-        $pdfIbuJanin = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+        $oriPath = public_path('uploads/pdf');
+        $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
+        $finalUrl = $oriPath."/".$filename;
         if($dataIbuJanin != null){
             foreach( $dataIbuJanin->toArray() as $key => $value )
             {
                 switch($key) {
-                    case 'kenaikan_berat_badan' : 
+                    case 'kenaikan_berat_badan' :
 											$singleData = [
 												"question" => "Kenaikan Berat Badan",
 												"answer" => $value . " kg",
@@ -445,7 +452,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answerIbuJanin,$singleData);
 											break;
-                    case 'hemoglobin'   :  
+                    case 'hemoglobin'   :
 											if($value >= 11){
 												$isRisky = false;
 											}else if($value < 11){
@@ -458,7 +465,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answerIbuJanin,$singleData);
 											break;
-                    case 'tensi_darah'  : 
+                    case 'tensi_darah'  :
 											if($value <= 90){
 												$isRisky = false;
 											}else if($value > 90){
@@ -471,7 +478,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answerIbuJanin,$singleData);
 											break;
-                    case 'gula_darah' :   
+                    case 'gula_darah' :
 											if($value >= 95 && $value <= 200){
 												$isRisky = false;
 											}else if($value < 95 || $value > 200){
@@ -484,7 +491,7 @@ class KuisHamilController extends Controller
 											];
 											array_push($answerIbuJanin,$singleData);
 											break;
-                    case 'proteinuria'                :   
+                    case 'proteinuria'                :
 											if($value == "Positif"){
 												$isRisky = true;
 											}else if($value == "Negatif"){
@@ -498,7 +505,7 @@ class KuisHamilController extends Controller
 											array_push($answerIbuJanin,$singleData);
 											break;
 
-                    case 'denyut_jantung'          :   
+                    case 'denyut_jantung'          :
 											if($value >= 100 && $value <= 160){
 												$isRisky = false;
 											}else if($value < 100 || $value > 160){
@@ -512,7 +519,7 @@ class KuisHamilController extends Controller
 											array_push($answerIbuJanin,$singleData);
 											break;
 
-                    case 'tinggi_fundus_uteri' :   
+                    case 'tinggi_fundus_uteri' :
 											if($periode == 20)
 											{
 												if($value >= 17 && $value <= 23){
@@ -520,28 +527,28 @@ class KuisHamilController extends Controller
 												}else if($value < 17 || $value > 23){
 														$isRisky = true;
 												};
-												
+
 											}else if($periode == 24){
 													if($value >= 20 && $value <= 26){
 															$isRisky = false;
 													}else if($value < 20 || $value > 26){
 															$isRisky = true;
 													};
-												
+
 											}else if($periode == 28){
 													if($value >= 24 && $value <= 30){
 															$isRisky = false;
 													}else if($value < 24 || $value > 30){
 															$isRisky = true;
 													};
-												
+
 											}else if($periode == 32){
 													if($value >= 27 && $value <= 33){
 															$isRisky = false;
 													}else if($value < 27 || $value > 33){
 															$isRisky = true;
 													};
-													
+
 											}else if($periode == 36){
 													if($value >= 31 && $value <= 37){
 															$isRisky = false;
@@ -557,7 +564,7 @@ class KuisHamilController extends Controller
 											array_push($answerIbuJanin,$singleData);
 											break;
 
-                    case 'taksiran_berat_janin'          :   
+                    case 'taksiran_berat_janin'          :
 											if($periode == 20)
 											{
 													if($value >= 300 && $value <= 325){
@@ -565,35 +572,35 @@ class KuisHamilController extends Controller
 													}else if($value < 300 || $value > 325){
 															$isRisky = true;
 													};
-													
+
 											}else if($periode == 24){
 													if($value >= 550 && $value <= 685){
 															$isRisky = false;
 													}else if($value < 550 || $value > 685){
 															$isRisky = true;
 													};
-												
+
 											}else if($periode == 28){
 													if($value >= 1000 && $value <= 1150){
 															$isRisky = false;
 													}else if($value < 1000 || $value > 1150){
 															$isRisky = true;
 													};
-													
+
 											}else if($periode == 32){
 													if($value >= 1610 && $value <= 1810){
 															$isRisky = false;
 													}else if($value < 1610 || $value > 1810){
 															$isRisky = true;
 													};
-													
+
 											}else if($periode == 36){
 													if($value >= 2500 && $value <= 2690){
 															$isRisky = false;
 													}else if($value < 2500 || $value > 2690){
 															$isRisky = true;
 													};
-													
+
 											}
 											$singleData = [
 												"question" => "Taksiran Berat Janin",
@@ -603,7 +610,7 @@ class KuisHamilController extends Controller
 											array_push($answerIbuJanin,$singleData);
 											break;
 
-										case 'gerak_janin'  : 
+										case 'gerak_janin'  :
 											if($value == "Positif"){
 												$isRisky = false;
 											}else if($value == "Negatif"){
@@ -617,7 +624,7 @@ class KuisHamilController extends Controller
 										array_push($answerIbuJanin,$singleData);
 										break;
 
-										case 'jumlah_janin'   : 
+										case 'jumlah_janin'   :
 											if($value == 1){
 												$isRisky = false;
 											}else if($value > 1){
@@ -638,7 +645,7 @@ class KuisHamilController extends Controller
             $arrayIbuJanin = array(
                 "id" => $periode .'-minggu',
                 "answerDate" => \Carbon\Carbon::parse($dataIbuJanin->created_at)->isoFormat('YYYY-MM-DD'),
-                "pdfUrl" =>  $base_url.$pdfIbuJanin,
+                "pdfUrl" =>  $base_url.$filename,
                 "answers" => $answerIbuJanin
             );
             return $arrayIbuJanin;
@@ -662,7 +669,9 @@ class KuisHamilController extends Controller
          ->select(['tanggal_persalinan','kb','usia_janin','berat_janin','panjang_badan_janin','jumlah_bayi'
          ])->first();
          $answerPersalinan= array();
-         $pdfPersalinan = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+         $oriPath = public_path('uploads/pdf');
+         $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
+         $finalUrl = $oriPath."/".$filename;
          if($dataPersalinan != null){
              foreach( $dataPersalinan->toArray() as $key => $value )
              {
@@ -675,7 +684,7 @@ class KuisHamilController extends Controller
                     //                                             array_push($answerPersalinan,$singleData);
                     //                                             break;
 
-                    case 'kb'   :  
+                    case 'kb'   :
 											$isRisky = false;
 											if($value == "Ya"){
 												$isRisky = false;
@@ -690,7 +699,7 @@ class KuisHamilController extends Controller
 											array_push($answerPersalinan,$singleData);
 											break;
 
-                    case 'usia_janin'    :   
+                    case 'usia_janin'    :
 											if($value >= 37 && $value <= 42){
 												$isRisky = false;
 											}else if($value < 37 || $value > 42){
@@ -704,7 +713,7 @@ class KuisHamilController extends Controller
 											array_push($answerPersalinan,$singleData);
 											break;
 
-                    case 'berat_janin'                            :   
+                    case 'berat_janin'                            :
 											if($value >= 2500 && $value <= 3900){
 												$isRisky = false;
 											}else if($value < 2500 || $value > 3900){
@@ -718,7 +727,7 @@ class KuisHamilController extends Controller
 											array_push($answerPersalinan,$singleData);
 											break;
 
-                   case 'panjang_badan_janin'                :   
+                   case 'panjang_badan_janin'                :
 										if($value >= 48 && $value <= 53){
 											$isRisky = false;
 										}else if($value < 48 || $value > 53){
@@ -732,7 +741,7 @@ class KuisHamilController extends Controller
 										array_push($answerPersalinan,$singleData);
 										break;
 
-                  case 'jumlah_bayi'  :   
+                  case 'jumlah_bayi'  :
 										if($value == 1){
 											$isRisky = false;
 										}else if($value > 1){
@@ -751,7 +760,7 @@ class KuisHamilController extends Controller
              $arrayPersalinan = array(
                "id" => 'persalinan',
                "answerDate" => \Carbon\Carbon::parse($dataPersalinan->created_at)->isoFormat('YYYY-MM-DD'),
-               "pdfUrl" =>  $base_url.$pdfPersalinan,
+               "pdfUrl" =>  $base_url.$filename,
                "answers" => $answerPersalinan
              );
              return $arrayPersalinan;
@@ -776,12 +785,14 @@ class KuisHamilController extends Controller
         ->select(['komplikasi','asi','kbpp_mkjp'
         ])->first();
         $answerNifas= array();
-        $pdfNifas = '20210316154708 - 96RCJH4N - Pencegahan Stunting - oncom.pdf';
+        $oriPath = public_path('uploads/pdf');
+        $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
+        $finalUrl = $oriPath."/".$filename;
         if($dataNifas != null){
             foreach( $dataNifas->toArray() as $key => $value )
             {
                 switch($key) {
-                    case 'komplikasi' : 
+                    case 'komplikasi' :
 											$isRisky= false;
 											if($value == "Ya"){
 												$isRisky = true;
@@ -796,7 +807,7 @@ class KuisHamilController extends Controller
 											array_push($answerNifas,$singleData);
 											break;
 
-										case 'asi' :                 
+										case 'asi' :
 											if($value == "Ya"){
 												$isRisky = false;
 											}else if($value == "Tidak"){
@@ -810,7 +821,7 @@ class KuisHamilController extends Controller
 											array_push($answerNifas,$singleData);
 											break;
 
-										case 'kbpp_mkjp' :  
+										case 'kbpp_mkjp' :
 											if($value == "MKJP"){
 												$isRisky = false;
 											}else if($value == "Tidak"){
@@ -829,7 +840,7 @@ class KuisHamilController extends Controller
             $arrayNifas = array(
               "id" => 'nifas',
               "answerDate" => \Carbon\Carbon::parse($dataNifas->created_at)->isoFormat('YYYY-MM-DD'),
-              "pdfUrl" =>  $base_url.$pdfNifas,
+              "pdfUrl" =>  $base_url.$filename,
               "answers" => $answerNifas
             );
             return $arrayNifas;

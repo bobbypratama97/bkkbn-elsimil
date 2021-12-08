@@ -272,17 +272,17 @@ class AuthController extends Controller
 
                         $insert->save();
 
-                        $update = MemberOnesignal::where('member_id', $data->id)->where('player_id', '!=', $request->player_id)->update([
-                            'status' => '0',
-                            'updated_at' => date('Y-m-d H:i:s'),
-                            'updated_by' => $data->id
-                        ]);
+                        // $update = MemberOnesignal::where('member_id', $data->id)->where('player_id', '!=', $request->player_id)->update([
+                        //     'status' => '0',
+                        //     'updated_at' => date('Y-m-d H:i:s'),
+                        //     'updated_by' => $data->id
+                        // ]);
                     } else {
-                        $update = MemberOnesignal::where('member_id', $data->id)->where('player_id', $request->player_id)->update([
-                            'status' => '1',
-                            'updated_at' => date('Y-m-d H:i:s'),
-                            'updated_by' => $data->id
-                        ]);
+                        // $update = MemberOnesignal::where('member_id', $data->id)->where('player_id', $request->player_id)->update([
+                        //     'status' => '1',
+                        //     'updated_at' => date('Y-m-d H:i:s'),
+                        //     'updated_by' => $data->id
+                        // ]);
                     }
                 }
             }
