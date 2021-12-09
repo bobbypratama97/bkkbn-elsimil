@@ -26,7 +26,9 @@
                         </div>
 
                                 <div class="card-toolbar">
-                                    <a href="{{ route('admin.member.logbook',$member->id) }}" class="btn btn-success font-weight-bolder btn-md px-8 mr-5">Logbook</a>
+                                    @if($cekdelegate)
+                                        <a href="{{ route('admin.member.logbook',$member->id) }}" class="btn btn-success font-weight-bolder btn-md px-8 mr-5">Logbook</a>
+                                    @endif
                                     <a href="{{ route('admin.member.index') }}" class="btn btn-danger font-weight-bolder btn-md">Kembali</a>
                                 </div>
                     </div>
