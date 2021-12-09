@@ -35,6 +35,7 @@ use App\KuisHamilIbuJanin;
 use App\KuisHamilPersalinan;
 use App\KuisHamilNifas;
 use App\KuesionerHamil;
+use App\LogbookHistory;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\Debugbar\Facade as Debugbar;
 
@@ -254,7 +255,10 @@ class MemberController extends Controller
         ->where('kuisioner_result.member_id', $id)
         ->get();
 
-        return view('member.result', compact('member', 'res'));
+        $cekdelegate = MemberDelegate::where('member_id', $id)
+        ->where('user_id', Auth::user()->id)->first();
+
+        return view('member.result', compact('member', 'res','cekdelegate'));
     }
 
     public function logbookUpdate (Request $request) {
@@ -275,6 +279,10 @@ class MemberController extends Controller
 
         if($logbook->save()){
             $msg = 'Intervensi berhasil ditambahkan';
+
+            $logbook_history = new LogbookHistory();
+            $logbook_history->addToLogbook($logbook->id_user, $logbook->id_member, 1, $logbook->toJson());
+
             return redirect()->back()->with('success', $msg);
         }else {
             return redirect()->back()->withErrors([
@@ -299,203 +307,44 @@ class MemberController extends Controller
 
         $logbook = Logbook::where('id_member',$member->id)->first();
 
-        // get result before intervensi
-        $kuis_first = KuisResult::where('member_id', $id)
-            ->select([
-                'id',
-                'member_id',
-                'kuis_id',
-                'kuis_code',
-                'kuis_title',
-                'created_at',
-                'kuis_max_nilai',
-                'member_kuis_nilai',
-                'label',
-                'rating_color'
-            ])
-            ->first();
-        $details_first = [];
-        $details_last = [];
-
-
-        if($kuis_first){
-            $deskripsi = Kuis::where('id', $kuis_first->kuis_id)->first();
-
-            $details_first = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
-                $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
-                $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
-            })
-            ->where('kuisioner_result_detail.result_id', $kuis_first->id)
-            ->select([
-                'kuisioner_result_header.pertanyaan_header_caption',
-                'kuisioner_result_header.pertanyaan_header_jenis',
-                'kuisioner_result_detail.pertanyaan_detail_title',
-                'kuisioner_result_detail.pertanyaan_detail_pilihan',
-                'kuisioner_result_detail.pertanyaan_bobot_label',
-                'kuisioner_result_detail.pertanyaan_rating',
-                'kuisioner_result_detail.pertanyaan_rating_color',
-                'kuisioner_result_detail.value',
-                'kuisioner_result_detail.formula_value',
-                'kuisioner_result_detail.pertanyaan_bobot_id',
-                'kuisioner_result_detail.pertanyaan_bobot'
-            ])
-            ->get()
-            ->toArray();
-        }
-
-        // get result after intervensi
-        $kuis = KuisResult::where('member_id', $id)
-            ->select([
-                'id',
-                'member_id',
-                'kuis_id',
-                'kuis_code',
-                'kuis_title',
-                'created_at',
-                'kuis_max_nilai',
-                'member_kuis_nilai',
-                'label',
-                'rating_color'
-            ])
-            ->orderBy('id', 'desc');
-        $kuis_last = [];
-
-        if($kuis->count() > 1 && $logbook){
-            $kuis_last = $kuis->first();
-            $deskripsi = Kuis::where('id', $kuis_last->kuis_id)->first();
-
-            $details_last = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
-                $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
-                $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
-            })
-            ->where('kuisioner_result_detail.result_id', $kuis_last->id)
-            ->select([
-                'kuisioner_result_header.pertanyaan_header_caption',
-                'kuisioner_result_header.pertanyaan_header_jenis',
-                'kuisioner_result_detail.pertanyaan_detail_title',
-                'kuisioner_result_detail.pertanyaan_detail_pilihan',
-                'kuisioner_result_detail.pertanyaan_bobot_label',
-                'kuisioner_result_detail.pertanyaan_rating',
-                'kuisioner_result_detail.pertanyaan_rating_color',
-                'kuisioner_result_detail.value',
-                'kuisioner_result_detail.formula_value',
-                'kuisioner_result_detail.pertanyaan_bobot_id',
-                'kuisioner_result_detail.pertanyaan_bobot'
-            ])
-            ->get()
-            ->toArray();
-        }
-
-        $couple = MemberCouple::join('members', function($join) {
-            $join->on('members.id', '=', 'member_couple.couple_id');
-        })
-        ->where('member_couple.member_id', $id)
-        ->where('member_couple.status', '=', 'APM200')
-        ->select(['couple_id', 'members.no_ktp as no_ktp', 'members.name as namapasangan'])->first();
-
-        $details_couple_first = [];
-        $details_couple_last = [];
-        if($couple){
-                // get result before intervensi
-            $kuis_couple_first = KuisResult::where('member_id', $couple->couple_id)
-            ->select([
-                'id',
-                'member_id',
-                'kuis_id',
-                'kuis_code',
-                'kuis_title',
-                'created_at',
-                'kuis_max_nilai',
-                'member_kuis_nilai',
-                'label',
-                'rating_color'
-            ])
-            ->first();
-
-            if($kuis_couple_first){
-                $deskripsi = Kuis::where('id', $kuis_couple_first->kuis_id)->first();
-
-                $tanggal = explode(' ', $kuis_couple_first->created_at);
-                $tanggal = $tanggal[0] . ' ' . $tanggal[1] . ' ' . $tanggal[2];
-                $kuis_couple_first->tanggal = $tanggal;
-
-                $details_couple_first = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
-                    $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
-                    $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
-                })
-                ->where('kuisioner_result_detail.result_id', $kuis_couple_first->id)
-                ->select([
-                    'kuisioner_result_header.pertanyaan_header_caption',
-                    'kuisioner_result_header.pertanyaan_header_jenis',
-                    'kuisioner_result_detail.pertanyaan_detail_title',
-                    'kuisioner_result_detail.pertanyaan_detail_pilihan',
-                    'kuisioner_result_detail.pertanyaan_bobot_label',
-                    'kuisioner_result_detail.pertanyaan_rating',
-                    'kuisioner_result_detail.pertanyaan_rating_color',
-                    'kuisioner_result_detail.value',
-                    'kuisioner_result_detail.formula_value',
-                    'kuisioner_result_detail.pertanyaan_bobot_id',
-                    'kuisioner_result_detail.pertanyaan_bobot'
-                ])
-                ->get()
-                ->toArray();
-            }
-
-            // get result after intervensi
-            $kuis_couple = KuisResult::where('member_id', $couple->couple_id)
-                ->select([
-                    'id',
-                    'member_id',
-                    'kuis_id',
-                    'kuis_code',
-                    'kuis_title',
-                    'created_at',
-                    'kuis_max_nilai',
-                    'member_kuis_nilai',
-                    'label',
-                    'rating_color'
-                ])
-                ->orderBy('id', 'desc');
-
-            if($kuis_couple->count() > 1){
-                $kuis_couple_last = $kuis_couple->first();
-                $deskripsi = Kuis::where('id', $kuis_couple_last->kuis_id)->first();
-
-                $tanggal = explode(' ', $kuis_couple_last->created_at);
-                $tanggal = $tanggal[0] . ' ' . $tanggal[1] . ' ' . $tanggal[2];
-                $kuis_couple_last->tanggal = $tanggal;
-
-                $details_couple_last = KuisResultDetail::leftJoin('kuisioner_result_header', function($join) {
-                    $join->on('kuisioner_result_header.header_id', '=', 'kuisioner_result_detail.header_id');
-                    $join->on('kuisioner_result_header.result_id', '=', 'kuisioner_result_detail.result_id');
-                })
-                ->where('kuisioner_result_detail.result_id', $kuis_couple_last->id)
-                ->select([
-                    'kuisioner_result_header.pertanyaan_header_caption',
-                    'kuisioner_result_header.pertanyaan_header_jenis',
-                    'kuisioner_result_detail.pertanyaan_detail_title',
-                    'kuisioner_result_detail.pertanyaan_detail_pilihan',
-                    'kuisioner_result_detail.pertanyaan_bobot_label',
-                    'kuisioner_result_detail.pertanyaan_rating',
-                    'kuisioner_result_detail.pertanyaan_rating_color',
-                    'kuisioner_result_detail.value',
-                    'kuisioner_result_detail.formula_value',
-                    'kuisioner_result_detail.pertanyaan_bobot_id',
-                    'kuisioner_result_detail.pertanyaan_bobot'
-                ])
-                ->get()
-                ->toArray();
-            }
-        }
-
         if(!$logbook){
             $logbook = new Logbook();
         }
 
+        $logbook_histories = LogbookHistory::leftJoin('users', function($join) {
+                    $join->on('users.id', '=', 'logbook_history.user_id');
+                })->where('member_id',$member->id)
+                ->select([
+                                'users.name as name',
+                                'logbook_history.created_at as created_at',
+                                'logbook_history.log_type as log_type',
+                                'logbook_history.meta_data as meta_data',
+                            ])
+                ->get()
+                ->toArray();
+            
+        $histories = array(); 
+
+        foreach ($logbook_histories as $logbook_history){ 
+            $temp = array(
+                "date" => \Carbon\Carbon::parse($logbook_history["created_at"])->setTimezone('Asia/Phnom_Penh')->isoFormat('D MMMM Y HH:mm:ss'),
+                "name" => $logbook_history["name"],
+                "log_type" => $logbook_history["log_type"],
+                "meta_data" => json_decode($logbook_history["meta_data"],true)
+              );
+            array_push($histories,$temp);
+        }
+
+        $last_result = KuisResult::select([
+            'label',
+            'rating_color'
+        ])
+        ->where('kuisioner_result.status', 1)
+        ->where('kuisioner_result.member_id', $id)
+        ->first();
+
         return view('member.logbook', compact(
-            'member','logbook', 'details_first',
-            'details_last', 'kuis_first', 'kuis_last',
-            'details_couple_last','details_couple_first','couple'));
+            'member','logbook', 'histories','last_result'));
     }
 
     public function show($id) {
