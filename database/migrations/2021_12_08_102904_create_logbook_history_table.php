@@ -18,7 +18,7 @@ class CreateLogbookHistoryTable extends Migration
             $table->integer('user_id');
             $table->integer('member_id');
             $table->integer('log_type');
-            $table->json('meta_data');
+            $table->string('meta_data');
             $table->timestamps();
         });
     }
