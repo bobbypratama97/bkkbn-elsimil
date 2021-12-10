@@ -149,7 +149,14 @@
                                         <input type="number" class="number form-control" name="usia" value="@php echo isset($data_kuesioner->usia) ? ($data_kuesioner->usia) : $umur; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">Tahun</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                   @endphp
+                                   @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -191,7 +198,14 @@
                                         <label for="nama"><p class="font-weight-boldest m-0"> 5. Jumlah Anak</p></label>
                                     @endif
                                     <input type="number" class="number form-control" name="jumlah_anak" value="@php echo isset($data_kuesioner->jumlah_anak) ? ($data_kuesioner->jumlah_anak) : null; @endphp">
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -233,7 +247,14 @@
                                         <input type="number" class="number form-control" name="usia_anak_terakhir" value="@php echo isset($data_kuesioner->usia_anak_terakhir) ? ($data_kuesioner->usia_anak_terakhir) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">Tahun</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -284,7 +305,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -339,7 +367,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -390,7 +425,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -441,7 +483,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -492,7 +541,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                     if(isset($data_kuesioner)){
+                                         $dataExisting = True;
+                                     }else{
+                                         $dataExisting = False;
+                                     }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-2">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>

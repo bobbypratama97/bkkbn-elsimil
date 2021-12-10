@@ -47,12 +47,6 @@
                             <span class="form-control-plaintext h6">Gender: {{ $member->gender == 1 ? 'Pria' : 'Wanita' }}</span>
                         </div>
                       </div>
-                      <div class="form-group row my-0">
-                        <label class="mr-5 col-form-label"><i class="flaticon2-calendar-8"></i></label>
-                        <div class="">
-                            <span class="form-control-plaintext h6">Rencana Menikah: {{ $member->rencana_pernikahan }}</span>
-                        </div>
-                      </div>
                     </div>
                     <div class="col-md-6">
                       {{-- <div>Usia: {{ $member->usia }}</div> --}}
@@ -62,13 +56,19 @@
                             <span class="form-control-plaintext h6">Tempat/ Tanggal Lahir: {{ $member->tempat_lahir }} / {{ $member->tgl_lahir }}</span>
                         </div>
                       </div>
+                      <div class="form-group row my-0">
+                        <label class="mr-5 col-form-label"><i class="flaticon2-calendar-8"></i></label>
+                        <div class="">
+                            <span class="form-control-plaintext h6">Rencana Menikah: {{ $member->rencana_pernikahan }}</span>
+                        </div>
+                      </div>
                       {{-- <div>Lokasi: {{ $member->gender }}</div> --}}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-3">
                   <h5 class="card-title">Intervensi Pendampingan Calon Pengantin</h5>
@@ -123,148 +123,100 @@
                   </div>
                 </form>
               </div>
+
+              <div class="card card-custom gutter-b">
+                <div class="card-body flex-wrap py-3">
+                  <h5 class="card-title mb-0">
+                    @if($last_result)
+                      Hasil Kuesioner Terakhir :
+                      <span class="badge text-white ml-3" style="background-color: {{ $last_result["rating_color"] }}">{{ $last_result["label"] }}</span>
+                    @endif
+                  </h5>
+                </div>
+              </div>
+
             </div>
 
-            <div class="col-sm-7">
+            <div class="col-sm-8">
               <div class="card card-custom gutter-b">
-                <div class="card-header flex-wrap py-3">
-                  <h3 class="card-title">Perbandingan Hasil Sebelum dan Sesudah Intervensi</h3>
-                  <h6 class="card-subtitle my-1 text-muted">Tabel ini untuk membandingkan sebelum dan sesudah pendamping melakukan intercensi pada catin</h6>
+                <div class="card-body flex-wrap py-3">
+                  <h5 class="card-title mt-1 mb-8">Riwayat Intervensi</h3>
+                  <h6 class="card-subtitle text-muted">Tabel ini untuk melihat riwayat intervensi pendamping dan pengisian kuesioner catin</h6>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-text">Calon Pengantin {{ $member->gender == 1 ? 'Pria' : 'Wanita' }}</h5>
-
-                  <div class="my-10">
-                    <button type="button" class="btn btn-success btn-lg btn-block mb-5"><span class="font-weight-boldest">Tgl Pengisian : {{ $kuis_first ? $kuis_first->created_at : '-' }}</span></button>
-                    <button type="button" class="btn btn-info btn-lg btn-block mb-5"><span class="font-weight-boldest">Tgl Update : {{ $kuis_last ? $kuis_last->created_at : '-' }}</span></button>
-                  </div>
-
-                  <table class="table table-bordered text-left mt-10">
+                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th scope="col" class="h6 p-6">Variabel</th>
-                        <th scope="col" class="h6 p-6">Sebelum Intervensi</th>
-                        <th scope="col" class="h6 p-6">Setelah Intervensi</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Aksi</th>
+                        <th scope="col">Catatan</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @if($details_first)
-                        @foreach ($details_first as $key => $detail)
-
-                          @if($key-1 > -1)
-                            @if($details_first[$key-1]["pertanyaan_header_caption"] == $detail["pertanyaan_header_caption"])
-                              @continue
+                      @foreach ($histories as $key => $detail)
+                        <tr>
+                          <td>{{  $detail["date"] }}</td>
+                          <td>
+                            @if($detail["log_type"]==1)
+                              Intervensi dilakukan oleh: <br>{{ $detail["name"] }}
+                            @else
+                              Catin mengisi kuesioner
                             @endif
-                          @endif
 
-                          @if ($detail["pertanyaan_bobot_id"] != "0")
-                            <tr>
-                              <td scope="row" class="h6 p-6">{{ $detail["pertanyaan_header_caption"] }}</td>
-                              {{-- sebelum intervensi --}}
-                              <td class="h6 p-6" >
-                                <span class="badge p-2 mr-2" style="background-color:{{ $detail["pertanyaan_rating_color"] }}"> </span>
-                                
-                                @if($detail["pertanyaan_header_caption"] == "Perilaku Merokok")
-                                  {{ $detail["pertanyaan_bobot_label"] }}
-                                @elseif($detail["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
-                                  {{ $detail["formula_value"] }} - {{ $detail["pertanyaan_bobot_label"] }}
-                                @else
-                                  {{ $detail["value"] }} - {{ $detail["pertanyaan_bobot_label"] }}
-                                @endif
-                                
-                              </td>
-                              {{-- setelah intervensi --}}
-                              <td class="h6 p-6">
-                                @if($details_last)
-                                  <span class="badge p-2 mr-2" style="background-color:{{ $details_last[$loop->index]["pertanyaan_rating_color"] }}"> </span>
-                                  
-                                  @if($details_last[$loop->index]["pertanyaan_header_caption"] == "Perilaku Merokok")
-                                    {{ $details_last[$loop->index]["pertanyaan_bobot_label"] }}
-                                  @elseif($details_last[$loop->index]["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
-                                    {{ $details_last[$loop->index]["formula_value"] }} - {{ $details_last[$loop->index]["pertanyaan_bobot_label"] }}
-                                  @else
-                                    {{ $details_last[$loop->index]["value"] }} - {{ $details_last[$loop->index]["pertanyaan_bobot_label"] }}
+                          </td>
+                          <td>
+                            @if($detail["log_type"]==1)
+                              <div class="form-check pl-0">
+                                @if($detail['meta_data']['suplemen_darah'])
+                                  <i class="flaticon2-accept"></i>
+                                  <label class="form-check-label" for="logcheck1">
+                                    Suplemen Penambah Darah
+                                  </label>
                                   @endif
-                                @else
-                                  -
+                              </div>
+
+                              <div class="form-check pl-0">
+                                @if($detail['meta_data']['suplemen_makanan'])
+                                  <i class="flaticon2-accept"></i>
+                                  <label class="form-check-label" for="logcheck2">
+                                    Suplemen Makanan
+                                  </label>
                                 @endif
                                 
-                                
-                              </td>
-                            </tr>
-                          @endif
-                        @endforeach
-                      @endif
+                              </div>
+
+                               <div class="form-check pl-0">
+                                @if($detail['meta_data']['kie'])
+                                  <i class="flaticon2-accept"></i>
+                                  <label class="form-check-label" for="logcheck3">
+                                    KIE
+                                  </label>
+                                @endif
+                              </div>
+
+                              <div class="form-check pl-0">
+                                @if($detail['meta_data']['rujukan'])
+                                  <i class="flaticon2-accept"></i>
+                                  <label class="form-check-label" for="logcheck4">
+                                    Rujukan
+                                  </label>
+                                @endif
+                              </div>
+
+                            @else 
+
+                              Hasil Kuesioner : 
+                              {{-- <button type="button" class="btn font-size-sm unclick" style="background-color: {{ $detail['meta_data']["rating_color"] }}"><span class="font-weight-bolder text-white">{{ $detail['meta_data']["label"] }}</span></button> --}}
+                              <span class="badge text-white" style="background-color: {{ $detail['meta_data']["rating_color"] }}">{{ $detail['meta_data']["label"] }}</span>
+                              
+                            @endif  
+                            
+                          </td>
+                        </tr>
+                      @endforeach
                     </tbody>
                   </table>
-
-                  @if($couple)
-                    <div class="mt-10">
-                      <h5 class="card-text">Calon Pengantin {{ $member->gender == 1 ? 'Wanita' : 'Pria' }} / Pasangan</h5>
-                      <h5 class="card-text">{{ $couple->namapasangan }} - {!! Helper::decryptNik($couple->no_ktp) !!}</h5>
-
-                      <table class="table table-bordered text-left mt-10">
-                        <thead>
-                          <tr>
-                            <th scope="col" class="h6 p-6">Variabel</th>
-                            <th scope="col" class="h6 p-6">Sebelum Intervensi</th>
-                            <th scope="col" class="h6 p-6">Setelah Intervensi</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @if($details_couple_first)
-
-                            @foreach ($details_couple_first as $key => $detail_couple)
-
-                            @if($key-1 > -1)
-                              @if($details_couple_first[$key-1]["pertanyaan_header_caption"] == $detail_couple["pertanyaan_header_caption"])
-                                @continue
-                              @endif
-                            @endif
-
-                              @if ($detail_couple["pertanyaan_bobot_id"] != "0")
-                                <tr>
-                                  <td scope="row" class="h6 p-6">{{ $detail_couple["pertanyaan_header_caption"] }}</td>
-                                  {{-- sebelum intervensi --}}
-                                  <td class="h6 p-6" >
-                                    <span class="badge p-2 mr-2" style="background-color:{{ $detail_couple["pertanyaan_rating_color"] }}"> </span>
-                                    
-                                    @if($detail_couple["pertanyaan_header_caption"] == "Perilaku Merokok")
-                                      {{ $detail_couple["pertanyaan_bobot_label"] }}
-                                    @elseif($detail_couple["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
-                                      {{ $detail_couple["formula_value"] }} - {{ $detail_couple["pertanyaan_bobot_label"] }}
-                                    @else
-                                      {{ $detail_couple["value"] }} - {{ $detail_couple["pertanyaan_bobot_label"] }}
-                                    @endif
-                                    
-                                  </td>
-                                  {{-- setelah intervensi --}}
-                                  <td class="h6 p-6">
-                                    @if($details_couple_last)
-                                      <span class="badge p-2 mr-2" style="background-color:{{ $details_couple_last[$loop->index]["pertanyaan_rating_color"] }}"> </span>
-                                      
-                                      @if($details_couple_last[$loop->index]["pertanyaan_header_caption"] == "Perilaku Merokok")
-                                        {{ $details_couple_last[$loop->index]["pertanyaan_bobot_label"] }}
-                                      @elseif($details_couple_last[$loop->index]["pertanyaan_header_caption"] == "Indeks Massa Tubuh")
-                                        {{ $details_couple_last[$loop->index]["formula_value"] }} - {{ $details_couple_last[$loop->index]["pertanyaan_bobot_label"] }}
-                                      @else
-                                        {{ $details_couple_last[$loop->index]["value"] }} - {{ $details_couple_last[$loop->index]["pertanyaan_bobot_label"] }}
-                                      @endif
-                                    @else
-                                      -
-                                    @endif
-                                    
-                                    
-                                  </td>
-                                </tr>
-                              @endif
-                            @endforeach
-                          @endif
-                        </tbody>
-                      </table>
-                    </div>
-                  @endif
-
+                  {{ $logbook_histories->links() }}
                 </div>
               </div>
             </div>
