@@ -155,7 +155,7 @@
                             <div class="card-footer bg-gray-100 border-top-0">
                                 <div class="row">
                                     <div class="col text-right">
-                                        <button type="button" id="kelola" data-id="{{ $member->id }}" class="btn btn-primary mr-2">Dampingi catin ini</button>
+                                        <button type="button" id="kelola" data-id="{{ $member->id }}" class="btn mr-2" disabled>Dampingi catin ini</button>
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@
                                     <textarea class="form-control" rows="5" name="komentar" required>{{ (isset($komentar->komentar)) ? $komentar->komentar : '' }}</textarea>
                                 </div>
                             </div>
-                            @if ($member->petugas_id != Auth::id())
+                            @if ($member->petugas_id != Auth::id() || $is_comment == 0)
                             <div class="card-footer bg-gray-100 border-top-0">
                                 <div class="row">
                                     <div class="col text-center">

@@ -16,7 +16,7 @@ use Helper;
 use App\Member;
 use App\ChatHeader;
 use App\ChatMessage;
-
+use App\Config;
 use App\MemberDelegate;
 
 class ChatController extends Controller
@@ -116,14 +116,23 @@ class ChatController extends Controller
     }
 
     public function submit(Request $request) {
-        $check = ChatHeader::where('member_id', $request->id)->first();
-
         $stat = 0;
+        $chat_role_id = request('chat_role_id') ?? $this->role_child_id;
 
-        $get = MemberDelegate::where('member_id', $request->id)->first();
-
+        $check = ChatHeader::where('member_id', $request->id)->where('type', $chat_role_id)->first();
+        $get = MemberDelegate::join('role_user as role', 'role.user_id', 'member_delegate.user_id')
+            ->where('role.role_child_id', $chat_role_id)
+            ->where('member_id', $request->id)
+            ->first();
+            
+        if(!$get) {
+            return response()->json([
+                'code' => 401,
+                'error'   => true,
+                'message' => 'Chat gagal dikirim. Responde tidak ditemukan.'
+            ], 200);
+        }
         $responder_id = ($get) ? $get->user_id : null;
-
         if ($check) {
 
             $update = ChatMessage::where('chat_id', $check->id)->update([
@@ -160,6 +169,7 @@ class ChatController extends Controller
             $insertHeader->kecamatan_kode = $member->kecamatan_id;
             $insertHeader->kelurahan_kode = $member->kelurahan_id;
             $insertHeader->status = 0;
+            $insertHeader->type = $chat_role_id;
             $insertHeader->created_at = date('Y-m-d H:i:s');
             $insertHeader->created_by = $request->id;
 
@@ -201,6 +211,19 @@ class ChatController extends Controller
                 'message' => 'Chat gagal dikirim'
             ], 200);
         }
+    }
+
+    public function type(){
+        $role_childs = Config::select('name', 'value as type')
+            ->where('code', 'LIKE', '%role_child_%')
+            ->get();
+
+        return response()->json([
+            'code' => 200,
+            'error'   => false,
+            'message' => 'List Chat type',
+            'data' => $role_childs
+        ], 200);
     }
 
 }

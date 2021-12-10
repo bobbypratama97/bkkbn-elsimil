@@ -284,6 +284,7 @@ class UserController extends Controller
         ->leftJoin('adms_kecamatan', function($join) {
             $join->on('adms_kecamatan.kecamatan_kode', '=', 'users.kecamatan_id');
         })
+        ->join('role_user as role', 'role.user_id', 'users.id')
         ->where('users.id', $id)
         ->select([
             'users.id',
@@ -294,6 +295,7 @@ class UserController extends Controller
             'adms_kabupaten.nama as kabupaten',
             'users.kecamatan_id',
             'adms_kecamatan.nama as kecamatan',
+            'role.role_child_id',
             DB::raw("count(member_delegate.id) AS total_member")
         ])
         ->first();
@@ -303,22 +305,24 @@ class UserController extends Controller
         $users = User::leftJoin('member_delegate', function($join) {
             $join->on('member_delegate.user_id', '=', 'users.id');
         })
-        ->leftJoin('adms_provinsi', function($join) {
+        ->join('adms_provinsi', function($join) {
             $join->on('adms_provinsi.provinsi_kode', '=', 'users.provinsi_id');
         })
-        ->leftJoin('adms_kabupaten', function($join) {
+        ->join('adms_kabupaten', function($join) {
             $join->on('adms_kabupaten.kabupaten_kode', '=', 'users.kabupaten_id');
         })
-        ->leftJoin('adms_kecamatan', function($join) {
+        ->join('adms_kecamatan', function($join) {
             $join->on('adms_kecamatan.kecamatan_kode', '=', 'users.kecamatan_id');
         })
-        ->leftJoin('adms_kelurahan', function($join) {
+        ->join('adms_kelurahan', function($join) {
             $join->on('adms_kelurahan.kelurahan_kode', '=', 'users.kelurahan_id');
         })
+        ->join('role_user as role', 'role.user_id', 'users.id')
         ->where('users.provinsi_id', $user->provinsi_id)
         ->where('users.kabupaten_id', $user->kabupaten_id)
         ->where('users.kecamatan_id', $user->kecamatan_id)
         ->where('users.id', '!=', $user->id)
+        ->where('role.role_child_id', $user->role_child_id)
         ->whereNull('users.deleted_by')
         ->select([
             'users.id as user_id',

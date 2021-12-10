@@ -87,7 +87,7 @@ class ChatController extends Controller
                 chat_header.kecamatan_kode = '{$user->kecamatan_id}' AND 
                 chat_header.kelurahan_kode = '{$user->kelurahan_id}' AND 
             ";
-            $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+            $condition = "AND {$where} ((responder_id = {$user->id}))";
         }
 
         $sql = "
