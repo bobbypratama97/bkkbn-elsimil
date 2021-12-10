@@ -422,62 +422,74 @@ class DashboardController extends Controller
 
         }
 
+        $array_role = [1, 2, 3];
+        $where_self_delegate = '';
+        if (!in_array($role->role_id, $array_role)) {
+            $where_self_delegate = "OR member_delegate.user_id = {$auth->id}";
+        }
+
         $sql10 = "
             SELECT 
                 kr.id, kr.kuis_code, kr.kuis_title, kr.label, kr.rating_color, 
                 krc.komentar,
                 members.id AS member_id, members.name, members.gender, 
-                adms_provinsi.nama as provinsi, adms_kabupaten.nama as kabupaten, adms_kecamatan.nama as kecamatan, adms_kelurahan.nama as kelurahan
+                member_delegate.user_id as member_delegate_user,
+                adms_provinsi.nama as provinsi, adms_kabupaten.nama as kabupaten, adms_kecamatan.nama as kecamatan, adms_kelurahan.nama as kelurahan,
+                kr.created_at
             FROM kuisioner_result kr LEFT JOIN kuisioner_result_comment krc ON kr.id = krc.result_id
             LEFT JOIN members ON members.id = kr.member_id
+            LEFT JOIN member_delegate ON member_delegate.member_id = members.id
             LEFT JOIN adms_provinsi ON adms_provinsi.provinsi_kode = members.provinsi_id
             LEFT JOIN adms_kabupaten ON adms_kabupaten.kabupaten_kode = members.kabupaten_id
             LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
             LEFT JOIN adms_kelurahan ON adms_kelurahan.kelurahan_kode = members.kelurahan_id
-            WHERE krc.result_id IS NULL AND kr.status = 1 {$whereReview} LIMIT 10
+            WHERE krc.result_id IS NULL AND kr.status = 1 {$whereReview} AND member_delegate.user_id is null {$where_self_delegate} ORDER BY kr.created_at desc  LIMIT 10
         ";
 
         //echo $sql10;
-
         $resp = DB::select($sql10);
+        // echo('<pre>');
+        // print_r($resp);die;
 
-        $cur = '';
-        if (!empty($resp)) {
-            foreach ($resp as $key => $row) {
-                $cur .= $row->member_id . ', ';
-            }
+        // $cur = '';
+        // if (!empty($resp)) {
+        //     foreach ($resp as $key => $row) {
+        //         $cur .= $row->member_id . ', ';
+        //     }
 
-            $cur = substr($cur, 0, -2);
+        //     $cur = substr($cur, 0, -2);
 
-            $array = [1, 2, 3];
+        //     $array = [1, 2, 3];
 
-            if (!in_array($role->role_id, $array)) {
-                $check = "AND member_delegate.user_id = {$auth->id}";
-            } else {
-                $check = "";
-            }
+        //     if (!in_array($role->role_id, $array)) {
+        //         $check = "AND member_delegate.user_id = {$auth->id}";
+        //     } else {
+        //         $check = "";
+        //     }
 
-            $sql20 = "
-                SELECT 
-                    kr.id, kr.kuis_code, kr.kuis_title, kr.label, kr.rating_color, 
-                    krc.komentar,
-                    members.id AS member_id, members.name, members.gender, 
-                    adms_provinsi.nama as provinsi, adms_kabupaten.nama as kabupaten, adms_kecamatan.nama as kecamatan, adms_kelurahan.nama as kelurahan
-                FROM kuisioner_result kr LEFT JOIN kuisioner_result_comment krc ON kr.id = krc.result_id
-                LEFT JOIN members ON members.id = kr.member_id
-                LEFT JOIN member_delegate ON member_delegate.member_id = members.id
-                LEFT JOIN adms_provinsi ON adms_provinsi.provinsi_kode = members.provinsi_id
-                LEFT JOIN adms_kabupaten ON adms_kabupaten.kabupaten_kode = members.kabupaten_id
-                LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
-                LEFT JOIN adms_kelurahan ON adms_kelurahan.kelurahan_kode = members.kelurahan_id
-                WHERE krc.result_id IS NULL AND kr.status = 1 {$check} AND member_delegate.member_id NOT IN ({$cur}) LIMIT 10
-            ";
-            //echo $sql20;
+        //     $sql20 = "
+        //         SELECT 
+        //             kr.id, kr.kuis_code, kr.kuis_title, kr.label, kr.rating_color, 
+        //             krc.komentar,
+        //             members.id AS member_id, members.name, members.gender, 
+        //             adms_provinsi.nama as provinsi, adms_kabupaten.nama as kabupaten, adms_kecamatan.nama as kecamatan, adms_kelurahan.nama as kelurahan
+        //         FROM kuisioner_result kr LEFT JOIN kuisioner_result_comment krc ON kr.id = krc.result_id
+        //         LEFT JOIN members ON members.id = kr.member_id
+        //         LEFT JOIN member_delegate ON member_delegate.member_id = members.id
+        //         LEFT JOIN adms_provinsi ON adms_provinsi.provinsi_kode = members.provinsi_id
+        //         LEFT JOIN adms_kabupaten ON adms_kabupaten.kabupaten_kode = members.kabupaten_id
+        //         LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
+        //         LEFT JOIN adms_kelurahan ON adms_kelurahan.kelurahan_kode = members.kelurahan_id
+        //         WHERE krc.result_id IS NULL AND kr.status = 1 {$check} AND member_delegate.member_id NOT IN ({$cur}) LIMIT 10
+        //     ";
+        //     //echo $sql20;
 
-            $rescur = DB::select($sql20);
+        //     $rescur = DB::select($sql20);
+        //     // echo('<pre>');
+        //     // print_r($rescur);die;
 
-            $resp = array_merge($resp, $rescur);
-        }
+        //     $resp = array_merge($resp, $rescur);
+        // }
 
 
         return view('dashboard', compact('resnorespondchat', 'resnorespondkuis', 'resallnorespchat', 'resallnorespondkuis', 'resallunmap', 'chatalloc', 'chat', 'review', 'members', 'member', 'membertotal', 'kuis', 'resp', 'provcur', 'kabcur', 'keccur'));
