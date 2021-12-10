@@ -151,7 +151,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -202,7 +209,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -253,7 +267,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
