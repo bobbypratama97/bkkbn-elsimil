@@ -313,15 +313,13 @@ class MemberController extends Controller
 
         $logbook_histories = LogbookHistory::leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'logbook_history.user_id');
-                })->where('member_id',$member->id)
-                ->select([
-                                'users.name as name',
-                                'logbook_history.created_at as created_at',
-                                'logbook_history.log_type as log_type',
-                                'logbook_history.meta_data as meta_data',
-                            ])
-                ->get()
-                ->toArray();
+                })->select([
+                    'users.name as name',
+                    'logbook_history.created_at as created_at',
+                    'logbook_history.log_type as log_type',
+                    'logbook_history.meta_data as meta_data',
+                ])->where('member_id',$member->id)->paginate(10);
+                
             
         $histories = array(); 
 
@@ -344,7 +342,7 @@ class MemberController extends Controller
         ->first();
 
         return view('member.logbook', compact(
-            'member','logbook', 'histories','last_result'));
+            'member','logbook', 'histories','last_result','logbook_histories'));
     }
 
     public function show($id) {
