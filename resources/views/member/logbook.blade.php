@@ -68,7 +68,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-3">
                   <h5 class="card-title">Intervensi Pendampingan Calon Pengantin</h5>
@@ -123,9 +123,21 @@
                   </div>
                 </form>
               </div>
+
+              <div class="card card-custom gutter-b">
+                <div class="card-body flex-wrap py-3">
+                  <h5 class="card-title mb-0">
+                    @if($last_result)
+                      Hasil Kuesioner Terakhir :
+                      <span class="badge text-white ml-3" style="background-color: {{ $last_result["rating_color"] }}">{{ $last_result["label"] }}</span>
+                    @endif
+                  </h5>
+                </div>
+              </div>
+
             </div>
 
-            <div class="col-sm-7">
+            <div class="col-sm-8">
               <div class="card card-custom gutter-b">
                 <div class="card-body flex-wrap py-3">
                   <h5 class="card-title mt-1 mb-8">Riwayat Intervensi</h3>
@@ -204,23 +216,9 @@
                       @endforeach
                     </tbody>
                   </table>
+                  {{ $logbook_histories->links() }}
                 </div>
               </div>
-
-              <div class="card card-custom gutter-b">
-                <div class="card-body flex-wrap py-3">
-                  <h5 class="card-title mt-1 mb-8">
-                    @if($last_result)
-                      Hasil Kuesioner Terakhir :
-                      <span class="badge text-white ml-3" style="background-color: {{ $last_result["rating_color"] }}">{{ $last_result["label"] }}</span>
-                    @endif
-                  </h5>
-                </div>
-                <div class="card-body">
-                  
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
