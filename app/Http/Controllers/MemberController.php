@@ -355,12 +355,17 @@ class MemberController extends Controller
                 ->first();
 
         //decode token
-        $decode = decrypt($request->token);
-        $arr_decode = explode($decode, '+');
-        Log::debug('arr_decode==========', $arr_decode);
-        Log::debug('member==========',array($member_delegates));
-        if(!$member_delegates && ($arr_decode[0] == $id)) $is_dampingi = true;
-        else $is_dampingi = false;
+        $is_dampingi = false;
+        if($request->has('token')){
+            $decode = decrypt($request->token);
+            $arr_decode = explode('+', $decode);
+            
+            Log::debug('arr_decode==========', $arr_decode);
+            Log::debug('member==========',array($member_delegates));
+
+            if(!$member_delegates && ($arr_decode[0] == $id)) $is_dampingi = true;
+            else $is_dampingi = false;
+        }
         
         if (!empty($member->foto_pic)) {
             if ($member->foto_pic == 'noimage.png') {
