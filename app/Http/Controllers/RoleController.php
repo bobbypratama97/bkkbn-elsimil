@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Config;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -262,4 +263,11 @@ class RoleController extends Controller
 		die();
 	}
 
+	public function getChild($roleid){
+		$role_child = Config::select('configs.value as id', 'configs.name')
+			->where('code', 'role_child_'.$roleid)
+			->get();
+
+		return $role_child;
+	}
 }

@@ -664,7 +664,6 @@ class RepkuisController extends Controller
 
         $result = array_merge($self, $couple);
 
-
         if (isset($request->curl) && !empty($request->curl)) {
             $fullurl = $request->curl . '&search=' . $request->search . '&keyword=' . $request->keyword;
             return redirect()->to($fullurl)->with(['result' => $result])->with(['selected' => $request->search]);
@@ -708,7 +707,8 @@ class RepkuisController extends Controller
             $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
         })
         ->leftJoin('member_delegate', function($join) {
-            $join->on('member_delegate.member_id', '=', 'members.id');
+            $join->on('member_delegate.member_id', '=', 'members.id')
+                ->where('member_delegate.user_id', Auth::user()->id);
         })
         ->leftJoin('users', function($join) {
             $join->on('users.id', '=', 'member_delegate.user_id');
@@ -793,7 +793,12 @@ class RepkuisController extends Controller
 
         $fullurl = $request->cu;
 
-        return view('repkuis.edit', compact('kuis', 'member', 'deskripsi', 'result', 'out', 'komentar', 'fullurl'));
+        // echo('<pre>');
+        // print_r($member);die;
+        if(Auth::user()->roleChild == $this->role_child_id) $is_comment = 1;
+        else $is_comment = 0;
+
+        return view('repkuis.edit', compact('kuis', 'member', 'deskripsi', 'result', 'out', 'komentar', 'fullurl', 'is_comment'));
     }
 
     public function update(Request $request, $id) {

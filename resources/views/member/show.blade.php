@@ -15,6 +15,10 @@
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title"></div>
                         <div class="card-toolbar">
+                            @if($member->link_token && Auth::user()->roleChild == 3)
+                            <input readonly id="copy_link" class="form mr-3 pt-3 form-control" style="width: 500px;white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" value="{{$member->link_token}}"/>
+                            <button value="copy" class="btn btn-warning font-weight-bold mr-3 pt-3 text-center" onclick="copyToClipboard('copy_link')">Copy Link</button>
+                            @endif
                             @can('access', [\App\Member::class, Auth::user()->role, 'blokir'])
                             @if ($member->is_active != '4')
                             <form method="POST" action="{{ route('admin.member.blokir') }}" class="form mr-3 pt-3">
@@ -166,15 +170,33 @@
                         </div>
                     </div>
                 </div>
-
+                @if($is_dampingi)
+                <div class="card card-custom gutter-b">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title"></div>
+                        <div class="card-toolbar">
+                            <button class="btn btn-sm btn-warning kelola" id="kelola" width="100%" title="Dampingi catin" data-id="{{ $member->id }}">
+                                <i class="flaticon-businesswoman"></i> Dampingi Catin 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
 
 @push('script')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
+    function copyToClipboard(id) {
+        console.log(id)
+        document.getElementById(id).select();
+        document.execCommand('copy');
+    }
+
     $(document).ready(function() {
         $('#kategori').select2({
             placeholder: "Pilih",
@@ -194,30 +216,71 @@
             },    
         });
 
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
+        $('.kelola').on('click', function () {
+            var id = $(this).attr('data-id');
+
+            bootbox.confirm({
+                title: 'Perhatian',
+                message: "<p class='text-center'>Apakah Anda akan mendampingi catin ini ?</p>",
+                centerVertical: true,
+                closeButton: false,
+                buttons: {
+                    confirm: { label: 'Yakin', className: 'btn-success' },
+                    cancel: { label: 'Batalkan', className: 'btn-danger' }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.preloader.start({
+                            modal:true,
+                            src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
+                        });
+
+                        $.ajax({
+                            url: '{{ route('admin.member.kelola') }}',
+                            type: 'POST',
+                            data: {id : id, '_token': "{{ csrf_token() }}"},
+                            dataType: 'json',
+                            success: function( data ) {
+                                $.preloader.stop();
+
+                                if (data.count == '0') {
+                                    bootbox.dialog({
+                                        title: 'Perhatian',
+                                        centerVertical: true,
+                                        closeButton: false,
+                                        message: "<p class='text-center'>" + data.message + "</p>",
+                                        buttons: {
+                                            ok: {
+                                                label: "OK",
+                                                className: 'btn-info',
+                                                callback: function() {
+                                                    //window.location.href = '{{ route('admin.member.index') }}';
+                                                }
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    bootbox.dialog({
+                                        title: 'Perhatian',
+                                        centerVertical: true,
+                                        closeButton: false,
+                                        message: "<p class='text-center'>" + data.message + "</p>",
+                                        buttons: {
+                                            ok: {
+                                                label: "OK",
+                                                className: 'btn-info',
+                                                callback: function() {
+                                                    window.location.href = '{{ route('admin.member.index') }}';
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                    }
                 }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
+            });
         });
     });
 </script>
