@@ -54,7 +54,7 @@
                                     <th>Nama</th>
                                     <th>Pesan</th>
                                     <th>Status</th>
-                                    <th>Petugas KB</th>
+                                    <th>Petugas</th>
                                     <th width="30">Aksi</th>
                                 </tr>
                             </thead>
@@ -78,7 +78,7 @@
                                         @elseif (!empty($row->header_responder_id) && $row->header_responder_id != Auth::id())
                                         <a href="{{ route('admin.chat.show', $row->chatid) }}" class="btn btn-icon btn-sm btn-info"  title="Lihat Percakapan"><i class="flaticon2-talk"></i></a>
                                         @else
-                                        <button class="flaticon2-talk btn btn-icon btn-sm btn-info check"  title="Lihat Percakapan" data-id="{{ $row->id }}" data-chatid="{{ $row->chatid }}">
+                                        <button disabled class="flaticon2-talk btn btn-icon btn-sm btn-info check"  title="Lihat Percakapan" data-id="{{ $row->id }}" data-chatid="{{ $row->chatid }}">
                                         </button>
                                         @endif
                                         @endcan
