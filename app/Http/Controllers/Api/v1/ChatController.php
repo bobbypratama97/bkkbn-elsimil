@@ -123,7 +123,7 @@ class ChatController extends Controller
 
     public function submit(Request $request) {
         $stat = 0;
-        $chat_role_id = request('chat_role_id') ?? $this->role_child_id;
+        $chat_role_id = request('type') ?? $this->role_child_id;
 
         $check = ChatHeader::where('member_id', $request->id)->where('type', $chat_role_id)->first();
         $get = MemberDelegate::join('role_user as role', 'role.user_id', 'member_delegate.user_id')
