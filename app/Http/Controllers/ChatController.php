@@ -102,6 +102,7 @@ class ChatController extends Controller
                 adms_kelurahan.nama AS kelurahan,
                 chat_header.id AS chatid,
                 chat_header.responder_id AS header_responder_id,
+                chat_header.type,
                 role_user.role_id AS header_role_id,
                 (SELECT COUNT(*) FROM chat_message WHERE member_id = members.id) AS total,
                 chat_message.message,
@@ -118,12 +119,12 @@ class ChatController extends Controller
             LEFT JOIN role_user ON role_user.user_id = chat_header.responder_id
             LEFT JOIN chat_message ON chat_message.chat_id = chat_header.id AND chat_message.last = 1
             LEFT JOIN users ON users.id = chat_header.responder_id
-            WHERE 1 = 1 $condition
+            WHERE 1 = 1 AND chat_header.type = '".Auth::user()->roleChild."' $condition
             ORDER BY chat_message.id DESC LIMIT 100
         ";
 
         $list = DB::select($sql);
-
+        
         if (!empty($list)) {
             $curr = '';
             foreach ($list as $key => $row) {
@@ -234,9 +235,10 @@ class ChatController extends Controller
 
         $user = Auth::user();
         $role = Auth::user()->role;
+        $roleChild = Auth::user()->roleChild;
 
         if ($request->search == 'mine') {
-            $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+            $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL)) AND type = {$roleChild}";
         } else if ($request->search == 'other') {
             $filter = " AND (role_user.role_id = 1 OR (responder_id != {$user->id}))";
         } else if ($request->search == 'all' || $request->search == '') {
