@@ -357,7 +357,8 @@ class MemberController extends Controller
         //decode token
         $decode = decrypt($request->token);
         $arr_decode = explode($decode, '+');
-        return $request->token;
+        Log::debug('arr_decode==========', $arr_decode);
+        Log::debug('member==========',array($member_delegates));
         if(!$member_delegates && ($arr_decode[0] == $id)) $is_dampingi = true;
         else $is_dampingi = false;
         
