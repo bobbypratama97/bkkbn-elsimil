@@ -31,6 +31,8 @@ use App\KuisResultDetail;
 use App\KuisResultComment;
 use App\KuisResultBobotFile;
 
+use App\LogbookHistory;
+
 use App\MemberDelegate;
 
 class KuisController extends Controller
@@ -942,6 +944,15 @@ class KuisController extends Controller
             'header' => $kuis,
             'detail' => $result
         ];
+
+        // START: add to logbook
+        $kuis_result_header = array(
+            'label' => $kuis['label'],
+            'rating_color' => $kuis['rating_color']
+        );
+        $logbook_history = new LogbookHistory();
+        $logbook_history->addToLogbook(0, $request->user_id, 2, json_encode($kuis_result_header));
+        // END: add to logbook
 
         return response()->json([
             'error' => false,

@@ -144,7 +144,14 @@
                                         <input type="number" class="text form-control" name="berat_badan" value="@php echo isset($data_kuesioner->berat_badan) ? ($data_kuesioner->berat_badan) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">kg</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                       @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                        @endphp
+                                        @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -185,7 +192,14 @@
                                         <input type="number" class="text form-control" name="tinggi_badan" value="@php echo isset($data_kuesioner->tinggi_badan) ? ($data_kuesioner->tinggi_badan) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -226,7 +240,14 @@
                                         <input type="number" class="number form-control" name="lingkar_lengan_atas" value="@php echo isset($data_kuesioner->lingkar_lengan_atas) ? ($data_kuesioner->lingkar_lengan_atas) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">cm</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                        @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -267,7 +288,14 @@
                                         <input type="number" class="number form-control" name="hemoglobin" value="@php echo isset($data_kuesioner->hemoglobin) ? ($data_kuesioner->hemoglobin) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">gr/dl</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -308,7 +336,14 @@
                                         <input type="number" class="number form-control" name="tensi_darah" value="@php echo isset($data_kuesioner->tensi_darah) ? ($data_kuesioner->tensi_darah) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mmHg</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                        if(isset($data_kuesioner)){
+                                            $dataExisting = True;
+                                        }else{
+                                            $dataExisting = False;
+                                        }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -349,7 +384,14 @@
                                         <input type="number" class="number form-control" name="gula_darah_sewaktu" value="@php echo isset($data_kuesioner->gula_darah_sewaktu) ? ($data_kuesioner->gula_darah_sewaktu) : null; @endphp">
                                         <span class="input-group-text rounded-0 bg-white font-weight-boldest">mg/dl</span>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>
@@ -400,7 +442,14 @@
                                             </label>
                                         </div>
                                     </div>
-                                    @if ($data_kuesioner->created_at == null)
+                                    @php
+                                    if(isset($data_kuesioner)){
+                                        $dataExisting = True;
+                                    }else{
+                                        $dataExisting = False;
+                                    }
+                                    @endphp
+                                    @if ($dataExisting == False)
                                         <div class="row mt-5">
                                             <div class="col-sm-3">
                                                 <span class="badge p-2 mr-2" style="background-color: #1CC574;"> </span>

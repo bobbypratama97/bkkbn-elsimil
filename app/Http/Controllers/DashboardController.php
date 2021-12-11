@@ -491,7 +491,6 @@ class DashboardController extends Controller
         //     $resp = array_merge($resp, $rescur);
         // }
 
-
         return view('dashboard', compact('resnorespondchat', 'resnorespondkuis', 'resallnorespchat', 'resallnorespondkuis', 'resallunmap', 'chatalloc', 'chat', 'review', 'members', 'member', 'membertotal', 'kuis', 'resp', 'provcur', 'kabcur', 'keccur'));
     }
 
