@@ -45,7 +45,7 @@
                         <div class="card-body">
 
                             <div class="form-group">
-                                <label>Pindahkan catin ke petugas KB</label>
+                                <label>Pindahkan catin ke petugas</label>
                                 <select name="user" class="form-control" id="user">
                                     <option value="">Pilih</option>
                                     @foreach ($users as $key => $row)
