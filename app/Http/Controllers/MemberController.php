@@ -355,7 +355,7 @@ class MemberController extends Controller
                 ->first();
 
         //decode token
-        $decode = decrypt($token);
+        $decode = decrypt($request->token);
         $arr_decode = explode($decode, '+');
         Log::debug('arr_decode==========', $arr_decode);
         Log::debug('member==========',array($member_delegates));
