@@ -170,18 +170,22 @@
                         </div>
                     </div>
                 </div>
-                @if($is_dampingi)
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title"></div>
                         <div class="card-toolbar">
+                            @if($is_dampingi)
                             <button class="btn btn-sm btn-warning kelola" id="kelola" width="100%" title="Dampingi catin" data-id="{{ $member->id }}">
                                 <i class="flaticon-businesswoman"></i> Dampingi Catin 
                             </button>
+                            @else
+                            <button disabled class="btn btn-sm btn-warning kelola" id="kelola" width="100%" title="Dampingi catin" data-id="{{ $member->id }}">
+                                <i class="flaticon-businesswoman"></i> Dampingi Catin 
+                            </button>
+                            @endif
                         </div>
                     </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>
