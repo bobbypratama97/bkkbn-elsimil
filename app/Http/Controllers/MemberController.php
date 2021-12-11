@@ -81,9 +81,9 @@ class MemberController extends Controller
         ->leftJoin('adms_kelurahan', function($join) {
             $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
         })
-        // ->leftJoin('member_delegate', function($join) {
-        //     $join->on('members.id', '=', 'member_delegate.member_id');
-        // })
+        ->leftJoin('member_delegate', function($join) {
+            $join->on('members.id', '=', 'member_delegate.member_id');
+        })
         // ->leftJoin('users', function($join) {
         //     $join->on('users.id', '=', 'member_delegate.user_id');
         // })
@@ -114,7 +114,7 @@ class MemberController extends Controller
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id)->where('members.kelurahan_id', $auth->kelurahan_id);
         }
 
-        $search = '';
+        $search = 'all';
         if (isset($request->s)) {
             if ($request->s == 'all') {
                 $search = 'all';
@@ -136,7 +136,7 @@ class MemberController extends Controller
             $self = $self->where('members.name', 'like', '%' . $request->name . '%');
         }
 
-        $paginate = $self->orderBy('id', 'asc')->paginate(10);
+        $paginate = $self->orderBy('id', 'asc')->distinct('members.id')->paginate(10);
         $self = $paginate->items();
         foreach ($self as $key => $val) {
             // if($role == 5){
