@@ -166,7 +166,7 @@
                             @if($detail["status"])
                               <span class="badge bg-success text-white">Sudah Mengisi</span>
                             @else
-                              <span class="badge bg-secondary text-white">Belum Mengisi</span>
+                              <span class="badge bg-secondary">Belum Mengisi</span>
                             @endif
                           </td>
                           <td>{{ $detail["updated_at"] }}</td>

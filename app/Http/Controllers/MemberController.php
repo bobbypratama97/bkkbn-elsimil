@@ -293,6 +293,7 @@ class MemberController extends Controller
     }
 
     public function logbook($id) {
+        $this->authorize('access', [\App\Member::class, Auth::user()->role, 'show']);
 
         $member = Member::where('id', $id)->first();
 
