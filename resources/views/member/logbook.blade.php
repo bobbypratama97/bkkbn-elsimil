@@ -68,7 +68,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
               <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-3">
                   <h5 class="card-title">Intervensi Pendampingan Calon Pengantin</h5>
@@ -127,17 +127,60 @@
               <div class="card card-custom gutter-b">
                 <div class="card-body flex-wrap py-3">
                   <h5 class="card-title mb-0">
-                    @if($last_result)
-                      Hasil Kuesioner Terakhir :
-                      <span class="badge text-white ml-3" style="background-color: {{ $last_result["rating_color"] }}">{{ $last_result["label"] }}</span>
-                    @endif
+                    <div class="row align-items-center">
+                      <div class="col-sm-8">
+                        Hasil Kuesioner Terakhir
+                        <br>
+                        <h6 class="mt-1">Tanggal : {{ ($last_result ? $last_result["created_at"] : '-') }}</h6>
+                      </div>
+                      <div class="col-sm-4">
+                        @if($last_result)
+                          <span class="badge text-white ml-3" style="background-color: {{ $last_result["rating_color"] }}">{{ $last_result["label"] }}</span>
+                        @else
+                          -
+                        @endif
+                        </div>
+                    </div>
                   </h5>
+                </div>
+              </div>
+
+              <div class="card card-custom gutter-b">
+                <div class="card-body flex-wrap py-3">
+                  <h5 class="card-title mb-8">
+                    Status Pengisian Logbook Pendamping
+                  </h5>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Tanggal Pengisian</th>
+                      </tr>
+                    </thead>
+                    <tbody class="h6">
+                      @foreach ($members_logbooks_status as $key => $detail)
+                        <tr>
+                          <td>{{ $detail["name"] }}</td>
+                          <td>
+                            @if($detail["status"])
+                              <span class="badge bg-success text-white">Sudah Mengisi</span>
+                            @else
+                              <span class="badge bg-secondary">Belum Mengisi</span>
+                            @endif
+                          </td>
+                          <td>{{ $detail["updated_at"] }}</td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+
                 </div>
               </div>
 
             </div>
 
-            <div class="col-sm-8">
+            <div class="col-sm-7">
               <div class="card card-custom gutter-b">
                 <div class="card-body flex-wrap py-3">
                   <h5 class="card-title mt-1 mb-8">Riwayat Intervensi</h3>
@@ -152,7 +195,7 @@
                         <th scope="col">Catatan</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="h6">
                       @foreach ($histories as $key => $detail)
                         <tr>
                           <td>{{  $detail["date"] }}</td>
