@@ -14,19 +14,19 @@ class ConfigSeeds extends Seeder
     {
         $configs = [
             [
-                'code' => 'role_child_4',
+                'code' => 'role_child_5',
                 'value' => '1',
                 'name' => 'Petugas KB',
                 'description' => '-'
             ],
             [
-                'code' => 'role_child_4',
+                'code' => 'role_child_5',
                 'value' => '2',
                 'name' => 'Petugas PKK',
                 'description' => '-'
             ],
             [
-                'code' => 'role_child_4',
+                'code' => 'role_child_5',
                 'value' => '3',
                 'name' => 'Petugas Bidan',
                 'description' => '-'

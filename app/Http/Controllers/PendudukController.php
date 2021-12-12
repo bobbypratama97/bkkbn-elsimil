@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PendudukTemplate;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ use Redirect;
 use Helper;
 
 use App\Penduduk;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PendudukController extends Controller
 {
@@ -281,5 +283,26 @@ class PendudukController extends Controller
         return json_encode($output);
 
         die();
+    }
+
+    public function downloadExcel(){
+        $penduduk[] = [
+            "KODE PROVINSI"     => '00',
+            "KODE KABUPATEN"    => '000',
+            "KODE KECAMATAN"    => '0000',
+            "KODE KELURAHAN"    => '00000',
+            "KODE RW"           => '00',
+            "KODE RT"           => '00',
+            "NIK"               => '-',
+            "NAMA"              => 'Nama Penduduk',
+            "TANGGAL"           => '7',
+            "BULAN"             => '7',
+            "TAHUN"             => '1999',
+            "HUBUNGAN KKI"      => '-',
+            "KKI"               => '-'
+        ];
+
+        $title = 'Template_Upload_Penduduk.xlsx';
+        return Excel::download(new PendudukTemplate($penduduk), $title);
     }
 }

@@ -84,13 +84,19 @@
 
                             <div class="form-group">
                                 <label>Role</label>
-                                <select class="form-control select2" id="roles" name="role">
+                                <select class="form-control select2" id="roles" name="role" onchange="roleChange(event)">
                                     @foreach ($roles as $key => $val)
                                     <option value="{{ $val->id }}" {{ ($user->role_id == $val->id) ? 'selected' : '' }}>{{ $val->name }}</option>
                                     @endforeach
                                 </select>
+                                <label></label>
+                                <select class="form-control select2" id="rolechild" name="rolechild" style="display: block;">
+                                <option value="">-</option>
+                                @foreach($role_childs as $rolechild)
+                                <option value="{{$rolechild['value']}}" {{ ($user->role_child_id == $rolechild['value']) ? 'selected' : '' }}>{{$rolechild['name']}}</option>
+                                @endforeach
+                                </select>
                             </div>
-
                         </div>
 
                         <div class="card-footer bg-gray-100 border-top-0">
@@ -132,7 +138,38 @@
                 }
             },    
         });
+
+        $('#rolechild').select2({
+            placeholder: "Pilih",
+            "language": {
+                "noResults": function(){
+                    return "Tidak ada data";
+                }
+            },    
+        });
     });
+
+    function roleChange(e) {
+        let id = e.target.value
+        let base_url = window.location.origin + '/' + window.location.pathname.split ('/') [1] + '/';
+
+        $.get(base_url+'user-management/role/'+id+'/child', function(res) {
+            var select = document.getElementById("rolechild");
+            select.innerHTML = ''
+            if(res.length > 0){
+                res.forEach(element => {
+                    let option = document.createElement("option");
+                    option.text = element.name;
+                    option.value = element.id;
+                    select.appendChild(option);
+                });
+                // document.getElementById("rolechild").style.display = "block";
+            }else{
+                // document.getElementById("rolechild").style.display = "none";
+            }
+        })
+    }
+
 </script>
 @endpush
 

@@ -16,7 +16,7 @@ use Helper;
 use App\Member;
 use App\ChatHeader;
 use App\ChatMessage;
-
+use App\Config;
 use App\MemberDelegate;
 
 class ChatController extends Controller
@@ -35,6 +35,7 @@ class ChatController extends Controller
             $limit = $request->has('limit') ? $request->limit : 15;
             $page = $request->has('paging') ? $request->paging : 0;
             $page = $page * 15;
+            $type = request('type');
 
             /*$res = ChatMessage::leftJoin('members', function($join) {
                 $join->on('members.id', '=', 'chat_message.member_id');
@@ -58,11 +59,16 @@ class ChatController extends Controller
             ->limit($limit)->offset($page)
             ->get();*/
 
+            $condition = '';
+            if($type) $condition = 'AND chat_header.type = '.$type;
             $sql = "
-                SELECT a.*, members.foto_pic AS pic, role.name AS jabatan FROM (SELECT chat_message.id, chat_message.member_id, chat_message.response_id, chat_message.message, chat_message.created_at, chat_message.status FROM chat_message WHERE member_id = {$id} ORDER BY id DESC LIMIT {$limit} OFFSET {$page}) a 
+                SELECT a.*, members.foto_pic AS pic, role.name AS jabatan 
+                    FROM (SELECT chat_message.id, chat_message.chat_id, chat_message.member_id, chat_message.response_id, chat_message.message, chat_message.created_at, chat_message.status FROM chat_message WHERE member_id = {$id} ORDER BY id DESC LIMIT {$limit} OFFSET {$page}) a 
                 LEFT JOIN members ON members.id = a.member_id
                 LEFT JOIN role_user ON role_user.user_id = a.response_id
                 LEFT JOIN role ON role.id = role_user.role_id
+                JOIN chat_header ON chat_header.id = a.chat_id
+                WHERE 1 = 1 {$condition}
                 ORDER BY a.id
             ";
 
@@ -116,14 +122,15 @@ class ChatController extends Controller
     }
 
     public function submit(Request $request) {
-        $check = ChatHeader::where('member_id', $request->id)->first();
-
         $stat = 0;
+        $chat_role_id = request('type') ?? $this->role_child_id;
 
-        $get = MemberDelegate::where('member_id', $request->id)->first();
-
+        $check = ChatHeader::where('member_id', $request->id)->where('type', $chat_role_id)->first();
+        $get = MemberDelegate::join('role_user as role', 'role.user_id', 'member_delegate.user_id')
+            ->where('role.role_child_id', $chat_role_id)
+            ->where('member_id', $request->id)
+            ->first();
         $responder_id = ($get) ? $get->user_id : null;
-
         if ($check) {
 
             $update = ChatMessage::where('chat_id', $check->id)->update([
@@ -160,6 +167,7 @@ class ChatController extends Controller
             $insertHeader->kecamatan_kode = $member->kecamatan_id;
             $insertHeader->kelurahan_kode = $member->kelurahan_id;
             $insertHeader->status = 0;
+            $insertHeader->type = $chat_role_id;
             $insertHeader->created_at = date('Y-m-d H:i:s');
             $insertHeader->created_by = $request->id;
 
@@ -201,6 +209,19 @@ class ChatController extends Controller
                 'message' => 'Chat gagal dikirim'
             ], 200);
         }
+    }
+
+    public function type(){
+        $role_childs = Config::select('name', 'value as type')
+            ->where('code', 'LIKE', '%role_child_%')
+            ->get();
+
+        return response()->json([
+            'code' => 200,
+            'error'   => false,
+            'message' => 'List Chat type',
+            'data' => $role_childs
+        ], 200);
     }
 
 }

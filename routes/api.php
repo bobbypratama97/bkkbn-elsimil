@@ -70,6 +70,7 @@ Route::group(['namespace' => 'Api\v1', 'prefix' => 'v1'], function() {
 
 	Route::post('chatlist', 'ChatController@list');
 	Route::post('chatsubmit', 'ChatController@submit');
+	Route::get('chattype', 'ChatController@type');
 
 	Route::post('notiflist', 'NotifikasiController@notiflist');
 	Route::post('notifdelete', 'NotifikasiController@notifdelete');

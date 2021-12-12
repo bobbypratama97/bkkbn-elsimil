@@ -48,4 +48,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $role;
     }
 
+    public function getRoleChildAttribute() {
+        $role = DB::table('role_user')->where('user_id', $this->id)->value('role_child_id');
+        return $role;
+    }
+
 }

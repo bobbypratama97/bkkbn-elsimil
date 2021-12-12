@@ -93,8 +93,12 @@
                                             <i class="flaticon2-menu-4"></i>
                                         </a>
                                         @endcan
-                                        @if (empty($row['petugas_id']))
+                                        @if (empty($row['petugas_id']) && $is_dampingi == true)
                                         <button class="btn btn-icon btn-sm btn-warning kelola" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
+                                            <i class="flaticon-businesswoman"></i>
+                                       </button>
+                                       @else
+                                       <button disabled class="btn btn-icon btn-sm btn-warning kelola" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
                                             <i class="flaticon-businesswoman"></i>
                                        </button>
                                        @endif
@@ -190,7 +194,7 @@
                                             label: "OK",
                                             className: 'btn-info',
                                             callback: function() {
-                                                //window.location.href = '{{ route('admin.member.index') }}';
+                                                // window.location.href = '{{ route("admin.member.show", '+id+') }}';
                                             }
                                         }
                                     }
@@ -206,7 +210,10 @@
                                             label: "OK",
                                             className: 'btn-info',
                                             callback: function() {
-                                                window.location.href = '{{ route('admin.member.index') }}';
+                                                let url = '{{ route("admin.member.show", ":queryId") }}';
+                                                url = url.replace(':queryId', id);
+                                                // window.location.href = '{{ route('admin.member.index') }}';
+                                                window.location.href = url;
                                             }
                                         }
                                     }
