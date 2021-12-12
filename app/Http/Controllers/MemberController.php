@@ -256,6 +256,7 @@ class MemberController extends Controller
     }
 
     public function logbook($id) {
+        $this->authorize('access', [\App\Member::class, Auth::user()->role, 'show']);
 
         $member = Member::where('id', $id)->first();
 
@@ -268,7 +269,10 @@ class MemberController extends Controller
         }
 
 
-        $logbook = Logbook::where('id_member',$member->id)->first();
+        $logbook = Logbook::where([
+            ['id_member','=',$member->id],
+            ['id_user','=',Auth::user()->id]
+        ])->first();
 
         if(!$logbook){
             $logbook = new Logbook();
@@ -298,14 +302,51 @@ class MemberController extends Controller
 
         $last_result = KuisResult::select([
             'label',
-            'rating_color'
+            'rating_color',
+            'created_at'
         ])
         ->where('kuisioner_result.status', 1)
         ->where('kuisioner_result.member_id', $id)
         ->first();
 
+        $members_delegates = MemberDelegate::leftJoin('users', function($join) {
+            $join->on('users.id', '=', 'member_delegate.user_id');
+        })
+        ->select([
+            'users.id as user_id',
+            'users.name as name'
+        ])->where([
+            ['member_delegate.member_id','=',$member->id],
+            ['member_delegate.status','=',1],
+            // ['logbooks.id_member','=',$member->id],
+        ])
+        ->groupBy('user_id')->get();
+
+        $members_logbooks_status = array();
+        foreach($members_delegates as $member_delegate){
+            $check_logbook = Logbook::where([
+                ['id_member','=',$member->id],
+                ['id_user','=',$member_delegate->user_id]
+            ])->first();
+            
+            $status = false ;
+            $updated_at = '-';
+            if($check_logbook){
+                $status = true;
+                $updated_at = \Carbon\Carbon::parse($check_logbook["created_at"])->setTimezone('Asia/Phnom_Penh')->isoFormat('D MMMM Y HH:mm:ss');
+            }
+
+            $temp = array(
+                'name' => $member_delegate['name'],
+                'status' => $status,
+                'updated_at' => $updated_at
+            );
+
+            array_push($members_logbooks_status, $temp);            
+        }
+
         return view('member.logbook', compact(
-            'member','logbook', 'histories','last_result','logbook_histories'));
+            'member','logbook', 'histories','last_result','logbook_histories','members_logbooks_status'));
     }
 
     public function show($id, Request $request) {
