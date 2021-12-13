@@ -61,19 +61,22 @@ class ChatController extends Controller
 
             $condition = '';
             if($type) $condition = 'AND chat_header.type = '.$type;
+            
             $sql = "
-                SELECT a.*, members.foto_pic AS pic, role.name AS jabatan 
+                SELECT a.*, members.foto_pic AS pic,
+                    if(configs.id is not null, configs.name, role.name) as jabatan
                     FROM (SELECT chat_message.id, chat_message.chat_id, chat_message.member_id, chat_message.response_id, chat_message.message, chat_message.created_at, chat_message.status FROM chat_message WHERE member_id = {$id} ORDER BY id DESC LIMIT {$limit} OFFSET {$page}) a 
-                LEFT JOIN members ON members.id = a.member_id
-                LEFT JOIN role_user ON role_user.user_id = a.response_id
-                LEFT JOIN role ON role.id = role_user.role_id
+                JOIN members ON members.id = a.member_id
+                JOIN role_user ON role_user.user_id = a.response_id
+                JOIN role ON role.id = role_user.role_id
                 JOIN chat_header ON chat_header.id = a.chat_id
+                LEFT JOIN configs ON configs.value = role_user.role_child_id
                 WHERE 1 = 1 {$condition}
                 ORDER BY a.id
             ";
 
             $res = DB::select($sql);
-
+            
             $fin = [];
             foreach ($res as $key => $row) {
                 $tanggal = explode(' ', $row->created_at);
@@ -131,6 +134,7 @@ class ChatController extends Controller
             ->where('member_id', $request->id)
             ->first();
         $responder_id = ($get) ? $get->user_id : null;
+
         if ($check) {
 
             $update = ChatMessage::where('chat_id', $check->id)->update([
@@ -211,9 +215,17 @@ class ChatController extends Controller
         }
     }
 
-    public function type(){
-        $role_childs = Config::select('name', 'value as type')
+    public function type(Request $request){
+        $role_childs = Config::select('configs.name', 'configs.value as type', DB::Raw('if(md.id is not null, 1, 0) as status'))
+            ->join('role_user as role', 'role.role_child_id', 'configs.value')
+            ->leftJoin('member_delegate as md', function($q) use($request){
+                $q->on('md.user_id', 'role.user_id')
+                    ->where('md.status', 1)
+                    ->where('md.member_id', $request->id);
+            })
             ->where('code', 'LIKE', '%role_child_%')
+            ->orderBy('configs.value', 'desc')
+            ->groupBy('configs.value')
             ->get();
 
         return response()->json([
