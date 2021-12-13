@@ -34,7 +34,7 @@ class KuisHamilController extends Controller
     private function _getKontakAwalResult($id)
     {
         $today = date("Y-m-d");
-        $base_url = env('BASE_URL_PDF');
+        $base_url = env('BASE_URL_FILE_EDUKASI');
         #kontak-awal
         $dataKontakAwal = KuesionerHamil::where([['id_member','=',$id],['periode','=',1]])
         ->select(['nama', 'nik', 'usia',
@@ -42,7 +42,7 @@ class KuisHamilController extends Controller
                 'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih','jamban_sehat',
                 'rumah_layak_huni', 'bansos','created_at','updated_at'])->first();
         $answerKontakAwal= array();
-        $oriPath = public_path('uploads/pdf');
+        $oriPath = public_path('documents');
         $filename = 'files51990Flyer_ibu hamil_15x21cm.pdf';
         $finalUrl = $oriPath."/".$filename;
 
@@ -204,7 +204,7 @@ class KuisHamilController extends Controller
 
     private function _get12MingguResult($id)
     {
-         $base_url = env('BASE_URL_PDF');
+        $base_url = env('BASE_URL_FILE_EDUKASI');
          #kontak-16-minggu
          $data12Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',2]])
          ->select(['berat_badan','tinggi_badan','lingkar_lengan_atas',
@@ -338,7 +338,7 @@ class KuisHamilController extends Controller
     private function _get16MingguResult($id)
     {
          $today = date("Y-m-d");
-         $base_url = env('BASE_URL_PDF');
+         $base_url = env('BASE_URL_FILE_EDUKASI');
          #kontak-16-minggu
          $data16Minggu = KuesionerHamil::where([['id_member','=',$id],['periode','=',3]])
          ->select(['hemoglobin','tensi_darah','gula_darah_sewaktu'])->first();
@@ -430,7 +430,7 @@ class KuisHamilController extends Controller
     private function _getIbuJaninResult($id,$periode)
     {
         $today = date("Y-m-d");
-        $base_url = env('BASE_URL_PDF');
+        $base_url = env('BASE_URL_FILE_EDUKASI');
         $periode_id = $this->_getPeriodeID($periode);
         $dataIbuJanin = KuesionerHamil::where([['id_member','=',$id],['periode','=',$periode_id]])
         ->select(['kenaikan_berat_badan','hemoglobin','tensi_darah','gula_darah_sewaktu',
@@ -663,7 +663,7 @@ class KuisHamilController extends Controller
     private function _getPersalinanResult($id)
     {
          $today = date("Y-m-d");
-         $base_url = env('BASE_URL_PDF');
+        $base_url = env('BASE_URL_FILE_EDUKASI');
          #kontak-16-minggu
          $dataPersalinan = KuesionerHamil::where([['id_member','=',$id],['periode','=',9]])
          ->select(['tanggal_persalinan','kb','usia_janin','berat_janin','panjang_badan_janin','jumlah_bayi'
@@ -779,7 +779,7 @@ class KuisHamilController extends Controller
     private function _getNifasResult($id)
     {
         $today = date("Y-m-d");
-        $base_url = env('BASE_URL_PDF');
+        $base_url = env('BASE_URL_FILE_EDUKASI');
         #kontak-16-minggu
         $dataNifas = KuesionerHamil::where([['id_member','=',$id],['periode','=',10]])
         ->select(['komplikasi','asi','kbpp_mkjp'
@@ -861,7 +861,7 @@ class KuisHamilController extends Controller
     {
         #generic data
         $today = date("Y-m-d");
-        $base_url = env('BASE_URL_PDF');
+        $base_url = env('BASE_URL_FILE_EDUKASI');
         $finalData = array();
 
         #kontak awal
