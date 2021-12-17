@@ -226,6 +226,16 @@ class MemberController extends Controller
 
     public function logbookUpdate (Request $request) {
 
+        $cekdelegate = MemberDelegate::where('member_id', $request->id_member)
+        ->where('user_id', Auth::user()->id)->first();
+
+        if(!$cekdelegate){
+            return redirect()->back()->withErrors([
+                'error' => 'Perhatian',
+                'keterangan' => 'Hanya pendamping catin yang bisa mengisi logbook'
+            ]);
+        }
+
 
         $logbook = Logbook::where([['id_user','=', $request->id_user],['id_member','=', $request->id_member]])->first();
 
