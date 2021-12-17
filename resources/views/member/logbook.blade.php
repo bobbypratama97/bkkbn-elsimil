@@ -16,6 +16,14 @@
                   <div class="alert-text"><strong>Perhatian</strong><br />{{ Session::get( 'success' ) }}</div>
                 </div>
               @endif
+              @if ($errors->has('error'))
+                <div class="alert alert-custom alert-danger" role="alert">
+                    <div class="alert-icon">
+                        <i class="flaticon-warning"></i>
+                    </div>
+                    <div class="alert-text"><strong>{{ $errors->first('error') }}</strong><br />{{ $errors->first('keterangan') }}</div>
+                </div>
+                @endif
               <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-3">
                   <div class="card-title">
