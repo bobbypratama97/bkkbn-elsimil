@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Config;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -2868,4 +2869,32 @@ class HelperController extends Controller
         die();
     }
 
+    public function getRole(){
+        $select = '<option value="">Pilih Role</option>';
+        $roles = [
+            ['id' => 4, 'nama' => 'Admin Kecamatan', 'is_child' => 0],
+            ['id' => 5, 'nama' => 'Petugas Pendamping', 'is_child' => 1]
+        ];
+
+        foreach ($roles as $role) {
+            $select .= '<option value="'.$role['id'].'">' . $role['nama'] . '</option>';
+        }
+
+        $output = [
+            'count' => count($roles),
+            'content' => $select
+        ];
+
+        return json_encode($output);
+
+        die();
+    }
+
+    public function getRoleChild($roleid){
+		$role_child = Config::select('configs.value as id', 'configs.name')
+			->where('code', 'role_child_'.$roleid)
+			->get();
+
+		return $role_child;
+	}
 }

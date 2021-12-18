@@ -73,7 +73,8 @@ class RegisterController extends Controller
             'provinsi_id' => ['required'],
             'kabupaten_id' => ['required'],
             'kecamatan_id' => ['required'],
-            'kelurahan_id' => ['required']
+            'kelurahan_id' => ['required'],
+            'role' => ['required']
         ], $messages);
 
         if ($validator->fails()) {
@@ -104,7 +105,7 @@ class RegisterController extends Controller
         }
         // if (!checkdnsrr($domain, 'MX')) {
 
-        //print_r ($request->all()); die;
+        // print_r ($request->all()); die;
 
         $user = new User;
         $user->nik = Helper::encryptNik($request->nik);
@@ -122,8 +123,9 @@ class RegisterController extends Controller
 
 
         $insert = new UserRole;
-        $insert->role_id = 4;
+        $insert->role_id = $request->role;
         $insert->user_id = $user->id;
+        if($request->rolechild > 0) $insert->role_child_id = $request->rolechild;
 
         $insert->save();
 

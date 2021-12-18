@@ -64,7 +64,7 @@ class MemberController extends Controller
         $auth = Auth::user();
         $role = Auth::user()->role;
         $role_child = Auth::user()->roleChild;
-        $role_dampingi = $this->role_child_id; //hanya role bidan yg bisa mendapingi pertama kali
+        $role_dampingi = $this->role_child_id; //hanya role yg bisa mendapingi pertama kali
 
         if($role_child != $role_dampingi) $is_dampingi = false;
         else $is_dampingi = true;
@@ -393,7 +393,8 @@ class MemberController extends Controller
         ->first();
 
         //generate token
-        $token = encrypt($member->id.'+'.Auth::user()->id.'+generatetoken');
+        // $token = encrypt($member->id.'+'.Auth::user()->id.'+generatetoken');
+        $token = md5($member->id.'+generatetoken');
         if($member->user_id) $member->link_token = url()->current().'?token='.$token;
         else $member->link_token = null;
 
@@ -408,13 +409,10 @@ class MemberController extends Controller
         //decode token
         $is_dampingi = false;
         if($request->has('token')){
-            $decode = decrypt($request->token);
-            $arr_decode = explode('+', $decode);
-            
-            Log::debug('arr_decode==========', $arr_decode);
-            Log::debug('member==========',array($member_delegates));
+            //generate token
+            $self_token = md5($id.'+generatetoken');
 
-            if(!$member_delegates && ($arr_decode[0] == $id)) $is_dampingi = true;
+            if(!$member_delegates && ($self_token == $request->token)) $is_dampingi = true;
             else $is_dampingi = false;
         }
         
