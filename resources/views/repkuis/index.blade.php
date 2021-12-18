@@ -139,7 +139,21 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="row">
+                        <!-- <div style="margin-bottom: 1%;font-weight: bold; font-size: 14px;">Summary Kuisioner:</div>
+                        <div class="d-flex flex-row align-content-center">
+                            <p style="border:solid thick red; border-radius: 1em; 
+                                border-width:3px; padding-left:9px; padding-top:6px; 
+                                padding-bottom:6px; margin:2px; width:50px;height: 20px;background-color: red;"></p> 
+                                <div style="margin-left: 1%;">Beresiko</div>
+                        </div>
+                        <div class="d-flex flex-row align-content-center">
+                            <p style="border:solid thick green; border-radius: 1em; 
+                                border-width:3px; padding-left:9px; padding-top:6px; 
+                                padding-bottom:6px; margin:2px; width:50px;height: 20px;background-color: green;"></p> 
+                                <div style="margin-left: 1%;">Aman</div>
+                        </div> -->
+
+                        <div class="row" style="margin-top: 2%">
                             @for ($i = 1; $i < 20; $i++)
                             <div class="col-lg-4 mb-10" id="own-{{ $i }}">
                                 <canvas class="charts" id="myChart-{{ $i }}"></canvas>
@@ -284,15 +298,15 @@
                     size: 'small'
                 });
             }
-            else if(tanggal == '') {
-                bootbox.alert({
-                    title: 'Perhatian',
-                    centerVertical: true,
-                    closeButton: false,
-                    message: "<p class='text-center'>Range Tanggal harus dipilih</p>",
-                    size: 'small'
-                });
-            }
+            // else if(tanggal == '') {
+            //     bootbox.alert({
+            //         title: 'Perhatian',
+            //         centerVertical: true,
+            //         closeButton: false,
+            //         message: "<p class='text-center'>Range Tanggal harus dipilih</p>",
+            //         size: 'small'
+            //     });
+            // }
             else {
 
                 $('#detail-kuesioner').val(kuesioner);
@@ -339,6 +353,7 @@
                     },
                     dataType: "json",
                     success: function(data) {
+                            console.log(data)
                         if (data.count == '0') {
                             bootbox.alert({
                                 title: 'Perhatian',
@@ -356,7 +371,7 @@
                             }
 
                             $.each(data.data, function(index, item) {
-
+                                
                                 $('#myChart-' + index).show();
                                 $('#own-' + index).show();
 
@@ -368,6 +383,7 @@
                                         labels: item.legend,
                                         datasets: [{
                                             label: item.label,
+                                            links: ['www.google.com', 'www.fb.com'],
                                             data: item.value,
                                             backgroundColor: item.color
                                         }],
@@ -384,7 +400,13 @@
                                             intersect: false
                                         },
                                         legend: {
-                                            position: 'right'
+                                            position: 'right',
+                                            onClick: function (e, elem){
+                                                // alert(JSON.stringify(elem))
+                                                if(typeof item.link != 'undefined'){
+                                                    window.open(item.link[elem.index])
+                                                }
+                                            }
                                         },
                                     }
                                 });
