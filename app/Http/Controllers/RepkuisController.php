@@ -110,9 +110,9 @@ class RepkuisController extends Controller
 
         //print_r ($res);
 
-
         $total = [0];
         $final = [];
+        $whereSummary = '';
         if ($res->isNotEmpty()) {
             $res = $res->toArray();
 
@@ -123,9 +123,7 @@ class RepkuisController extends Controller
                 ->leftJoin('members', function($join) {
                     $join->on('members.id', '=', 'kuisioner_result.member_id');
                 })
-                ->where('kuisioner_result_detail.pertanyaan_bobot_id', $row['bobot_id'])
-                ->where('kuisioner_result.status', 1)
-                ->groupBy('kuisioner_result.member_id');
+                ->where('kuisioner_result.status', 1);
 
                 if (!empty($request->tanggal)) {
                     $exp = explode(' - ', $request->tanggal);
@@ -137,10 +135,12 @@ class RepkuisController extends Controller
 
                     // $result->whereBetween('kuisioner_result.created_at', [$start, $end]);
                     $result->whereBetween(DB::raw('date(kuisioner_result.created_at)'), [$start, $end]);
+                    $whereSummary .= " AND (date(kuisioner_result.created_at) BETWEEN '".$start."' AND '".$end."')";
                 }
 
                 if (!empty($request->provinsi)) {
                     $result->where('members.provinsi_id', $request->provinsi);
+                    $whereSummary .= " AND members.provinsi_id = ".$request->provinsi;
                 }
 
                 if (!empty($request->kabupaten)) {
@@ -165,10 +165,12 @@ class RepkuisController extends Controller
                 }
 
                 if (!empty($request->gender)) {
-                    $result->where('kuisioner_result.gender', $request->gender);
+                    $result->where('kuisioner_result.kuis_gender', $request->gender);
                 }
 
-                $result = $result->get();
+                $result = $result->where('kuisioner_result_detail.pertanyaan_bobot_id', $row['bobot_id'])
+                    ->groupBy('kuisioner_result.member_id')
+                    ->get();
 
                 if ($result->isNotEmpty()) {
                     $count = count($result);
@@ -180,6 +182,7 @@ class RepkuisController extends Controller
 
                 $res[$key]['hitung'] = $count;
             }
+            // return $res;
 
             $fin = [];
             foreach ($res as $keys => $vals) {
@@ -220,6 +223,40 @@ class RepkuisController extends Controller
             'count' => $total,
             'data' => $final
         ];
+
+        //get summary report
+        $summary = "SELECT kuisioner_result.kuis_id, max(kuisioner_summary.`label`) as label, max(kuisioner_summary.`rating_color`) as rating_color, COUNT(kuisioner_result.id) AS total
+                    FROM
+                        kuisioner_result  
+                        JOIN members ON members.id =kuisioner_result.`member_id`
+                        JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id`
+                    WHERE kuisioner_result.label IS NOT NULL
+                        AND kuisioner_result.kuis_id = ".$request->kuesioner."
+                        AND kuisioner_result.status = 1 {$whereSummary}
+                        GROUP BY kuisioner_summary.`kondisi`;
+                        ";
+        $summ = DB::select($summary);
+        $total = array_sum(array_column($summ, 'total'));
+        foreach ($summ as $keys => $rows) {
+            $rows->count = $rows->total ?? 0;
+            $rows->persen = ($total == '0') ? 0 : round($rows->count / $total, 1) * 100;
+        }
+ 
+        if($summ) {
+            $finKuis['label'] = 'Summary Kuisioner';
+            $finKuis['total'] = $total ?? 0;
+
+            foreach ($summ as $keys => $rows) {
+                $finKuis['legend'][$keys] = $rows->label . ' ('.$rows->count.') ' . $rows->persen . ' %';
+                $finKuis['color'][$keys] = $rows->rating_color;
+                $finKuis['value'][$keys] = $rows->persen;
+                $finKuis['jumlah'][$keys] = $rows->count;
+                $finKuis['link'][$keys] = route('admin.repkuis.detail', ['keyword' => $rows->label, 'kuesioner' => $rows->kuis_id, 'search'=> 'all']);
+            }
+
+            $output['data'][] = $finKuis;
+        }
+
 
         return response()->json($output);
 
@@ -483,6 +520,7 @@ class RepkuisController extends Controller
         }
 
         if($request->keyword != ''){
+            // return $request->keyword;
             $key = $request->keyword;
             $self->where(function($q) use($key){
                 $q->where('kuisioner_result.kuis_title', 'LIKE', '%'.$key.'%');
@@ -493,15 +531,15 @@ class RepkuisController extends Controller
             });
         }
 
-        $st = $self->toSql();
+        // $st = $self->toSql();
         // echo('<pre>');
         // print_r($self);die;
-        
-        $self = $self->get();
+        $paginate = $self->groupBy('kuisioner_result.member_id')->paginate(10);
+        $self = $paginate->items();
 
         $cop = [];
-        if ($self->isNotEmpty()) {
-            $self = $self->toArray();
+        if ($self) {
+            // $self = $self->toArray();
 
             foreach ($self as $key => $val) {
                 $couple = MemberCouple::leftJoin('members', function($join) {
@@ -529,146 +567,146 @@ class RepkuisController extends Controller
             $self = [];
         }
 
+        // $couple = KuisResult::leftJoin('members', function($join) {
+        //     $join->on('members.id', '=', 'kuisioner_result.member_id');
+        // })
+        // ->leftJoin('kuisioner_summary', function($join) {
+        //     $join->on('kuisioner_summary.id', '=', 'kuisioner_result.summary_id');
+        // })
+        // ->leftJoin('adms_provinsi', function($join) {
+        //     $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
+        // })
+        // ->leftJoin('adms_kabupaten', function($join) {
+        //     $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
+        // })
+        // ->leftJoin('adms_kecamatan', function($join) {
+        //     $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
+        // })
+        // ->leftJoin('adms_kelurahan', function($join) {
+        //     $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
+        // })
+        // ->leftJoin('kuisioner_result_comment', function($join) {
+        //     $join->on('kuisioner_result_comment.result_id', '=', 'kuisioner_result.id');
+        // })
+        // ->leftJoin('member_delegate', function($join) {
+        //     $join->on('member_delegate.member_id', '=', 'members.id');
+        // })
+        // ->leftJoin('users', function($join) {
+        //     $join->on('users.id', '=', 'member_delegate.user_id');
+        // })
+        // ->leftJoin('member_couple', function($join) {
+        //     $join->on('member_couple.couple_id', '=', 'members.id');
+        // })
+        // ->where('kuisioner_result.status', 1)
+        // ->where('member_couple.status', '=', 'APM200')
+        // ->whereNotIn('member_delegate.member_id', $cop)
+        // ->orderBy('kuisioner_result.id', 'DESC')
+        // ->select([
+        //     'kuisioner_result.*',
+        //     'members.id as memberid',
+        //     'members.name as nama',
+        //     'adms_provinsi.nama as provinsi',
+        //     'adms_kabupaten.nama as kabupaten',
+        //     'adms_kecamatan.nama as kecamatan',
+        //     'adms_kelurahan.nama as kelurahan',
+        //     'kuisioner_summary.label as kuis_label',
+        //     'kuisioner_result_comment.komentar',
+        //     'users.id as petugas_id',
+        //     'users.name as petugas'
+        // ]);
 
-        $couple = KuisResult::leftJoin('members', function($join) {
-            $join->on('members.id', '=', 'kuisioner_result.member_id');
-        })
-        ->leftJoin('kuisioner_summary', function($join) {
-            $join->on('kuisioner_summary.id', '=', 'kuisioner_result.summary_id');
-        })
-        ->leftJoin('adms_provinsi', function($join) {
-            $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
-        })
-        ->leftJoin('adms_kabupaten', function($join) {
-            $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
-        })
-        ->leftJoin('adms_kecamatan', function($join) {
-            $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
-        })
-        ->leftJoin('adms_kelurahan', function($join) {
-            $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
-        })
-        ->leftJoin('kuisioner_result_comment', function($join) {
-            $join->on('kuisioner_result_comment.result_id', '=', 'kuisioner_result.id');
-        })
-        ->leftJoin('member_delegate', function($join) {
-            $join->on('member_delegate.member_id', '=', 'members.id');
-        })
-        ->leftJoin('users', function($join) {
-            $join->on('users.id', '=', 'member_delegate.user_id');
-        })
-        ->leftJoin('member_couple', function($join) {
-            $join->on('member_couple.couple_id', '=', 'members.id');
-        })
-        ->where('kuisioner_result.status', 1)
-        ->where('member_couple.status', '=', 'APM200')
-        ->whereNotIn('member_delegate.member_id', $cop)
-        ->orderBy('kuisioner_result.id', 'DESC')
-        ->select([
-            'kuisioner_result.*',
-            'members.id as memberid',
-            'members.name as nama',
-            'adms_provinsi.nama as provinsi',
-            'adms_kabupaten.nama as kabupaten',
-            'adms_kecamatan.nama as kecamatan',
-            'adms_kelurahan.nama as kelurahan',
-            'kuisioner_summary.label as kuis_label',
-            'kuisioner_result_comment.komentar',
-            'users.id as petugas_id',
-            'users.name as petugas'
-        ]);
+        // if (!empty($request->tanggal)) {
+        //     $exp = explode(' - ', $request->tanggal);
 
-        if (!empty($request->tanggal)) {
-            $exp = explode(' - ', $request->tanggal);
+        //     $start = explode('/', $exp[0]);
+        //     $start = $start[2] . '-' . $start[1] . '-' . $start[0];
+        //     $end = explode('/', $exp[1]);
+        //     $end = $end[2] . '-' . $end[1] . '-' . $end[0];
 
-            $start = explode('/', $exp[0]);
-            $start = $start[2] . '-' . $start[1] . '-' . $start[0];
-            $end = explode('/', $exp[1]);
-            $end = $end[2] . '-' . $end[1] . '-' . $end[0];
+        //     $couple->whereBetween('kuisioner_result.created_at', [$start, $end]);
+        // }
 
-            $couple->whereBetween('kuisioner_result.created_at', [$start, $end]);
-        }
+        // if (!empty($request->nik)) {
+        //     $cekKtp = Helper::dcNik($request->nik);
+        //     $couple->where('members.nik', 'LIKE', '%' . $cekKtp . '%');
+        // }
 
-        if (!empty($request->nik)) {
-            $cekKtp = Helper::dcNik($request->nik);
-            $couple->where('members.nik', 'LIKE', '%' . $cekKtp . '%');
-        }
+        // if (!empty($request->nama)) {
+        //     $couple->where('members.name', $request->nama);
+        // }
 
-        if (!empty($request->nama)) {
-            $couple->where('members.name', $request->nama);
-        }
+        // if (!empty($request->gender)) {
+        //     $couple->where('kuisioner_result.gender', $request->gender);
+        // }
 
-        if (!empty($request->gender)) {
-            $couple->where('kuisioner_result.gender', $request->gender);
-        }
+        // if (empty($request->kuesioner)) {
+        //     $couple->whereNull('kuisioner_result_comment.komentar');
+        // }
 
-        if (empty($request->kuesioner)) {
-            $couple->whereNull('kuisioner_result_comment.komentar');
-        }
+        // if (isset($request->search)) {
+        //     if ($request->search == 'mine') {
+        //         $couple->where('kuisioner_result.responder_id', Auth::id());
+        //     } else if ($request->search == 'other') {
+        //         $couple->where('kuisioner_result.responder_id', '!=', Auth::id());
+        //     } else if ($request->search == 'all') {
 
-        if (isset($request->search)) {
-            if ($request->search == 'mine') {
-                $couple->where('kuisioner_result.responder_id', Auth::id());
-            } else if ($request->search == 'other') {
-                $couple->where('kuisioner_result.responder_id', '!=', Auth::id());
-            } else if ($request->search == 'all') {
+        //     } else {
+        //         $couple->where('kuisioner_result.responder_id', Auth::id());
+        //     }
+        //     $selected = $request->search;
+        // } else {
+        //     $couple->where('kuisioner_result.responder_id', Auth::id());
+        //     $selected = 'mine';
+        // }
 
-            } else {
-                $couple->where('kuisioner_result.responder_id', Auth::id());
-            }
-            $selected = $request->search;
-        } else {
-            $couple->where('kuisioner_result.responder_id', Auth::id());
-            $selected = 'mine';
-        }
+        // if($request->keyword != ''){
+        //     $key = $request->keyword;
+        //     $couple->where(function($q) use($key){
+        //         $q->where('kuisioner_result.kuis_title', 'LIKE', '%'.$key.'%');
+        //         $q->OrWhere('members.name', 'LIKE', '%'.$key.'%');
+        //     });
+        // }
 
-        if($request->keyword != ''){
-            $key = $request->keyword;
-            $couple->where(function($q) use($key){
-                $q->where('kuisioner_result.kuis_title', 'LIKE', '%'.$key.'%');
-                $q->OrWhere('members.name', 'LIKE', '%'.$key.'%');
-            });
-        }
+        // $couple = $couple->get();
+        // // $st = $couple;
+        // // echo $st;die;
 
-        $couple = $couple->get();
-        // $st = $couple;
-        // echo $st;die;
+        // if ($couple->isNotEmpty()) {
+        //     $couple = $couple->toArray();
 
-        if ($couple->isNotEmpty()) {
-            $couple = $couple->toArray();
+        //     $pasangan = '';
+        //     foreach ($couple as $key => $val) {
+        //         $coups = MemberCouple::leftJoin('members', function($join) {
+        //             $join->on('members.id', '=', 'member_couple.couple_id');
+        //         })
+        //         ->where('member_couple.member_id', $val['memberid'])
+        //         ->where('member_couple.status', '=', 'APM200')
+        //         ->select(['members.name as namapasangan'])
+        //         ->get();
 
-            $pasangan = '';
-            foreach ($couple as $key => $val) {
-                $coups = MemberCouple::leftJoin('members', function($join) {
-                    $join->on('members.id', '=', 'member_couple.couple_id');
-                })
-                ->where('member_couple.member_id', $val['memberid'])
-                ->where('member_couple.status', '=', 'APM200')
-                ->select(['members.name as namapasangan'])
-                ->get();
+        //         $pasangan = '';
+        //         if ($coups->isNotEmpty()) {
+        //             foreach ($coups as $keys => $vals) {
+        //                 $pasangan .= $vals->namapasangan . ', ';
+        //             }
+        //             $pasangan = substr($pasangan, 0, -2);
+        //             $couple[$key]['pasangan'] = $pasangan;
+        //         }
+        //     }
 
-                $pasangan = '';
-                if ($coups->isNotEmpty()) {
-                    foreach ($coups as $keys => $vals) {
-                        $pasangan .= $vals->namapasangan . ', ';
-                    }
-                    $pasangan = substr($pasangan, 0, -2);
-                    $couple[$key]['pasangan'] = $pasangan;
-                }
-            }
-
-        } else {
-            $couple = [];
-        }
+        // } else {
+        //     $couple = [];
+        // }
 
 
-        $result = array_merge($self, $couple);
+        // $result = array_merge($self, $couple);
+        $result = $self;
 
         if (isset($request->curl) && !empty($request->curl)) {
             $fullurl = $request->curl . '&search=' . $request->search . '&keyword=' . $request->keyword;
-            return redirect()->to($fullurl)->with(['result' => $result])->with(['selected' => $request->search]);
+            return redirect()->to($fullurl)->with(['result' => $result])->with(['selected' => $request->search, 'paginate' => $paginate]);
         } else {
-            return view('repkuis.detail', compact('result', 'selected'));
+            return view('repkuis.detail', compact('result', 'selected', 'paginate'));
         }
 
     }
