@@ -45,6 +45,9 @@ Route::post('/jenisedit', 'HelperController@jenisedit')->name('jenisedit');
 Route::post('/pilihanedit', 'HelperController@pilihanedit')->name('pilihanedit');
 Route::post('/widgetedit', 'HelperController@widgetedit')->name('widgetedit');
 
+Route::post('/roles', 'HelperController@getRole')->name('getrole');
+Route::get('/rolechild/{id}', 'HelperController@getRoleChild')->name('getrolechild');
+
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
      \UniSharp\LaravelFilemanager\Lfm::routes();
  });
@@ -114,7 +117,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('detail', 'ChatController@detail')->name('chat.detail');
 		Route::post('active', 'ChatController@active')->name('chat.active');
 		Route::post('send', 'ChatController@send')->name('chat.send');
-		Route::post('search', 'ChatController@search')->name('chat.search');
+		Route::get('search', 'ChatController@search')->name('chat.search');
 		Route::post('history', 'ChatController@history')->name('chat.history');
 		Route::post('refresh', 'ChatController@refresh')->name('chat.refresh');
 		Route::post('leave', 'ChatController@leave')->name('chat.leave');

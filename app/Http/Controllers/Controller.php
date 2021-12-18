@@ -12,5 +12,5 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public $accept_email = ['gmail.com', 'yahoo.com', 'yahoo.co.id'];
-    public $role_child_id = 3;
+    public $role_child_id = 1;
 }

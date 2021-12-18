@@ -15,7 +15,7 @@
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title"></div>
                         <div class="card-toolbar">
-                            @if($member->link_token && Auth::user()->roleChild == 3)
+                            @if($member->link_token && Auth::user()->roleChild == 1)
                             <input readonly id="copy_link" class="form mr-3 pt-3 form-control" style="width: 500px;white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" value="{{$member->link_token}}"/>
                             <button value="copy" class="btn btn-warning font-weight-bold mr-3 pt-3 text-center" onclick="copyToClipboard('copy_link')">Copy Link</button>
                             @endif
