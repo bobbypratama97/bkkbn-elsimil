@@ -90,8 +90,39 @@ class ChatController extends Controller
             $condition = "AND {$where} ((responder_id = {$user->id}))";
         }
 
-        $sql = "
-            SELECT 
+        // $sql = "
+        //     SELECT 
+        //         members.id,
+        //         members.name,
+        //         members.gender,
+        //         members.foto_pic,
+        //         adms_provinsi.nama AS provinsi,
+        //         adms_kabupaten.nama AS kabupaten,
+        //         adms_kecamatan.nama AS kecamatan,
+        //         adms_kelurahan.nama AS kelurahan,
+        //         chat_header.id AS chatid,
+        //         chat_header.responder_id AS header_responder_id,
+        //         chat_header.type,
+        //         role_user.role_id AS header_role_id,
+        //         (SELECT COUNT(*) FROM chat_message WHERE member_id = members.id) AS total,
+        //         chat_message.message,
+        //         chat_message.status,
+        //         chat_message.response_id AS child_responder_id,
+        //         chat_message.created_at,
+        //         users.name AS petugas
+        //     FROM chat_header 
+        //     LEFT JOIN members ON members.id = chat_header.member_id
+        //     LEFT JOIN adms_provinsi ON adms_provinsi.provinsi_kode = members.provinsi_id
+        //     LEFT JOIN adms_kabupaten ON adms_kabupaten.kabupaten_kode = members.kabupaten_id
+        //     LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
+        //     LEFT JOIN adms_kelurahan ON adms_kelurahan.kelurahan_kode = members.kelurahan_id
+        //     LEFT JOIN role_user ON role_user.user_id = chat_header.responder_id
+        //     LEFT JOIN chat_message ON chat_message.chat_id = chat_header.id AND chat_message.last = 1
+        //     LEFT JOIN users ON users.id = chat_header.responder_id
+        //     WHERE 1 = 1 AND chat_header.type = '".Auth::user()->roleChild."' $condition
+        //     ORDER BY chat_message.id DESC LIMIT 100
+        // ";
+        $query = ChatHeader::selectRaw('
                 members.id,
                 members.name,
                 members.gender,
@@ -110,20 +141,27 @@ class ChatController extends Controller
                 chat_message.response_id AS child_responder_id,
                 chat_message.created_at,
                 users.name AS petugas
-            FROM chat_header 
-            LEFT JOIN members ON members.id = chat_header.member_id
-            LEFT JOIN adms_provinsi ON adms_provinsi.provinsi_kode = members.provinsi_id
-            LEFT JOIN adms_kabupaten ON adms_kabupaten.kabupaten_kode = members.kabupaten_id
-            LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
-            LEFT JOIN adms_kelurahan ON adms_kelurahan.kelurahan_kode = members.kelurahan_id
-            LEFT JOIN role_user ON role_user.user_id = chat_header.responder_id
-            LEFT JOIN chat_message ON chat_message.chat_id = chat_header.id AND chat_message.last = 1
-            LEFT JOIN users ON users.id = chat_header.responder_id
-            WHERE 1 = 1 AND chat_header.type = '".Auth::user()->roleChild."' $condition
-            ORDER BY chat_message.id DESC LIMIT 100
-        ";
+            ')
+            ->join('members', 'members.id', 'chat_header.member_id')
+            ->join('adms_provinsi', 'adms_provinsi.provinsi_kode', 'members.provinsi_id')
+            ->join('adms_kabupaten', 'adms_kabupaten.kabupaten_kode', 'members.kabupaten_id')
+            ->join('adms_kecamatan', 'adms_kecamatan.kecamatan_kode', 'members.kecamatan_id')
+            ->join('adms_kelurahan', 'adms_kelurahan.kelurahan_kode', 'members.kelurahan_id')
+            ->leftJoin('role_user', 'role_user.user_id', 'chat_header.responder_id')
+            ->join('chat_message', function($q) {
+                $q->on('chat_message.chat_id', 'chat_header.id')
+                    ->where('chat_message.last', 1);
+            })
+            ->leftJoin('users', 'users.id', 'chat_header.responder_id')
+            ->where('chat_header.type', Auth::user()->roleChild)
+            ->whereRaw('(role_user.role_id = 1 OR (responder_id = '.$user->id.' OR responder_id IS NULL))');
 
-        $list = DB::select($sql);
+        if($condition != '') $query->whereRaw('1=1 '.$condition);
+            
+        // $list = DB::select($sql)->paginate(10);
+        $paginate = $query->paginate(10);
+        $list = $paginate->items(); 
+        // return $list;
         
         if (!empty($list)) {
             $curr = '';
@@ -220,7 +258,7 @@ class ChatController extends Controller
 
         $selected = 'mine';
 
-        return view ('chat.index', compact('list', 'selected'));
+        return view ('chat.index', compact('list', 'selected', 'paginate'));
     }
 
     public function search(Request $request) {
@@ -297,8 +335,41 @@ class ChatController extends Controller
             $condition = "{$where} {$filter}";
         }
 
-        $sql = "
-            SELECT 
+        // $sql = "
+        //     SELECT 
+        //         members.id,
+        //         members.name,
+        //         members.gender,
+        //         members.foto_pic,
+        //         adms_provinsi.nama AS provinsi,
+        //         adms_kabupaten.nama AS kabupaten,
+        //         adms_kecamatan.nama AS kecamatan,
+        //         adms_kelurahan.nama AS kelurahan,
+        //         chat_header.id AS chatid,
+        //         chat_header.responder_id AS header_responder_id,
+        //         role_user.role_id AS header_role_id,
+        //         (SELECT COUNT(*) FROM chat_message WHERE member_id = members.id) AS total,
+        //         chat_message.message,
+        //         chat_message.status,
+        //         chat_message.response_id AS child_responder_id,
+        //         chat_message.created_at,
+        //         users.name AS petugas
+        //     FROM chat_header 
+        //     LEFT JOIN members ON members.id = chat_header.member_id
+        //     LEFT JOIN adms_provinsi ON adms_provinsi.provinsi_kode = members.provinsi_id
+        //     LEFT JOIN adms_kabupaten ON adms_kabupaten.kabupaten_kode = members.kabupaten_id
+        //     LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
+        //     LEFT JOIN adms_kelurahan ON adms_kelurahan.kelurahan_kode = members.kelurahan_id
+        //     LEFT JOIN role_user ON role_user.user_id = chat_header.responder_id
+        //     LEFT JOIN chat_message ON chat_message.chat_id = chat_header.id AND chat_message.last = 1
+        //     LEFT JOIN users ON users.id = chat_header.responder_id
+        //     WHERE 1 = 1 {$condition}
+        //     ORDER BY chat_message.id DESC LIMIT 100
+        // ";
+
+
+        // $list = DB::select($sql);
+        $query = ChatHeader::selectRaw('
                 members.id,
                 members.name,
                 members.gender,
@@ -309,6 +380,7 @@ class ChatController extends Controller
                 adms_kelurahan.nama AS kelurahan,
                 chat_header.id AS chatid,
                 chat_header.responder_id AS header_responder_id,
+                chat_header.type,
                 role_user.role_id AS header_role_id,
                 (SELECT COUNT(*) FROM chat_message WHERE member_id = members.id) AS total,
                 chat_message.message,
@@ -316,21 +388,23 @@ class ChatController extends Controller
                 chat_message.response_id AS child_responder_id,
                 chat_message.created_at,
                 users.name AS petugas
-            FROM chat_header 
-            LEFT JOIN members ON members.id = chat_header.member_id
-            LEFT JOIN adms_provinsi ON adms_provinsi.provinsi_kode = members.provinsi_id
-            LEFT JOIN adms_kabupaten ON adms_kabupaten.kabupaten_kode = members.kabupaten_id
-            LEFT JOIN adms_kecamatan ON adms_kecamatan.kecamatan_kode = members.kecamatan_id
-            LEFT JOIN adms_kelurahan ON adms_kelurahan.kelurahan_kode = members.kelurahan_id
-            LEFT JOIN role_user ON role_user.user_id = chat_header.responder_id
-            LEFT JOIN chat_message ON chat_message.chat_id = chat_header.id AND chat_message.last = 1
-            LEFT JOIN users ON users.id = chat_header.responder_id
-            WHERE 1 = 1 {$condition}
-            ORDER BY chat_message.id DESC LIMIT 100
-        ";
+            ')
+            ->join('members', 'members.id', 'chat_header.member_id')
+            ->join('adms_provinsi', 'adms_provinsi.provinsi_kode', 'members.provinsi_id')
+            ->join('adms_kabupaten', 'adms_kabupaten.kabupaten_kode', 'members.kabupaten_id')
+            ->join('adms_kecamatan', 'adms_kecamatan.kecamatan_kode', 'members.kecamatan_id')
+            ->join('adms_kelurahan', 'adms_kelurahan.kelurahan_kode', 'members.kelurahan_id')
+            ->leftJoin('role_user', 'role_user.user_id', 'chat_header.responder_id')
+            ->join('chat_message', function($q) {
+                $q->on('chat_message.chat_id', 'chat_header.id')
+                    ->where('chat_message.last', 1);
+            })
+            ->leftJoin('users', 'users.id', 'chat_header.responder_id');
 
-
-        $list = DB::select($sql);
+        if($condition != '') $query->whereRaw('1=1 '.$condition);
+            
+        $paginate = $query->orderBy('chat_message.id', 'DESC')->paginate(10);
+        $list = $paginate->items(); 
         // echo '<pre>';
         // print_r($list);die;
 
@@ -426,7 +500,7 @@ class ChatController extends Controller
 
         $selected = $request->search;
 
-        return view ('chat.index', compact('list', 'selected'));
+        return view ('chat.index', compact('list', 'selected', 'paginate'));
     }
 
     public function show($id) {

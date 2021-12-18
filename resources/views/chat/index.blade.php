@@ -27,7 +27,7 @@
                     </div>
                     <div class="card-body">
 
-                        <form class="form-inline mb-7" method="POST" action="{{ route('admin.chat.search') }}">
+                        <form class="form-inline mb-7" method="GET" action="{{ route('admin.chat.search') }}">
                             <div class="form-group mr-3">
                                 <label for="email">Cari : </label>
                                 <select name="search" class="form-control ml-3">
@@ -59,6 +59,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(empty($list))
+                                <tr>
+                                    <td colspan="7" align="center">Data tidak ditemukan</td>
+                                </tr>
+                                @endif
                                 @foreach($list as $key => $row)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
@@ -87,6 +92,16 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="float-left">
+                            @if (count($list) > 1)
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($list) }} dari {{ $paginate->total() }} data
+                            @else
+                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                            @endif
+                            </div>
+                        <div class="float-right">
+                            {{ $paginate->appends($_GET)->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,34 +113,34 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            searching: false,
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
-    });
+    // $(document).ready(function() {
+    //     var table = $('#kt_datatable').DataTable({
+    //         "sScrollX": "100%",
+    //         //"sScrollXInner": "110%",
+    //         searching: false,
+    //         "bLengthChange": false,
+    //         "ordering": false,
+    //         "iDisplayLength": 10,
+    //         "oLanguage": {
+    //             "sSearch": "Cari : ",
+    //             "oPaginate": {
+    //                 "sFirst": "Hal. Pertama",
+    //                 "sPrevious": "Sebelumnya",
+    //                 "sNext": "Berikutnya",
+    //                 "sLast": "Hal. Terakhir"
+    //             }
+    //         },
+    //         "language": {
+    //             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+    //             "infoEmpty": "Menampilkan 0 dari _MAX_ data",
+    //             "zeroRecords": "Tidak ada data",
+    //             "sInfoFiltered":   "",
+    //         },
+    //         columnDefs: [
+    //             { "width": "50px", "targets": [0] }
+    //         ]
+    //     });
+    // });
 
     $('#kt_datatable tbody').on('click', '.check', function () {
         var id = $(this).attr('data-id');
