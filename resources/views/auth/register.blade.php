@@ -81,6 +81,15 @@
                             <select class="form-control select2" id="kelurahan" name="kelurahan_id" required required oninvalid="this.setCustomValidity('Kelurahan harus diisi')" oninput="setCustomValidity('')">
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label class="pl-8">Roles</label>
+                            <select class="form-control select2" id="roles" name="role" onchange="roleChange(event)" required oninvalid="this.setCustomValidity('Role harus diisi')" oninput="setCustomValidity('')">
+                            </select>
+
+                            <label></label>
+                            <select class="form-control select2" id="rolechild" name="rolechild" style="display: block;" >
+                            </select>
+                        </div>
                         <div class="form-group d-flex flex-wrap flex-center mt-10">
                             <button type="submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">SIMPAN</button>
                         </div>
@@ -144,6 +153,24 @@
             },    
         });
 
+        $('#roles').select2({
+            placeholder: "Pilih Role",
+            "language": {
+                "noResults": function(){
+                    return "Tidak ada data";
+                }
+            },    
+        });
+
+        $('#rolechild').select2({
+            placeholder: "Pilih Petugas",
+            "language": {
+                "noResults": function(){
+                    return "Tidak ada data";
+                }
+            },    
+        });
+
         $.ajax({
             type: "POST",
             url: '{{ route('provinsi') }}',
@@ -151,6 +178,19 @@
             dataType: "json",
             success: function(data) {
                 $('#provinsi').html(data.content);
+            },
+            failure: function(errMsg) {
+                alert(errMsg);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '{{ route('getrole') }}',
+            data: { "_token": "{{ csrf_token() }}" },
+            dataType: "json",
+            success: function(data) {
+                $('#roles').html(data.content);
             },
             failure: function(errMsg) {
                 alert(errMsg);
@@ -281,6 +321,36 @@
             $.preloader.stop();
         });
     });
+
+    function roleChange(e) {
+        let id = e.target.value
+        let route = 'rolechild/'+id
+
+        $('#rolechild').removeAttr('required')
+
+        $.get(route, function(res) {
+            var select = document.getElementById("rolechild");
+            if(res.length > 0){
+                select.innerHTML = '<option value="">Pilih Petugas</option>'
+                res.forEach(element => {
+                    let option = document.createElement("option");
+                    option.text = element.name;
+                    option.value = element.id;
+                    select.appendChild(option);
+                });
+                // document.getElementById("rolechild").style.display = "block";
+                $('#rolechild').attr('required', '')
+            }else{
+                select.innerHTML = ''
+                let option = document.createElement("option");
+                option.text = '-';
+                option.value = '-1';
+                select.appendChild(option);
+
+                // document.getElementById("rolechild").style.display = "none";
+            }
+        })
+    }
 </script>
 @endpush
 

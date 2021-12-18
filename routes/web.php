@@ -45,6 +45,9 @@ Route::post('/jenisedit', 'HelperController@jenisedit')->name('jenisedit');
 Route::post('/pilihanedit', 'HelperController@pilihanedit')->name('pilihanedit');
 Route::post('/widgetedit', 'HelperController@widgetedit')->name('widgetedit');
 
+Route::post('/roles', 'HelperController@getRole')->name('getrole');
+Route::get('/rolechild/{id}', 'HelperController@getRoleChild')->name('getrolechild');
+
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
      \UniSharp\LaravelFilemanager\Lfm::routes();
  });

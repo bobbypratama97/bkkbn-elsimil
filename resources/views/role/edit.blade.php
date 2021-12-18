@@ -40,20 +40,12 @@
 								<div class="col-md-12">
 									<div class="form-group">
 										<label for="nama" class="font-weight-bold">Nama Role</label>
-										@if ($role[0]->id == '1' || $role[0]->id == '2' || $role[0]->id == '3' || $role[0]->id == '4')
-										<input type="text" id="name" name="name" class="form-control" value="{{ $role[0]->name ?? '' }}" autofocus required readonly>
-										@else
 										<input type="text" id="name" name="name" class="form-control" value="{{ $role[0]->name ?? '' }}" autofocus required>
-										@endif
 									</div>
 
 									<div class="form-group">
 										<label for="nama" class="font-weight-bold">Deskripsi</label>
-										@if ($role[0]->id == '1' || $role[0]->id == '2' || $role[0]->id == '3' || $role[0]->id == '4')
-										<input type="text" id="deskripsi" name="deskripsi" class="form-control" value="{{ $role[0]->deskripsi ?? '' }}" required readonly>
-										@else
 										<input type="text" id="deskripsi" name="deskripsi" class="form-control" value="{{ $role[0]->deskripsi ?? '' }}" required>
-										@endif
 									</div>
 
 									<div class="form-group">
