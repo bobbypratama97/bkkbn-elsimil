@@ -19,12 +19,23 @@
                             <input readonly id="copy_link" class="form mr-3 pt-3 form-control" style="width: 500px;white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" value="{{$member->link_token}}"/>
                             <button value="copy" class="btn btn-warning font-weight-bold mr-3 pt-3 text-center" onclick="copyToClipboard('copy_link')">Copy Link</button>
                             @endif
+
+                            @if($is_dampingi)
+                            <button class="btn btn-sm btn-warning kelola mr-3 pt-3" id="kelola" width="100%" title="Dampingi catin" data-id="{{ $member->id }}">
+                                <i class="flaticon-businesswoman"></i> Dampingi Catin 
+                            </button>
+                            @else
+                            <button disabled class="btn btn-sm btn-default kelola mr-3 pt-3" id="kelola" width="100%" title="Dampingi catin" data-id="{{ $member->id }}">
+                                <i class="flaticon-businesswoman"></i> Dampingi Catin 
+                            </button>
+                            @endif
+
                             @can('access', [\App\Member::class, Auth::user()->role, 'blokir'])
                             @if ($member->is_active != '4')
-                            <form method="POST" action="{{ route('admin.member.blokir') }}" class="form mr-3 pt-3">
+                            <form method="POST" action="{{ route('admin.member.blokir') }}" class="form ">
                                 @csrf
                                 <input type="hidden" name="cid" value="{{ $member->id }}">
-                                <button type="submit" class="btn btn-success font-weight-bold py-3 px-6 mb-2 text-center btn-block">{{ ($member->is_active == '3') ? 'Buka Blokir Catin : ' . $member->name : 'Blokir Catin : ' . $member->name }}</button>
+                                <button type="submit" class="btn btn-success font-weight-bold mr-3 pt-3">{{ ($member->is_active == '3') ? 'Buka Blokir Catin : ' . $member->name : 'Blokir Catin : ' . $member->name }}</button>
                             </form>
                             @endif
                             @endcan
@@ -171,20 +182,7 @@
                     </div>
                 </div>
                 <div class="card card-custom gutter-b">
-                    <div class="card-header flex-wrap py-3">
-                        <div class="card-title"></div>
-                        <div class="card-toolbar">
-                            @if($is_dampingi)
-                            <button class="btn btn-sm btn-warning kelola" id="kelola" width="100%" title="Dampingi catin" data-id="{{ $member->id }}">
-                                <i class="flaticon-businesswoman"></i> Dampingi Catin 
-                            </button>
-                            @else
-                            <button disabled class="btn btn-sm btn-warning kelola" id="kelola" width="100%" title="Dampingi catin" data-id="{{ $member->id }}">
-                                <i class="flaticon-businesswoman"></i> Dampingi Catin 
-                            </button>
-                            @endif
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
