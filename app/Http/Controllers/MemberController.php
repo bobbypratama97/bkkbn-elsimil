@@ -28,12 +28,6 @@ use App\KuisResult;
 use App\Kuis;
 use App\KuisResultDetail;
 
-use App\KuisHamilKontakAwal;
-use App\KuisHamil12Minggu;
-use App\KuisHamil16Minggu;
-use App\KuisHamilIbuJanin;
-use App\KuisHamilPersalinan;
-use App\KuisHamilNifas;
 use App\KuesionerHamil;
 use App\LogbookHistory;
 use Illuminate\Support\Facades\Log;
@@ -328,7 +322,6 @@ class MemberController extends Controller
         ])->where([
             ['member_delegate.member_id','=',$member->id],
             ['member_delegate.status','=',1],
-            // ['logbooks.id_member','=',$member->id],
         ])
         ->groupBy('user_id')->get();
 
