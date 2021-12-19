@@ -219,7 +219,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'email' => ['required','email','unique:users,email,'.$id],
+            'email' => ['required','email','unique:users,email,'.$id]
         ], [
             'unique' => ':attribute sudah terdaftar.',
             'required' => ':attribute harus diisi.'
@@ -229,9 +229,17 @@ class UserController extends Controller
             return Redirect::back()->withErrors(['error' => 'Gagal', 'keterangan' => $validator->errors()->first()]);
         }
 
+        //cek nomor telp
+        $current_phone = User::where('no_telp', Helper::phoneNumber($request->no_telp))
+            ->whereNotIn('id', [$id])
+            ->first();
+
+        if($current_phone) return Redirect::back()->withErrors(['error' => 'Gagal', 'keterangan' => 'Nomor telepon sudah terdaftar.']);
+
         $update = User::where('id', $id)->update([
             'email' => $request->email,
             'name' => $request->name,
+            'no_telp' => Helper::phoneNumber($request->no_telp),
             'no_sk' => $request->no_sk,
             'sertifikat' => $request->sertifikat,
             'is_active' => $request->status,

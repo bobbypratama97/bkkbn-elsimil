@@ -42,6 +42,11 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Nomor Telepon</label>
+                                <input type="text" class="form-control" value="{{ $user->no_telp }}" name="no_telp" required />
+                            </div>
+
+                            <div class="form-group">
                                 <label>Email</label>
                                 <input type="text" class="form-control" value="{{ $user->email }}" name="email" required />
                             </div>
