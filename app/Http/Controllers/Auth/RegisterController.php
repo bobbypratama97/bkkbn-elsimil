@@ -113,6 +113,8 @@ class RegisterController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->no_sk = $request->no_sk;
+        $user->sertifikat = $request->sertifikat;
         $user->is_active = 1;
         $user->provinsi_id = $request->provinsi_id;
         $user->kabupaten_id = $request->kabupaten_id;

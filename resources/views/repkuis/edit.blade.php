@@ -49,7 +49,17 @@
                                     <div class="d-flex mr-3">
                                         <a href="#" class="text-dark-75 text-hover-primary font-size-h5 font-weight-bold mr-2">{{ $kuis->kuis_title }}</a>
                                     </div>
-                                    <div class="my-lg-0 my-3">
+                                    <div class="d-flex my-lg-0 my-3 row" >
+                                        @if($couple)
+                                        <div>
+                                            <form method="POST" action="{{ route('admin.repkuis.details') }}">
+                                                <input type="hidden" name="cu" value="{{ $fullurl }}">
+                                                <input type="hidden" name="cid" value="{{ $couple->kuis_result_id }}">
+                                                <button type="submit" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Kuisioner Pasangan - {{$couple->name}}">Kuisioner Pasangan</button>
+                                            </form>
+                                        </div>
+                                        @endif
+                                        <div>&nbsp;</div>
                                         <a href="{{ $fullurl }}" class="btn btn-sm btn-danger font-weight-bolder text-uppercase">Kembali</a>
                                     </div>
                                 </div>

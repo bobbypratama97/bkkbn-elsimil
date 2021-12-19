@@ -103,7 +103,7 @@
                         </a>
                         <!--end::Stats Widget 14-->
                     </div>
-                    <div class="col-6 col-xl-3">
+                    <div class="col-6 col-xl-2">
                         <!--begin::Stats Widget 15-->
                         <a href="#" class="card card-custom bg-primary bg-hover-state-success card-stretch gutter-b unclick">
                             <!--begin::Body-->
@@ -116,7 +116,7 @@
                         </a>
                         <!--end::Stats Widget 15-->
                     </div>
-                    <div class="col-6 col-xl-3">
+                    <div class="col-6 col-xl-2">
                         <!--begin::Stats Widget 15-->
                         <a href="#" class="card card-custom bg-primary bg-hover-state-success card-stretch gutter-b unclick">
                             <!--begin::Body-->
@@ -124,6 +124,19 @@
                                 <div class="font-weight-bolder text-inverse-primary font-size-h1" style="font-size:4rem!important;">{{ number_format($members['kecamatan']['count'], 0, ',', '.') }}</div>
                                 <div class="text-inverse-success font-weight-bolder font-size-h5 mb-2">{{ $members['kecamatan']['label'] }}</div>
                                 <div class="font-weight-bold text-inverse-success font-size-xs">{{ $members['kecamatan']['text'] }}</div>
+                            </div>
+                            <!--end::Body-->
+                        </a>
+                        <!--end::Stats Widget 15-->
+                    </div>
+                    <div class="col-6 col-xl-2">
+                        <!--begin::Stats Widget 15-->
+                        <a href="#" class="card card-custom bg-primary bg-hover-state-success card-stretch gutter-b unclick">
+                            <!--begin::Body-->
+                            <div class="card-body">
+                                <div class="font-weight-bolder text-inverse-primary font-size-h1" style="font-size:4rem!important;">{{ number_format($members['kelurahan']['count'], 0, ',', '.') }}</div>
+                                <div class="text-inverse-success font-weight-bolder font-size-h5 mb-2">{{ $members['kelurahan']['label'] }}</div>
+                                <div class="font-weight-bold text-inverse-success font-size-xs">{{ $members['kelurahan']['text'] }}</div>
                             </div>
                             <!--end::Body-->
                         </a>

@@ -55,7 +55,7 @@
                                 <select name="" class="form-control select2" id="kabupaten">
                                     <option value="">Pilih</option>
                                     @foreach ($kabupaten as $key => $row)
-                                    <option value="{{ $row->kabupaten_kode }}" {{ ($roles->role_id != '1') ? 'selected' : '' }}>{{ $row->nama }}</option>
+                                    <option value="{{ $row->kabupaten_kode }}" {{ ($roles->role_id != '1' && $roles->role_id != '2') ? 'selected' : '' }}>{{ $row->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -64,7 +64,7 @@
                                 <select name="" class="form-control select2" id="kecamatan">
                                     <option value="">Pilih</option>
                                     @foreach ($kecamatan as $key => $row)
-                                    <option value="{{ $row->kecamatan_kode }}" {{ ($roles->role_id != '1') ? 'selected' : '' }}>{{ $row->nama }}</option>
+                                    <option value="{{ $row->kecamatan_kode }}" {{ ($roles->role_id != '1' && $roles->role_id != '2' && $roles->role_id != '3') ? 'selected' : '' }}>{{ $row->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -73,7 +73,7 @@
                                 <select name="" class="form-control select2" id="kelurahan">
                                     <option value="">Pilih</option>
                                     @foreach ($kelurahan as $key => $row)
-                                    <option value="{{ $row->kelurahan_kode }}">{{ $row->nama }}</option>
+                                    <option value="{{ $row->kelurahan_kode }}" {{ ($roles->role_id != '1' && $roles->role_id != '2' && $roles->role_id != '3' && $roles->role_id != '4') ? 'selected' : '' }}>{{ $row->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>

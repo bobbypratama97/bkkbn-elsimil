@@ -33,17 +33,26 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>NIK</label>
-                                <input type="text" class="form-control" value="{!! Helper::decryptNik($user->nik) !!}" disabled />
+                                <input type="text" class="form-control" value="{!! Helper::decryptNik($user->nik) !!}" name="nik" disabled />
                             </div>
 
                             <div class="form-group">
                                 <label>Nama</label>
-                                <input type="text" class="form-control" value="{{ $user->name }}" disabled />
+                                <input type="text" class="form-control" value="{{ $user->name }}" name="name" required/>
                             </div>
 
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="text" class="form-control" value="{{ $user->email }}" disabled />
+                                <input type="text" class="form-control" value="{{ $user->email }}" name="email" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nomor SK</label>
+                                <input type="text" class="form-control" value="{{ $user->no_sk }}" name="no_sk" />
+                            </div>
+                            <div class="form-group">
+                                <label>Sertifikat</label>
+                                <textarea type="text" class="form-control" name="sertifikat" />{{ $user->sertifikat }}</textarea>
                             </div>
 
                             <div class="form-group row">

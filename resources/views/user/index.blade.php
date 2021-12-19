@@ -33,7 +33,7 @@
                             </div>
                             <button type="submit" class="btn btn-success">Filter </button>
                         </form>
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display: block;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -49,6 +49,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(empty($user))
+                                    <tr>
+                                        <td colspan="10" align="center">Data tidak ditemukan</td>
+                                    </tr>
+                                @endif
                                 @foreach($user as $key => $row)
                                 <tr>
                                     <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
