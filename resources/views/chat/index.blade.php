@@ -35,6 +35,7 @@
                                     <option value="all" {{ (isset($selected) && $selected == "all") ? 'selected' : '' }}>Semua</option>
                                     <option value="mine" {{ (isset($selected) && $selected == "mine") ? 'selected' : '' }}>Catin Saya</option>
                                     <option value="other" {{ (isset($selected) && $selected == "other") ? 'selected' : '' }}>Catin Petugas Lain</option>
+                                    <option value="nh" {{ (isset($selected) && $selected == "nh") ? 'selected' : '' }}>Belum Punya Petugas</option>
                                 </select>
                             </div>
                             <div class="form-group mr-3">
@@ -76,14 +77,15 @@
                                     <td>{!! Helper::customUser($row->petugas) !!}</td>
                                     <td>
                                         @can('access', [\App\Chat::class, Auth::user()->role, 'detail'])
-                                        @if (Auth::user()->role == 1 || Auth::user()->role == 2 || Auth::user()->role == 3)
+                                        @if (Auth::user()->role == 1)
                                         <a href="{{ route('admin.chat.show', $row->chatid) }}" class="btn btn-icon btn-sm btn-info" title="Lihat Percakapan"><i class="flaticon2-talk"></i></a>
                                         @elseif ($row->header_responder_id == Auth::id())
                                         <a href="{{ route('admin.chat.show', $row->chatid) }}" class="btn btn-icon btn-sm btn-info" title="Lihat Percakapan"><i class="flaticon2-talk"></i></a>
                                         @elseif (!empty($row->header_responder_id) && $row->header_responder_id != Auth::id())
-                                        <a href="{{ route('admin.chat.show', $row->chatid) }}" class="btn btn-icon btn-sm btn-info"  title="Lihat Percakapan"><i class="flaticon2-talk"></i></a>
+                                        <!-- <a href="{{ route('admin.chat.show', $row->chatid) }}" class="btn btn-icon btn-sm btn-info"  title="Lihat Percakapan"><i class="flaticon2-talk"></i></a> -->
+                                        <a href="#" class="btn btn-icon btn-sm btn-default otherresp"  title="Lihat Percakapan"><i class="flaticon2-talk"></i></a>
                                         @else
-                                        <button disabled class="flaticon2-talk btn btn-icon btn-sm btn-info check"  title="Lihat Percakapan" data-id="{{ $row->id }}" data-chatid="{{ $row->chatid }}">
+                                        <button class="flaticon2-talk btn btn-icon btn-sm btn-info check"  title="Lihat Percakapan" data-id="{{ $row->id }}" data-chatid="{{ $row->chatid }}">
                                         </button>
                                         @endif
                                         @endcan
@@ -205,6 +207,27 @@
                             }
                         }
                     })
+                }
+            }
+        });
+    });
+
+    $('#kt_datatable tbody').on('click', '.otherresp', function () {
+        var id = $(this).attr('data-id');
+        var chatid = $(this).attr('data-chatid');
+
+        bootbox.dialog({
+            title: 'Perhatian',
+            centerVertical: true,
+            closeButton: false,
+            message: "Sudah punya pendamping, tidak dapat melihat.",
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: 'btn-info',
+                    callback: function() {
+                        // window.location.href = data.url;
+                    }
                 }
             }
         });

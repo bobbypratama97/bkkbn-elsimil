@@ -63,7 +63,7 @@ class MemberController extends Controller
 
         if($role_child != $role_dampingi) $is_dampingi = false;
         else $is_dampingi = true;
-
+        
         $self = Member::leftJoin('adms_provinsi', function($join) {
             $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
         })

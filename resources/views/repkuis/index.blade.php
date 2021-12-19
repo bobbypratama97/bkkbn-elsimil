@@ -139,23 +139,15 @@
                     </div>
 
                     <div class="card-body">
-                        <!-- <div style="margin-bottom: 1%;font-weight: bold; font-size: 14px;">Summary Kuisioner:</div>
-                        <div class="d-flex flex-row align-content-center">
-                            <p style="border:solid thick red; border-radius: 1em; 
-                                border-width:3px; padding-left:9px; padding-top:6px; 
-                                padding-bottom:6px; margin:2px; width:50px;height: 20px;background-color: red;"></p> 
-                                <div style="margin-left: 1%;">Beresiko</div>
+                        <div class="d-flex flex-row align-center justify-content-center">
+                            <div class="d-flex flex-row align-content-center" style="width:400px">
+                                <canvas class="charts" id="summaryChart"></canvas>
+                            </div>
                         </div>
-                        <div class="d-flex flex-row align-content-center">
-                            <p style="border:solid thick green; border-radius: 1em; 
-                                border-width:3px; padding-left:9px; padding-top:6px; 
-                                padding-bottom:6px; margin:2px; width:50px;height: 20px;background-color: green;"></p> 
-                                <div style="margin-left: 1%;">Aman</div>
-                        </div> -->
 
                         <div class="row" style="margin-top: 2%">
                             @for ($i = 1; $i < 20; $i++)
-                            <div class="col-lg-4 mb-10" id="own-{{ $i }}">
+                            <div class="col-lg-4 mb-10" id="own-{{ $i }}" style="width:500px">
                                 <canvas class="charts" id="myChart-{{ $i }}"></canvas>
                             </div>
                             @endfor
@@ -383,7 +375,6 @@
                                         labels: item.legend,
                                         datasets: [{
                                             label: item.label,
-                                            links: ['www.google.com', 'www.fb.com'],
                                             data: item.value,
                                             backgroundColor: item.color
                                         }],
@@ -397,7 +388,7 @@
                                         },
                                         tooltips: {
                                             mode: 'dataset',
-                                            intersect: false
+                                            intersect: true
                                         },
                                         legend: {
                                             position: 'right',
@@ -410,6 +401,44 @@
                                         },
                                     }
                                 });
+                            });
+
+                            $('#summaryChart').show();
+                            var sum_data = data.summary
+                            var ctx2 = document.getElementById('summaryChart').getContext('2d');
+
+                            var summaryChart = new Chart(ctx2, {
+                                animation: 'easeInQuad',
+                                type: 'pie',
+                                data: {
+                                    labels: sum_data.legend,
+                                    datasets: [{
+                                        label: sum_data.label,
+                                        data: sum_data.value,
+                                        backgroundColor: sum_data.color
+                                    }],
+                                },
+                                options: {
+                                    showAllTooltips: true,
+                                    responsive: true,
+                                    title: {
+                                        display: true,
+                                        text: sum_data.label
+                                    },
+                                    tooltips: {
+                                        mode: 'dataset',
+                                        intersect: true
+                                    },
+                                    legend: {
+                                        position: 'right',
+                                        onClick: function (e, elem){
+                                            // alert(JSON.stringify(elem))
+                                            if(typeof sum_data.link != 'undefined'){
+                                                window.open(sum_data.link[elem.index])
+                                            }
+                                        }
+                                    },
+                                }
                             });
                         }
 

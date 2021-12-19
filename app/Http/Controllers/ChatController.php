@@ -154,7 +154,8 @@ class ChatController extends Controller
             })
             ->leftJoin('users', 'users.id', 'chat_header.responder_id')
             ->where('chat_header.type', Auth::user()->roleChild)
-            ->whereRaw('(role_user.role_id = 1 OR (responder_id = '.$user->id.' OR responder_id IS NULL))');
+            ->whereRaw('responder_id = '.$user->id);
+            // ->whereRaw('(role_user.role_id = 1 OR (responder_id = '.$user->id.' OR responder_id IS NULL))');
 
         if($condition != '') $query->whereRaw('1=1 '.$condition);
             
@@ -172,7 +173,8 @@ class ChatController extends Controller
             $curr = substr($curr, 0, -2);
 
 
-            $conditions = "AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+            // $conditions = "AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+            $conditions = "AND responder_id = {$user->id}";
 
             $sql1 = "
                 SELECT 
@@ -276,17 +278,21 @@ class ChatController extends Controller
         $roleChild = Auth::user()->roleChild;
 
         if ($request->search == 'mine') {
-            $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL)) AND type = {$roleChild}";
+            // $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL)) AND type = {$roleChild}";
+            $filter = " AND responder_id = {$user->id}";
         } else if ($request->search == 'other') {
             $filter = " AND (role_user.role_id = 1 OR (responder_id != {$user->id}))";
         } else if ($request->search == 'all' || $request->search == '') {
             //$filter = "(role_user.role_id = 1 OR (responder_id IS NULL))";
             $filter = "";
+        } else if ($request->search == 'nh') {
+            $filter = " AND (role_user.role_id = 1 OR (responder_id IS NULL))";
         //} else if ($request->search == 'new') {
         //    $filter = " AND (role_user.role_id = 1 OR (responder_id IS NULL))";
-        } else {
-            $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
-        }
+        } 
+        // else {
+        //     $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+        // }
 
         if($request->keyword != ''){
             $keyword = $request->keyword;

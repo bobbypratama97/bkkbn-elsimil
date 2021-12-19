@@ -160,27 +160,33 @@ class RepkuisController extends Controller
 
                 if (!empty($request->kabupaten)) {
                     $result->where('members.kabupaten_id', $request->kabupaten);
+                    $whereSummary .= " AND members.kabupaten_id = ".$request->kabupaten;
                 }
 
                 if (!empty($request->kecamatan)) {
                     $result->where('members.kecamatan_id', $request->kecamatan);
+                    $whereSummary .= " AND members.kecamatan_id = ".$request->kecamatan;
                 }
 
                 if (!empty($request->kelurahan)) {
                     $result->where('members.kelurahan_id', $request->kelurahan);
+                    $whereSummary .= " AND members.kelurahan_id = ".$request->kelurahan;
                 }
 
                 if (!empty($request->nik)) {
                     $cekKtp = Helper::dcNik($request->nik);
                     $result->where('members.nik', 'LIKE', '%' . $cekKtp . '%');
+                    $whereSummary .= " AND members.nik LIKE '%".$cekKtp."%'";
                 }
 
                 if (!empty($request->nama)) {
                     $result->where('members.name', $request->nama);
+                    $whereSummary .= " AND members.name = ".$request->nama;
                 }
 
                 if (!empty($request->gender)) {
                     $result->where('kuisioner_result.kuis_gender', $request->gender);
+                    $whereSummary .= " AND kuisioner_result.kuis_gender = ".$request->gender;
                 }
 
                 $result = $result->where('kuisioner_result_detail.pertanyaan_bobot_id', $row['bobot_id'])
@@ -236,7 +242,7 @@ class RepkuisController extends Controller
 
         $output = [
             'count' => $total,
-            'data' => $final
+            'data' => $final,
         ];
 
         //get summary report
@@ -266,10 +272,10 @@ class RepkuisController extends Controller
                 $finKuis['color'][$keys] = $rows->rating_color;
                 $finKuis['value'][$keys] = $rows->persen;
                 $finKuis['jumlah'][$keys] = $rows->count;
-                $finKuis['link'][$keys] = route('admin.repkuis.detail', ['keyword' => $rows->label, 'kuesioner' => $rows->kuis_id, 'search'=> 'all']);
+                $finKuis['link'][$keys] = route('admin.repkuis.detail', ['label' => $rows->label, 'kuesioner' => $rows->kuis_id, 'search'=> 'all']);
             }
 
-            $output['data'][] = $finKuis;
+            $output['summary'] = $finKuis;
         }
 
 
@@ -511,6 +517,10 @@ class RepkuisController extends Controller
 
         if (!empty($request->gender)) {
             $self->where('kuisioner_result.gender', $request->gender);
+        }
+
+        if (!empty($request->label)) {
+            $self->where('kuisioner_summary.label', $request->label);
         }
 
         if (empty($request->kuesioner)) {

@@ -96,12 +96,16 @@
                                         @if (empty($row['petugas_id']) && $is_dampingi == true)
                                         <button class="btn btn-icon btn-sm btn-warning kelola" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
                                             <i class="flaticon-businesswoman"></i>
-                                       </button>
-                                       @else
-                                       <button disabled class="btn btn-icon btn-sm btn-warning kelola" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
-                                            <i class="flaticon-businesswoman"></i>
-                                       </button>
-                                       @endif
+                                        </button>
+                                        @elseif ($row['petugas_id'] == Auth::user()->id)
+                                        <button class="btn btn-icon btn-sm btn-default btndisableself" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
+                                                <i class="flaticon-businesswoman"></i>
+                                        </button>
+                                        @else
+                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
+                                                <i class="flaticon-businesswoman"></i>
+                                        </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -221,6 +225,42 @@
                             }
                         }
                     })
+                }
+            }
+        });
+    });
+
+    $('#kt_datatable tbody').on('click', '.btndisable', function () {
+        bootbox.dialog({
+            title: 'Perhatian',
+            centerVertical: true,
+            closeButton: false,
+            message: "Sudah punya pendamping, tidak dapat dampingi catin ini.",
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: 'btn-info',
+                    callback: function() {
+                        // window.location.href = data.url;
+                    }
+                }
+            }
+        });
+    });
+
+    $('#kt_datatable tbody').on('click', '.btndisableself', function () {
+        bootbox.dialog({
+            title: 'Perhatian',
+            centerVertical: true,
+            closeButton: false,
+            message: "Catin sudah berhasil didampingi.",
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: 'btn-info',
+                    callback: function() {
+                        // window.location.href = data.url;
+                    }
                 }
             }
         });
