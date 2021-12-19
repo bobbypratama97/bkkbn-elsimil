@@ -90,7 +90,7 @@
                                         @endcan
                                         @can('access', [\App\Member::class, Auth::user()->role, 'edit'])
                                         <a href="{{ route('admin.member.edit', $row['id']) }}" class="btn btn-icon btn-sm btn-warning"   title="Edit">
-                                            <i class="flaticon2-menu-4"></i>
+                                            <i class="flaticon2-edit"></i>
                                         </a>
                                         @endcan
                                         @if (empty($row['petugas_id']) && $is_dampingi == true)

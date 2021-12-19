@@ -62,6 +62,14 @@
                             <input class="form-control h-auto form-control py-4 px-8" type="password" placeholder="Isi password Anda" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
                         </div>
                         <div class="form-group mb-5">
+                            <label class="pl-8">Nomor SK</label>
+                            <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nomor SK Anda" name="no_sk" />
+                        </div>
+                        <div class="form-group mb-5">
+                            <label class="pl-8">Sertifikat</label>
+                            <textarea class="form-control h-auto form-control py-4 px-8" placeholder="Tulis sertifikat yang pernah anda dapatkan dipisahi dengan koma(,)" name="sertifikat" /></textarea>
+                        </div>
+                        <div class="form-group mb-5">
                             <label class="pl-8">Provinsi</label>
                             <select class="form-control select2" id="provinsi" name="provinsi_id" required required oninvalid="this.setCustomValidity('Provinsi harus diisi')" oninput="setCustomValidity('')">
                             </select>

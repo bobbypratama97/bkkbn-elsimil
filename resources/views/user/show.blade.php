@@ -48,6 +48,15 @@
                             <input type="text" class="form-control" value="{{ $user->email }}" disabled />
                         </div>
 
+                        <div class="form-group">
+                            <label>Nomor SK</label>
+                            <input type="text" class="form-control" value="{{ $user->no_sk }}" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label>Sertifikat</label>
+                            <textarea type="text" class="form-control" disabled />{{ $user->sertifikat }}</textarea>
+                        </div>
+
                         <div class="form-group row">
                             <div class="col-3">
                                 <div class="form-group">

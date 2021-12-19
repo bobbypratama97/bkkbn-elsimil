@@ -232,6 +232,12 @@ class DashboardController extends Controller
                 'label' => 'Semua Kecamatan',
                 'text' => 'Semua Kecamatan'
             ];
+
+            $members['kelurahan'] = [
+                'count' => $countmember,
+                'label' => 'Semua Kelurahan',
+                'text' => 'Semua Kelurahan'
+            ];
         }
 
         if ($role->role_id == '2') {
@@ -264,6 +270,13 @@ class DashboardController extends Controller
                 'count' => $provinsi->total,
                 'label' => $kecamatan->nama,
                 'text' => 'Kecamatan'
+            ];
+
+            $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
+            $members['kelurahan'] = [
+                'count' => $provinsi->total,
+                'label' => $kelurahan->nama,
+                'text' => 'Kelurahan'
             ];
 
         }
@@ -308,6 +321,13 @@ class DashboardController extends Controller
                 'count' => $kabupaten->total,
                 'label' => $kecamatan->nama,
                 'text' => 'Kecamatan'
+            ];
+
+            $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
+            $members['kelurahan'] = [
+                'count' => $kabupaten->total,
+                'label' => $kelurahan->nama,
+                'text' => 'Kelurahan'
             ];
 
         }
@@ -365,6 +385,13 @@ class DashboardController extends Controller
                 'text' => 'Kecamatan'
             ];
 
+            $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
+            $members['kelurahan'] = [
+                'count' => $kecamatan->total,
+                'label' => $kelurahan->nama,
+                'text' => 'Kelurahan'
+            ];
+
         }
 
         if ($role->role_id == '5') {
@@ -418,6 +445,25 @@ class DashboardController extends Controller
                 'count' => $kecamatan->total,
                 'label' => $kecamatan->kecamatan,
                 'text' => 'Kecamatan'
+            ];
+
+            $kelurahan = Member::leftJoin('adms_kelurahan', function($join) {
+                $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
+            })
+            ->select([
+                'adms_kelurahan.nama as kelurahan',
+                DB::raw('count(*) AS total')
+            ])
+            ->where('members.provinsi_id', $auth->provinsi_id)
+            ->where('members.kabupaten_id', $auth->kabupaten_id)
+            ->where('members.kecamatan_id', $auth->kecamatan_id)
+            ->where('members.kelurahan_id', $auth->kelurahan_id)
+            ->first();
+
+            $members['kelurahan'] = [
+                'count' => $kelurahan->total,
+                'label' => $kelurahan->kelurahan,
+                'text' => 'Kelurahan'
             ];
 
         }
