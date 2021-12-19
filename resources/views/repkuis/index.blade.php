@@ -31,7 +31,7 @@
                             <div class="col-lg-3">
                                 <label>Rentang Waktu</label>
                                 <div class='input-group' id='kt_daterangepicker'>
-                                    <input type='text' class="form-control" readonly="readonly" placeholder="Select date range" name="tanggal" id="tanggal" />
+                                    <input type='text' class="form-control" readonly="readonly" placeholder="Select date range" name="tanggal" id="tanggal"/>
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="la la-calendar-check-o"></i>
@@ -290,16 +290,15 @@
                     size: 'small'
                 });
             }
-            // else if(tanggal == '') {
-            //     bootbox.alert({
-            //         title: 'Perhatian',
-            //         centerVertical: true,
-            //         closeButton: false,
-            //         message: "<p class='text-center'>Range Tanggal harus dipilih</p>",
-            //         size: 'small'
-            //     });
-            // }
-            else {
+            else if(tanggal == '') {
+                bootbox.alert({
+                    title: 'Perhatian',
+                    centerVertical: true,
+                    closeButton: false,
+                    message: "<p class='text-center'>Range Tanggal harus dipilih</p>",
+                    size: 'small'
+                });
+            } else {
 
                 $('#detail-kuesioner').val(kuesioner);
                 $('#detail-tanggal').val(tanggal);
