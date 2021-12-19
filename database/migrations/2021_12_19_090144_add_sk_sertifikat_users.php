@@ -14,8 +14,8 @@ class AddSkSertifikatUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('sertifikat')->nullable()->after('remember_token');
-            $table->string('no_sk')->nullable()->after('remember_token');
+            $table->text('sertifikat', 300)->nullable()->after('remember_token');
+            $table->string('no_sk', 100)->nullable()->after('remember_token');
         });
     }
 

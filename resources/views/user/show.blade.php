@@ -44,6 +44,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Nomor Telepon</label>
+                            <input type="text" class="form-control" value="{{ ($user->no_telp != 0 ? Helper::phoneNumber($user->no_telp) : '-') }}" disabled />
+                        </div>
+
+                        <div class="form-group">
                             <label>Email</label>
                             <input type="text" class="form-control" value="{{ $user->email }}" disabled />
                         </div>
