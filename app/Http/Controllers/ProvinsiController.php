@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProvinsiTemplate;
 use App\Exports\WilayahTemplate;
 use App\Http\Controllers\Controller;
 use App\Kabupaten;
@@ -110,16 +111,16 @@ class ProvinsiController extends Controller
                     $columns = [
                         "A" => "kode_provinsi",
                         "B" => "provinsi",
-                        "C" => "kode_kabupaten",
-                        "D" => "kabupaten",
-                        "E" => "kode_kecamatan",
-                        "F" => "kecamatan",
-                        "G" => "kode_kelurahan",
-                        "H" => "kelurahan",
-                        "I" => "kode_rw",
-                        "J" => "rw",
-                        "K" => "kode_rt",
-                        "L" => "rt"
+                        // "C" => "kode_kabupaten",
+                        // "D" => "kabupaten",
+                        // "E" => "kode_kecamatan",
+                        // "F" => "kecamatan",
+                        // "G" => "kode_kelurahan",
+                        // "H" => "kelurahan",
+                        // "I" => "kode_rw",
+                        // "J" => "rw",
+                        // "K" => "kode_rt",
+                        // "L" => "rt"
                     ];
 
                     $data_insert = [];
@@ -143,38 +144,38 @@ class ProvinsiController extends Controller
                             'provinsi' => $row['provinsi']
                         ];
 
-                        $kota[] = [
-                            'provinsi_kode' => $row['kode_provinsi'],
-                            'kabupaten_kode' => $row['kode_kabupaten'],
-                            'kabupaten' => $row['kabupaten']
-                        ];
+                        // $kota[] = [
+                        //     'provinsi_kode' => $row['kode_provinsi'],
+                        //     'kabupaten_kode' => $row['kode_kabupaten'],
+                        //     'kabupaten' => $row['kabupaten']
+                        // ];
 
-                        $kecamatan[] = [
-                            'kabupaten_kode' => $row['kode_kabupaten'],
-                            'kecamatan_kode' => $row['kode_kecamatan'],
-                            'kecamatan' => $row['kecamatan']
-                        ];
+                        // $kecamatan[] = [
+                        //     'kabupaten_kode' => $row['kode_kabupaten'],
+                        //     'kecamatan_kode' => $row['kode_kecamatan'],
+                        //     'kecamatan' => $row['kecamatan']
+                        // ];
 
-                        $kelurahan[] = [
-                            'kecamatan_kode' => $row['kode_kecamatan'],
-                            'kelurahan_kode' => $row['kode_kelurahan'],
-                            'kelurahan' => $row['kelurahan']
-                        ];
+                        // $kelurahan[] = [
+                        //     'kecamatan_kode' => $row['kode_kecamatan'],
+                        //     'kelurahan_kode' => $row['kode_kelurahan'],
+                        //     'kelurahan' => $row['kelurahan']
+                        // ];
 
-                        $rwrt[] = [
-                            'kelurahan_kode' => $row['kode_kelurahan'],
-                            'kode_rw' => $row['kode_rw'],
-                            'rw' => $row['rw'],
-                            'kode_rt' => $row['kode_rt'],
-                            'rt' => $row['rt']
-                        ];
+                        // $rwrt[] = [
+                        //     'kelurahan_kode' => $row['kode_kelurahan'],
+                        //     'kode_rw' => $row['kode_rw'],
+                        //     'rw' => $row['rw'],
+                        //     'kode_rt' => $row['kode_rt'],
+                        //     'rt' => $row['rt']
+                        // ];
                     }
 
                     $provinsi = array_map("unserialize", array_unique(array_map("serialize", $provinsi)));
-                    $kota = array_map("unserialize", array_unique(array_map("serialize", $kota)));
-                    $kecamatan = array_map("unserialize", array_unique(array_map("serialize", $kecamatan)));
-                    $kelurahan = array_map("unserialize", array_unique(array_map("serialize", $kelurahan)));
-                    $rwrt = array_map("unserialize", array_unique(array_map("serialize", $rwrt)));
+                    // $kota = array_map("unserialize", array_unique(array_map("serialize", $kota)));
+                    // $kecamatan = array_map("unserialize", array_unique(array_map("serialize", $kecamatan)));
+                    // $kelurahan = array_map("unserialize", array_unique(array_map("serialize", $kelurahan)));
+                    // $rwrt = array_map("unserialize", array_unique(array_map("serialize", $rwrt)));
 
                     $provsukses = $provgagal = 0;
                     foreach ($provinsi as $key => $row) {
@@ -198,99 +199,99 @@ class ProvinsiController extends Controller
                         }
                     }
 
-                    $kotasukses = $kotagagal = 0;
-                    foreach ($kota as $key => $row) {
-                        $check = Kabupaten::whereNull('deleted_by')->where('provinsi_kode', $row['provinsi_kode'])->where('kabupaten_kode', $row['kabupaten_kode'])->where('nama', $row['kabupaten'])->first();
+                    // $kotasukses = $kotagagal = 0;
+                    // foreach ($kota as $key => $row) {
+                    //     $check = Kabupaten::whereNull('deleted_by')->where('provinsi_kode', $row['provinsi_kode'])->where('kabupaten_kode', $row['kabupaten_kode'])->where('nama', $row['kabupaten'])->first();
 
-                        if ($check) {
-                            $kotagagal = $kotagagal + 1;
-                        } else {
-                            $kota = new Kabupaten;
-                            $kota->provinsi_kode = $row['provinsi_kode'];
-                            $kota->kabupaten_kode = $row['kabupaten_kode'];
-                            $kota->nama = $row['kabupaten'];
-                            $kota->status = 2;
-                            $kota->created_at = date('Y-m-d H:i:s');
-                            $kota->created_by = Auth::id();
+                    //     if ($check) {
+                    //         $kotagagal = $kotagagal + 1;
+                    //     } else {
+                    //         $kota = new Kabupaten;
+                    //         $kota->provinsi_kode = $row['provinsi_kode'];
+                    //         $kota->kabupaten_kode = $row['kabupaten_kode'];
+                    //         $kota->nama = $row['kabupaten'];
+                    //         $kota->status = 2;
+                    //         $kota->created_at = date('Y-m-d H:i:s');
+                    //         $kota->created_by = Auth::id();
 
-                            if ($kota->save()) {
-                                $kotasukses = $kotasukses + 1;
-                            } else {
-                                $kotagagal = $kotagagal + 1;
-                            }
-                        }
-                    }
+                    //         if ($kota->save()) {
+                    //             $kotasukses = $kotasukses + 1;
+                    //         } else {
+                    //             $kotagagal = $kotagagal + 1;
+                    //         }
+                    //     }
+                    // }
 
-                    $camatsukses = $camatgagal = 0;
-                    foreach ($kecamatan as $key => $row) {
-                        $check = Kecamatan::whereNull('deleted_by')->where('kabupaten_kode', $row['kabupaten_kode'])->where('kecamatan_kode', $row['kecamatan_kode'])->where('nama', $row['kecamatan'])->first();
+                    // $camatsukses = $camatgagal = 0;
+                    // foreach ($kecamatan as $key => $row) {
+                    //     $check = Kecamatan::whereNull('deleted_by')->where('kabupaten_kode', $row['kabupaten_kode'])->where('kecamatan_kode', $row['kecamatan_kode'])->where('nama', $row['kecamatan'])->first();
 
-                        if ($check) {
-                            $camatgagal = $camatgagal + 1;
-                        } else {
-                            $camat = new Kecamatan;
-                            $camat->kabupaten_kode = $row['kabupaten_kode'];
-                            $camat->kecamatan_kode = $row['kecamatan_kode'];
-                            $camat->nama = $row['kecamatan'];
-                            $camat->status = 2;
-                            $camat->created_at = date('Y-m-d H:i:s');
-                            $camat->created_by = Auth::id();
+                    //     if ($check) {
+                    //         $camatgagal = $camatgagal + 1;
+                    //     } else {
+                    //         $camat = new Kecamatan;
+                    //         $camat->kabupaten_kode = $row['kabupaten_kode'];
+                    //         $camat->kecamatan_kode = $row['kecamatan_kode'];
+                    //         $camat->nama = $row['kecamatan'];
+                    //         $camat->status = 2;
+                    //         $camat->created_at = date('Y-m-d H:i:s');
+                    //         $camat->created_by = Auth::id();
 
-                            if ($camat->save()) {
-                                $camatsukses = $camatsukses + 1;
-                            } else {
-                                $camatgagal = $camatgagal + 1;
-                            }
-                        }
-                    }
+                    //         if ($camat->save()) {
+                    //             $camatsukses = $camatsukses + 1;
+                    //         } else {
+                    //             $camatgagal = $camatgagal + 1;
+                    //         }
+                    //     }
+                    // }
 
-                    $lurahsukses = $lurahgagal = 0;
-                    foreach ($kelurahan as $key => $row) {
-                        $check = Kelurahan::whereNull('deleted_by')->where('kecamatan_kode', $row['kecamatan_kode'])->where('kelurahan_kode', $row['kelurahan_kode'])->where('nama', $row['kelurahan'])->first();
+                    // $lurahsukses = $lurahgagal = 0;
+                    // foreach ($kelurahan as $key => $row) {
+                    //     $check = Kelurahan::whereNull('deleted_by')->where('kecamatan_kode', $row['kecamatan_kode'])->where('kelurahan_kode', $row['kelurahan_kode'])->where('nama', $row['kelurahan'])->first();
 
-                        if ($check) {
-                            $lurahgagal = $lurahgagal + 1;
-                        } else {
-                            $lurah = new Kelurahan;
-                            $lurah->kecamatan_kode = $row['kecamatan_kode'];
-                            $lurah->kelurahan_kode = $row['kelurahan_kode'];
-                            $lurah->nama = $row['kelurahan'];
-                            $lurah->status = 2;
-                            $lurah->created_at = date('Y-m-d H:i:s');
-                            $lurah->created_by = Auth::id();
+                    //     if ($check) {
+                    //         $lurahgagal = $lurahgagal + 1;
+                    //     } else {
+                    //         $lurah = new Kelurahan;
+                    //         $lurah->kecamatan_kode = $row['kecamatan_kode'];
+                    //         $lurah->kelurahan_kode = $row['kelurahan_kode'];
+                    //         $lurah->nama = $row['kelurahan'];
+                    //         $lurah->status = 2;
+                    //         $lurah->created_at = date('Y-m-d H:i:s');
+                    //         $lurah->created_by = Auth::id();
 
-                            if ($lurah->save()) {
-                                $lurahsukses = $lurahsukses + 1;
-                            } else {
-                                $lurahgagal = $lurahgagal + 1;
-                            }
-                        }
-                    }
+                    //         if ($lurah->save()) {
+                    //             $lurahsukses = $lurahsukses + 1;
+                    //         } else {
+                    //             $lurahgagal = $lurahgagal + 1;
+                    //         }
+                    //     }
+                    // }
 
-                    $rwrtsukses = $rwrtgagal = 0;
-                    foreach ($rwrt as $key => $row) {
-                        $check = Rwrt::whereNull('deleted_by')->where('kelurahan_kode', $row['kelurahan_kode'])->where('kode_rw', $row['kode_rw'])->where('rw', $row['rw'])->where('kode_rt', $row['kode_rt'])->where('rt', $row['rt'])->first();
+                    // $rwrtsukses = $rwrtgagal = 0;
+                    // foreach ($rwrt as $key => $row) {
+                    //     $check = Rwrt::whereNull('deleted_by')->where('kelurahan_kode', $row['kelurahan_kode'])->where('kode_rw', $row['kode_rw'])->where('rw', $row['rw'])->where('kode_rt', $row['kode_rt'])->where('rt', $row['rt'])->first();
 
-                        if ($check) {
-                            $rwrtgagal = $rwrtgagal + 1;
-                        } else {
-                            $rw = new Rwrt;
-                            $rw->kelurahan_kode = $row['kelurahan_kode'];
-                            $rw->kode_rw = $row['kode_rw'];
-                            $rw->rw = $row['rw'];
-                            $rw->kode_rt = $row['kode_rt'];
-                            $rw->rt = $row['rt'];
-                            $rw->status = 2;
-                            $rw->created_at = date('Y-m-d H:i:s');
-                            $rw->created_by = Auth::id();
+                    //     if ($check) {
+                    //         $rwrtgagal = $rwrtgagal + 1;
+                    //     } else {
+                    //         $rw = new Rwrt;
+                    //         $rw->kelurahan_kode = $row['kelurahan_kode'];
+                    //         $rw->kode_rw = $row['kode_rw'];
+                    //         $rw->rw = $row['rw'];
+                    //         $rw->kode_rt = $row['kode_rt'];
+                    //         $rw->rt = $row['rt'];
+                    //         $rw->status = 2;
+                    //         $rw->created_at = date('Y-m-d H:i:s');
+                    //         $rw->created_by = Auth::id();
 
-                            if ($rw->save()) {
-                                $rwrtsukses = $rwrtsukses + 1;
-                            } else {
-                                $rwrtgagal = $rwrtgagal + 1;
-                            }
-                        }
-                    }
+                    //         if ($rw->save()) {
+                    //             $rwrtsukses = $rwrtsukses + 1;
+                    //         } else {
+                    //             $rwrtgagal = $rwrtgagal + 1;
+                    //         }
+                    //     }
+                    // }
 
                     $msg = 'Data master wilayah telah diproses. <br /><br />';
                     $msg .= '<table class="table table-bordered">';
@@ -298,10 +299,6 @@ class ProvinsiController extends Controller
                         <thead>
                             <tr>
                                 <th>Provinsi</th>
-                                <th>Kabupaten</th>
-                                <th>Kecamatan</th>
-                                <th>Kelurahan</th>
-                                <th>RT RW</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -310,30 +307,6 @@ class ProvinsiController extends Controller
                                     <div class="row">
                                         <div class="col-lg-6">Data sukses diproses : ' . $provsukses . '</div>
                                         <div class="col-lg-6">Data gagal diproses : ' . $provgagal . '</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-lg-6">Data sukses diproses : ' . $kotasukses . '</div>
-                                        <div class="col-lg-6">Data gagal diproses : ' . $kotagagal . '</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-lg-6">Data sukses diproses : ' . $camatsukses . '</div>
-                                        <div class="col-lg-6">Data gagal diproses : ' . $camatgagal . '</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-lg-6">Data sukses diproses : ' . $lurahsukses . '</div>
-                                        <div class="col-lg-6">Data gagal diproses : ' . $lurahgagal . '</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-lg-6">Data sukses diproses : ' . $rwrtsukses . '</div>
-                                        <div class="col-lg-6">Data gagal diproses : ' . $rwrtgagal . '</div>
                                     </div>
                                 </td>
                             </tr>
@@ -409,19 +382,19 @@ class ProvinsiController extends Controller
         $provinsi[] = [
             'Kode Provinsi'         => '00',
             'Provinsi'              => '',
-            'Kode Kabupaten'        => '0000',
-            'Kabupaten'             => '',
-            'Kode Kecamatan'        => '000000',
-            'Kecamatan'             => '',
-            'Kode Kelurahan'        => '00000000',
-            'Kelurahan'             => '',
-            'Kode Rw'               => '01',
-            'Rw'                    => '1',
-            'Kode Rt'               => '004',
-            'Rt'                    => '4'
+            // 'Kode Kabupaten'        => '0000',
+            // 'Kabupaten'             => '',
+            // 'Kode Kecamatan'        => '000000',
+            // 'Kecamatan'             => '',
+            // 'Kode Kelurahan'        => '00000000',
+            // 'Kelurahan'             => '',
+            // 'Kode Rw'               => '01',
+            // 'Rw'                    => '1',
+            // 'Kode Rt'               => '004',
+            // 'Rt'                    => '4'
         ];
 
-        $title = 'Template_Upload_Wilayahs.xlsx';
-        return Excel::download(new WilayahTemplate($provinsi), $title);
+        $title = 'Template_Upload_Provinsi.xlsx';
+        return Excel::download(new ProvinsiTemplate($provinsi), $title);
     }
 }

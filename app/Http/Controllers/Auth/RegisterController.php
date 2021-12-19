@@ -62,11 +62,14 @@ class RegisterController extends Controller
             'email.unique' => 'Email sudah terdaftar. Silahkan Login atau klik Lupa Password',
             'email.email' => 'Format email salah',
             'password.min' => 'Password minimal :min karakter',
+            'no_telp.unique' => 'Nomor Telepon sudah terdaftar. Silahkan Login atau klik Lupa Password',
+            'unique' => ':attribute sudah terdaftar.',
         );
 
         return Validator::make($data, [
             //'nik' => ['required', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
+            'no_telp' => ['required', 'numeric', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             // 'regex:/(.*)@(gmail|yahoo|)\.com/i',
             'password' => ['required', 'string', 'min:6'],
@@ -111,6 +114,7 @@ class RegisterController extends Controller
         $user->nik = Helper::encryptNik($request->nik);
         // $user->nik = $request->nik;
         $user->name = $request->name;
+        $user->no_telp = Helper::phoneNumber($request->no_telp);
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->no_sk = $request->no_sk;
@@ -121,6 +125,7 @@ class RegisterController extends Controller
         $user->kecamatan_id = $request->kecamatan_id;
         $user->kelurahan_id = $request->kelurahan_id;
 
+        // print_r ($user); die;
         $user->save();
 
 

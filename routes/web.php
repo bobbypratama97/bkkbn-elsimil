@@ -205,12 +205,18 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('provinsi/delete', 'ProvinsiController@delete')->name('provinsi.delete');
 		Route::resource('provinsi', 'ProvinsiController')->except(['create', 'show', 'destroy']);
 
+		Route::get('kota/upload', 'KotaController@upload')->name('kota.upload');
+		Route::get('kota/template', 'KotaController@downloadExcel')->name('kota.template');
 		Route::post('kota/delete', 'KotaController@delete')->name('kota.delete');
 		Route::resource('kota', 'KotaController')->except(['create', 'show', 'destroy']);
 
+		Route::get('kecamatan/upload', 'KecamatanController@upload')->name('kecamatan.upload');
+		Route::get('kecamatan/template', 'KecamatanController@downloadExcel')->name('kecamatan.template');
 		Route::post('kecamatan/delete', 'KecamatanController@delete')->name('kecamatan.delete');
 		Route::resource('kecamatan', 'KecamatanController')->except(['create', 'show', 'destroy']);
 
+		Route::get('kelurahan/upload', 'KelurahanController@upload')->name('kelurahan.upload');
+		Route::get('kelurahan/template', 'KelurahanController@downloadExcel')->name('kelurahan.template');
 		Route::post('kelurahan/delete', 'KelurahanController@delete')->name('kelurahan.delete');
 		Route::resource('kelurahan', 'KelurahanController')->except(['create', 'show', 'destroy']);
 

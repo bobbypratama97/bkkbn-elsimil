@@ -26,7 +26,10 @@
                         </div>
                         @can('access', [\App\Kelurahan::class, Auth::user()->role, 'upload'])
                         <div class="card-toolbar">
-                            <a href="{{ route('admin.provinsi.upload') }}" class="btn btn-primary font-weight-bolder">
+                            <div class="col text-left">
+                                <a href="{{ route('admin.kelurahan.template') }}" class="btn btn-warning">Download Template Kelurahan</a>
+                            </div>
+                            <a href="{{ route('admin.kelurahan.upload') }}" class="btn btn-primary font-weight-bolder">
                             <span class="svg-icon svg-icon-md">
                                 <!--begin::Svg Icon | path:/metronic/theme/html/demo6/dist/assets/media/svg/icons/Design/Flatten.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -36,7 +39,7 @@
                                         <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
                                     </g>
                                 </svg>
-                            </span>Upload Master Wilayah</a>
+                            </span>Upload Master Kelurahan</a>
                         </div>
                         @endcan
                     </div>
