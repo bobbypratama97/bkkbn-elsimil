@@ -30,7 +30,7 @@
                     <form class="form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group mb-5">
-                            <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Email terdaftar" name="login" autocomplete="off" value="{{ old('login') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
+                            <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Email atau No Telepon terdaftar" name="login" autocomplete="off" value="{{ old('login') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
                         </div>
                         <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
