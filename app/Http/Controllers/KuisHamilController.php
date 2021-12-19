@@ -12,12 +12,6 @@ use Helper;
 
 use App\Member;
 use App\KuesionerHamil;
-use App\KuisHamilKontakAwal;
-use App\KuisHamil12Minggu;
-use App\KuisHamil16Minggu;
-use App\KuisHamilIbuJanin;
-use App\KuisHamilPersalinan;
-use App\KuisHamilNifas;
 
 class KuisHamilController extends Controller
 {
