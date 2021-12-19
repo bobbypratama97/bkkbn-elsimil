@@ -77,19 +77,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 col-xl-3">
+                    <div class="col-12 col-xl-12" align="center" style="height: 100%;">
                         <!--begin::Stats Widget 13-->
                         <a href="#" class="card card-custom bg-danger bg-hover-state-danger card-stretch gutter-b unclick">
                             <!--begin::Body-->
                             <div class="card-body">
-                                <div class="font-weight-bolder text-inverse-danger font-size-h1" style="font-size:4rem!important;">{{ number_format($members['total']['count'], 0, ',', '.') }}</div>
-                                <div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2">{{ $members['total']['label'] }}</div>
+                                <div class="font-weight-bolder text-inverse-danger font-size-h2" style="font-size:3rem!important;">{{ number_format($members['total']['count'], 0, ',', '.') }}</div>
+                                <div class="text-inverse-danger font-weight-bolder font-size-h6 mb-2">{{ $members['total']['label'] }}</div>
                                 <div class="font-weight-bold text-inverse-danger font-size-xs">{{ $members['total']['text'] }}</div>
                             </div>
                             <!--end::Body-->
                         </a>
                         <!--end::Stats Widget 13-->
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-6 col-xl-3">
                         <!--begin::Stats Widget 14-->
                         <a href="#" class="card card-custom bg-primary bg-hover-state-primary card-stretch gutter-b unclick">
@@ -103,7 +105,7 @@
                         </a>
                         <!--end::Stats Widget 14-->
                     </div>
-                    <div class="col-6 col-xl-2">
+                    <div class="col-6 col-xl-3">
                         <!--begin::Stats Widget 15-->
                         <a href="#" class="card card-custom bg-primary bg-hover-state-success card-stretch gutter-b unclick">
                             <!--begin::Body-->
@@ -116,7 +118,7 @@
                         </a>
                         <!--end::Stats Widget 15-->
                     </div>
-                    <div class="col-6 col-xl-2">
+                    <div class="col-6 col-xl-3">
                         <!--begin::Stats Widget 15-->
                         <a href="#" class="card card-custom bg-primary bg-hover-state-success card-stretch gutter-b unclick">
                             <!--begin::Body-->
@@ -129,7 +131,7 @@
                         </a>
                         <!--end::Stats Widget 15-->
                     </div>
-                    <div class="col-6 col-xl-2">
+                    <div class="col-6 col-xl-3">
                         <!--begin::Stats Widget 15-->
                         <a href="#" class="card card-custom bg-primary bg-hover-state-success card-stretch gutter-b unclick">
                             <!--begin::Body-->
