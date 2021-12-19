@@ -92,9 +92,9 @@
                       <label class="form-check-label h6 ml-4" for="suplemenDarah">
                         Suplemen Penambah Darah
                       </label>
-                      <div class="text-muted my-1 ml-4">
+                      {{-- <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
-                      </div>
+                      </div> --}}
                     </div>
 
                     <div class="form-check mb-4">
@@ -102,9 +102,9 @@
                       <label class="form-check-label h6 ml-4" for="suplemenMakanan">
                         Suplemen Makanan
                       </label>
-                      <div class="text-muted my-1 ml-4">
+                      {{-- <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
-                      </div>
+                      </div> --}}
                     </div>
 
                     <div class="form-check mb-4">
@@ -112,9 +112,9 @@
                       <label class="form-check-label h6 ml-4" for="kie">
                         KIE
                       </label>
-                      <div class="text-muted my-1 ml-4">
+                      {{-- <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
-                      </div>
+                      </div> --}}
                     </div>
 
                     <div class="form-check mb-4">
@@ -122,9 +122,9 @@
                       <label class="form-check-label h6 ml-4" for="rujukan">
                         Rujukan
                       </label>
-                      <div class="text-muted my-1 ml-4">
+                      {{-- <div class="text-muted my-1 ml-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet nisl egestas nisi venenatis, at sodales enim finibus. Aenean tempus placerat ultricies. Mauris a venenatis risus. Vestibulum eu eros gravida.
-                      </div>
+                      </div> --}}
                     </div>
 
                     <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
@@ -233,7 +233,7 @@
                                     Suplemen Makanan
                                   </label>
                                 @endif
-                                
+
                               </div>
 
                                <div class="form-check pl-0">
@@ -254,14 +254,14 @@
                                 @endif
                               </div>
 
-                            @else 
+                            @else
 
-                              Hasil Kuesioner : 
+                              Hasil Kuesioner :
                               {{-- <button type="button" class="btn font-size-sm unclick" style="background-color: {{ $detail['meta_data']["rating_color"] }}"><span class="font-weight-bolder text-white">{{ $detail['meta_data']["label"] }}</span></button> --}}
                               <span class="badge text-white" style="background-color: {{ $detail['meta_data']["rating_color"] }}">{{ $detail['meta_data']["label"] }}</span>
-                              
-                            @endif  
-                            
+
+                            @endif
+
                           </td>
                         </tr>
                       @endforeach
