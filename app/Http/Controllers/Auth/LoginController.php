@@ -66,9 +66,15 @@ class LoginController extends Controller
 
     public function login(Request $request) {
         $email = $request->get($this->username());
+        
+        if($this->username() == 'no_telp' && $email != 0) {
+            $no_telp = Helper::phoneNumber($email);
+            $email = (int)$no_telp;
+        }
+
         $user = User::where($this->username(), $email)->first();
         $password = $request->password;
-
+        // return $user;
         if (empty($user)) {
             return redirect()->back()
                 ->withInput($request->only($this->username()))
@@ -186,7 +192,7 @@ class LoginController extends Controller
     {
         $login = request()->input('login');
 
-        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'nik';
+        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_telp';
 
         request()->merge([$fieldType => $login]);
 

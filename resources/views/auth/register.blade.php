@@ -54,6 +54,10 @@
                             <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi dengan Nama Lengkap" name="name" id="name" value="{{ old('name') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Nama lengkap harus diisi')" oninput="setCustomValidity('')" />
                         </div>
                         <div class="form-group mb-5">
+                            <label class="pl-8">Nomor Telepon</label>
+                            <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi dengan Nomor Telepon yang valid" name="no_telp" value="{{ old('no_telp') }}" autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon harus diisi')" oninput="setCustomValidity('')" />
+                        </div>
+                        <div class="form-group mb-5">
                             <label class="pl-8">Email</label>
                             <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang valid" name="email" value="{{ old('email') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
                         </div>
