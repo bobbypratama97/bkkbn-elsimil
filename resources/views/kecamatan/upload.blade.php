@@ -17,14 +17,14 @@
 
                 <div class="card card-custom gutter-b example example-compact">
                     <div class="card-header">
-                        <h3 class="card-title">Upload Master Wilayah</h3>
+                        <h3 class="card-title">Upload Master Kecamatan</h3>
                     </div>
-                    <form class="form" method="POST" action="{{ route('admin.provinsi.store') }}" enctype="multipart/form-data">
+                    <form class="form" method="POST" action="{{ route('admin.kecamatan.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
 
                             <div class="form-group">
-                                <label>Upload Master Wilayah</label>
+                                <label>Upload Master Kecamatan</label>
                                 <input type="file" class="form-control" name="file" required oninvalid="this.setCustomValidity('Pilih dokumen yang diupload terlebih dahulu')" oninput="setCustomValidity('')" accept=".xls, .xlsx" />
                             </div>
 
@@ -35,7 +35,7 @@
                                     <button type="submit" class="btn btn-primary mr-2">Proses</button>
                                 </div>
                                 <div class="col text-right">
-                                    <a href="{{ route('admin.provinsi.index') }}" class="btn btn-danger">Batal</a>
+                                    <a href="{{ route('admin.kecamatan.index') }}" class="btn btn-danger">Batal</a>
                                 </div>
                             </div>
                         </div>
