@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\Validator;
 
 use Auth;
 use Str;
@@ -898,8 +899,22 @@ class MemberController extends Controller
 
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => ['required','email','unique:members,email,'.$request->cid],
+            'no_telp' => ['required','numeric','unique:members,no_telp,'.$request->cid],
+        ], [
+            'unique' => ':attribute sudah terdaftar.',
+            'required' => ':attribute harus diisi.'
+        ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors(['error' => 'Gagal', 'keterangan' => $validator->errors()->first()]);
+        }
+
         $member_upd = Member::where('id', $request->cid)->first();
 
+        $member_upd->email = $request->email;
+        $member_upd->no_telp = $request->no_telp;
         $member_upd->name = $request->name;
         $member_upd->alamat = $request->alamat;
         $member_upd->rt = $request->rt;

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\Validator;
 
 use Auth;
 use Str;
@@ -99,15 +100,23 @@ class UserController extends Controller
         ->orderBy('users.id', 'DESC');
 
         if ($role == '2') {
-            $user = $user->where('users.provinsi_id', $auth->provinsi_id);
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id)
+            ->where('role.id', '>', $role);
         }
 
         if ($role == '3') {
-            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id);
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)
+            ->where('role.id', '>', $role);
         }
 
         if ($role == '4') {
-            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id);
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id)
+            ->where('role.id', '>', $role);
+        }
+
+        if ($role == '5') {
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id)->where('users.kelurahan_id', $auth->kelurahan_id)
+            ->where('role.id', '>', $role);
         }
 
         $name = '';
@@ -209,7 +218,22 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'email' => ['required','email','unique:users,email,'.$id],
+        ], [
+            'unique' => ':attribute sudah terdaftar.',
+            'required' => ':attribute harus diisi.'
+        ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors(['error' => 'Gagal', 'keterangan' => $validator->errors()->first()]);
+        }
+
         $update = User::where('id', $id)->update([
+            'email' => $request->email,
+            'name' => $request->name,
+            'no_sk' => $request->no_sk,
+            'sertifikat' => $request->sertifikat,
             'is_active' => $request->status,
             'updated_at' => date('Y-m-d H:i:s'),
             'updated_by' => Auth::id()

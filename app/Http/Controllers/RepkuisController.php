@@ -68,11 +68,26 @@ class RepkuisController extends Controller
             $kecamatan = [];
             $kabupaten = [];
             $provinsi = Provinsi::whereNull('deleted_by')->get();
-        } else {
+        } else if($roles->role_id == '2') {
             $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
-            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->orderBy('nama')->get();
-            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+            $kabupaten = Kabupaten::where('provinsi_kode', $user->provinsi_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = [];//Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+            $kelurahan = [];//Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+        } else if($roles->role_id == '3') {
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = [];//Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+        } else if($roles->role_id == '4') {
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+        } else if($roles->role_id == '5') {
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
         }
 
         $kuis = Kuis::whereNull('deleted_by')->orderBy('id', 'DESC')->get();
@@ -836,7 +851,41 @@ class RepkuisController extends Controller
         if(Auth::user()->roleChild == $this->role_child_id) $is_comment = 1;
         else $is_comment = 0;
 
-        return view('repkuis.edit', compact('kuis', 'member', 'deskripsi', 'result', 'out', 'komentar', 'fullurl', 'is_comment'));
+        //get member couple 
+        $couple = MemberCouple::leftJoin('members', function($join) {
+            $join->on('members.id', '=', 'member_couple.couple_id');
+        })
+        ->join('adms_provinsi', function($join) {
+            $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
+        })
+        ->join('adms_kabupaten', function($join) {
+            $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
+        })
+        ->join('adms_kecamatan', function($join) {
+            $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
+        })
+        ->join('adms_kelurahan', function($join) {
+            $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
+        })
+        ->join('kuisioner_result', function($q){
+            $q->on('kuisioner_result.member_id', 'members.id')
+                ->where('kuisioner_result.status', 1);
+        })
+        ->select([
+            'member_couple.*',
+            'members.id', 'members.name',
+            'adms_provinsi.nama as provinsi',
+            'adms_kabupaten.nama as kabupaten',
+            'adms_kecamatan.nama as kecamatan',
+            'adms_kelurahan.nama as kelurahan',
+            'kuisioner_result.id as kuis_result_id'
+        ])
+        ->where('member_couple.member_id', $kuis->member_id)
+        ->orderBy('member_couple.id', 'DESC')
+        ->first();
+        // return $couple;
+
+        return view('repkuis.edit', compact('kuis', 'member', 'deskripsi', 'result', 'out', 'komentar', 'fullurl', 'is_comment', 'couple'));
     }
 
     public function update(Request $request, $id) {
