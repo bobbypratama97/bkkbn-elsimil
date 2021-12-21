@@ -164,6 +164,7 @@ class AuthController extends Controller
             $user->name = ucwords($request->name);
             $user->no_telp = $request->no_telp;
             $user->email = $request->email;
+            $user->email_verified_at = date('Y-m-d H:i:s');
             $user->password = $password;
             $user->no_ktp = Helper::encryptNik($request->no_ktp);
             $user->foto_ktp = $request->foto_name;
