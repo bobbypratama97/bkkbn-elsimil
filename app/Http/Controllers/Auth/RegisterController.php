@@ -116,6 +116,7 @@ class RegisterController extends Controller
         $user->name = $request->name;
         $user->no_telp = Helper::phoneNumber($request->no_telp);
         $user->email = $request->email;
+        $user->email_verified_at = date('Y-m-d H:i:s');
         $user->password = Hash::make($request->password);
         $user->no_sk = $request->no_sk;
         $user->sertifikat = $request->sertifikat;
