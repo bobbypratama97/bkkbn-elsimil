@@ -443,7 +443,8 @@ class AuthController extends Controller
     public function checkverify(Request $request) {
         $check = Member::where('id', $request->id)->first();
 
-        if (empty($check->email_verified_at) || $check->is_active == '4') {
+        // if (empty($check->email_verified_at) || $check->is_active == '4') {
+        if ($check->is_active == '4') {
             return response()->json([
                 'code' => 401,
                 'error'   => true,
