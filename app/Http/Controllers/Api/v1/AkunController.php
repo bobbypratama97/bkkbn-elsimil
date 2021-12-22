@@ -459,15 +459,19 @@ class AkunController extends Controller
                 $onesignal = MemberOnesignal::where('member_id', $checkall->id)->where('status', 1)->first();
                 
                 if (!empty($onesignal)) {
-                    $send = OneSignal::sendNotificationToUser(
-                        "Hii...Seseorang telah mengirimkan pengajuan pasangan. Klik disini untuk melihat.",
-                        $onesignal->player_id,
-                        $url = null,
-                        $data = null,
-                        $buttons = null,
-                        $schedule = null,
-                        $headings = "Pengajuan pasangan"
-                    );
+                    try {
+                        $send = OneSignal::sendNotificationToUser(
+                            "Hii...Seseorang telah mengirimkan pengajuan pasangan. Klik disini untuk melihat.",
+                            $onesignal->player_id,
+                            $url = null,
+                            $data = null,
+                            $buttons = null,
+                            $schedule = null,
+                            $headings = "Pengajuan pasangan"
+                        );
+                    } catch (\Throwable $th) {
+                        
+                    }
                 }
 
                 return response()->json([
