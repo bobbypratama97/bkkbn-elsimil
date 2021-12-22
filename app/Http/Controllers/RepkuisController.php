@@ -272,7 +272,19 @@ class RepkuisController extends Controller
                 $finKuis['color'][$keys] = $rows->rating_color;
                 $finKuis['value'][$keys] = $rows->persen;
                 $finKuis['jumlah'][$keys] = $rows->count;
-                $finKuis['link'][$keys] = route('admin.repkuis.detail', ['label' => $rows->label, 'kuesioner' => $rows->kuis_id, 'search'=> 'all']);
+                $finKuis['link'][$keys] = route('admin.repkuis.detail', [
+                    'label' => $rows->label, 
+                    'kuesioner' => $rows->kuis_id, 
+                    'search'=> 'all',
+                    'tanggal' => request('tanggal'),
+                    'provinsi' => request('provinsi'),
+                    'kabupaten' => request('kabupaten'),
+                    'kecamatan' => request('kecamatan'),
+                    'kelurahan' => request('kelurahan'),
+                    'nama' => request('nama'),
+                    'nik' => request('nik'),
+                    'gender' => request('gender')
+                ]);
             }
 
             $output['summary'] = $finKuis;
@@ -557,10 +569,10 @@ class RepkuisController extends Controller
         }
 
         // $st = $self->toSql();
-        // echo('<pre>');
-        // print_r($self);die;
         $paginate = $self->groupBy('kuisioner_result.member_id')->paginate(10);
         $self = $paginate->items();
+        // echo('<pre>');
+        // print_r($self);die;
 
         $cop = [];
         if ($self) {
