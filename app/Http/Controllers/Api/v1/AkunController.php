@@ -637,19 +637,23 @@ class AkunController extends Controller
                     );*/
 
                     if (!empty($onesignal->player_id)) {
-                        $parameters = [
-                            'include_player_ids' => [$onesignal->player_id],
-                            'headings' => [
-                                'en' => "Pengajuan pasangan"
-                            ],
-                            'contents' => [
-                                'en' => "Yeay, pengajuan pasangan kamu telah diterima. Klik disini untuk melihat."
-                            ],
-                            'ios_badgeType'  => 'Increase',
-                            'ios_badgeCount' => 1,
-                            //'included_segments' => array('All')
-                        ];
-                        $send = OneSignal::sendNotificationCustom($parameters);
+                        try {
+                            $parameters = [
+                                'include_player_ids' => [$onesignal->player_id],
+                                'headings' => [
+                                    'en' => "Pengajuan pasangan"
+                                ],
+                                'contents' => [
+                                    'en' => "Yeay, pengajuan pasangan kamu telah diterima. Klik disini untuk melihat."
+                                ],
+                                'ios_badgeType'  => 'Increase',
+                                'ios_badgeCount' => 1,
+                                //'included_segments' => array('All')
+                            ];
+                            $send = OneSignal::sendNotificationCustom($parameters);
+                        } catch (\Throwable $th) {
+                            //throw $th;
+                        }
                     }
 
                 } else {
@@ -684,19 +688,23 @@ class AkunController extends Controller
                     );*/
 
                     if (!empty($onesignal->player_id)) {
-                        $parameters = [
-                            'include_player_ids' => [$onesignal->player_id],
-                            'headings' => [
-                                'en' => "Pengajuan pasangan"
-                            ],
-                            'contents' => [
-                                'en' => "Hiks, sayang sekali pengajuan pasangan kamu ditolak."
-                            ],
-                            'ios_badgeType'  => 'Increase',
-                            'ios_badgeCount' => 1,
-                            //'included_segments' => array('All')
-                        ];
-                        $send = OneSignal::sendNotificationCustom($parameters);
+                        try {
+                            $parameters = [
+                                'include_player_ids' => [$onesignal->player_id],
+                                'headings' => [
+                                    'en' => "Pengajuan pasangan"
+                                ],
+                                'contents' => [
+                                    'en' => "Hiks, sayang sekali pengajuan pasangan kamu ditolak."
+                                ],
+                                'ios_badgeType'  => 'Increase',
+                                'ios_badgeCount' => 1,
+                                //'included_segments' => array('All')
+                            ];
+                            $send = OneSignal::sendNotificationCustom($parameters);
+                        } catch (\Throwable $th) {
+                            //throw $th;
+                        }
                     }
 
                 }
