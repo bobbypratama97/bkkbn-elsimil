@@ -132,6 +132,7 @@ class RepkuisController extends Controller
             $res = $res->toArray();
 
             foreach ($res as $key => $row) {
+                $whereSummary = '';
                 $result = KuisResultDetail::leftJoin('kuisioner_result', function($join) {
                     $join->on('kuisioner_result.id', '=', 'kuisioner_result_detail.result_id');
                 })
@@ -175,13 +176,13 @@ class RepkuisController extends Controller
 
                 if (!empty($request->nik)) {
                     $cekKtp = Helper::dcNik($request->nik);
-                    $result->where('members.nik', 'LIKE', '%' . $cekKtp . '%');
-                    $whereSummary .= " AND members.nik LIKE '%".$cekKtp."%'";
+                    $result->where('members.no_ktp', 'LIKE', '%' . $cekKtp . '%');
+                    $whereSummary .= " AND members.no_ktp LIKE '%".$cekKtp."%'";
                 }
 
                 if (!empty($request->nama)) {
                     $result->where('members.name', $request->nama);
-                    $whereSummary .= " AND members.name = ".$request->nama;
+                    $whereSummary .= " AND members.name = '".$request->nama."'";
                 }
 
                 if (!empty($request->gender)) {
@@ -257,6 +258,7 @@ class RepkuisController extends Controller
                         GROUP BY kuisioner_summary.`kondisi`;
                         ";
         $summ = DB::select($summary);
+        
         $total = array_sum(array_column($summ, 'total'));
         foreach ($summ as $keys => $rows) {
             $rows->count = $rows->total ?? 0;
@@ -569,6 +571,7 @@ class RepkuisController extends Controller
         }
 
         // $st = $self->toSql();
+        // return $st;
         $paginate = $self->groupBy('kuisioner_result.member_id')->paginate(10);
         $self = $paginate->items();
         // echo('<pre>');

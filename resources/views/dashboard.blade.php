@@ -544,7 +544,7 @@
                 if (data.count == '0') {
                     $('#umurChart').hide();
                     $('#umurNoData').show();
-                    $('#genderNoData').html('Belum ada data');
+                    $('#umurNoData').html('Belum ada data');
                 } else {
                     $('#umurNoData').hide();
                     $('#umurNoData').html('');

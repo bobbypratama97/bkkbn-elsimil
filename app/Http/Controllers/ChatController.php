@@ -162,7 +162,6 @@ class ChatController extends Controller
         // $list = DB::select($sql)->paginate(10);
         $paginate = $query->paginate(10);
         $list = $paginate->items(); 
-        // return $list;
         
         if (!empty($list)) {
             $curr = '';
@@ -593,7 +592,12 @@ class ChatController extends Controller
     }
 
     public function send(Request $request) {
-
+        if(!request('message')) {
+            return response()->json([
+                'msg' => request('message')
+            ]);
+        }
+        
         $insert = new ChatMessage;
         $insert->chat_id = $request->chatid;
         $insert->member_id = $request->member;

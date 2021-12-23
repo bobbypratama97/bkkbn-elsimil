@@ -232,7 +232,14 @@ class KuisController extends Controller
     public function submitkuis(Request $request) {
         $data = $request->all();
         //print_r ($data); die;
-        $header = $data['data'][0];
+        $header = $data['data'][0] ?? null;
+        if(!$header) {
+            return response()->json([
+                'error' => true,
+                'code' => 400,
+                'message' => 'Data yg dimasukan tidak sesuai'
+            ], 200);
+        }
 
         $kuis = Kuis::where('id', $header['kuis_id'])->select(['gender', 'title', 'max_point'])->first();
 

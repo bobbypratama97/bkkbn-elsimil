@@ -35,7 +35,7 @@
         <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
         <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 
-        <script>var baseurl = "<?php echo URL('/'); ?>"</script>
+        <script>var baseurl = "<?php echo env('APP_URL'); ?>"</script>
         @stack('script')
 
     </body>

@@ -67,7 +67,7 @@
                                 @endif
                                 @foreach($list as $key => $row)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
                                     <td width="50">
                                         <img src="{{ $row->gambar }}" height="25" class="d-block mx-auto">
                                     </td>

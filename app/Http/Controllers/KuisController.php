@@ -450,16 +450,20 @@ class KuisController extends Controller
                 $tanggal = Helper::customDateMember($date[0]);
                 $tanggal = $tanggal . ' pukul ' . $date[1];
 
-                Helper::sendMail([
-                    'id' => $kuis->id,
-                    'tipe' => 1,
-                    'name' => $name,
-                    'email' => $user[0]['email'],
-                    'cc' => $cc,
-                    'content' => $kuis->title,
-                    'date' => $tanggal,
-                    'url' => 'apv'
-                ]);
+                try {
+                    Helper::sendMail([
+                        'id' => $kuis->id,
+                        'tipe' => 1,
+                        'name' => $name,
+                        'email' => $user[0]['email'],
+                        'cc' => $cc,
+                        'content' => $kuis->title,
+                        'date' => $tanggal,
+                        'url' => 'apv'
+                    ]);
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
 
                 return redirect()->route('admin.kuis.index')->with('success', 'Approval untuk kuesioner ' . $kuis->title . ' telah diajukan');
             }
