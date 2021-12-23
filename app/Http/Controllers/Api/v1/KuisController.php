@@ -235,10 +235,11 @@ class KuisController extends Controller
         $header = $data['data'][0] ?? null;
         if(!$header) {
             return response()->json([
+                'code' => 401,
                 'error' => true,
-                'code' => 400,
-                'message' => 'Data yg dimasukan tidak sesuai'
-            ], 200);
+                'title' => 'Perhatian',
+                'message' => 'Data yang dimasukan belum lengkap.'
+            ], 401);
         }
 
         $kuis = Kuis::where('id', $header['kuis_id'])->select(['gender', 'title', 'max_point'])->first();
@@ -359,6 +360,14 @@ class KuisController extends Controller
                 if ($saveHeader->save()) {
                     $value1 = $row['pertanyaan'][0]['value'];
                     $value2 = $row['pertanyaan'][1]['value'];
+                    if(!$value1 || !$value2) {
+                        return response()->json([
+                            'code' => 401,
+                            'error' => true,
+                            'title' => 'Perhatian',
+                            'message' => 'Data yang dimasukan belum lengkap.'
+                        ], 401);
+                    }
 
                     $result = 0;
                     if (!empty($find->formula)) {
