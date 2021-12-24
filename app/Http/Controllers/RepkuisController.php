@@ -90,7 +90,7 @@ class RepkuisController extends Controller
             $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
         }
 
-        $kuis = Kuis::whereNull('deleted_by')->orderBy('id', 'DESC')->get();
+        $kuis = Kuis::whereNull('deleted_by')->where('apv', 'APV300')->orderBy('id', 'DESC')->get();
         $gender = Helper::statusGender();
 
         return view('repkuis.index', compact('kuis', 'gender', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'roles'));
