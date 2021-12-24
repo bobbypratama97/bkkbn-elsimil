@@ -94,29 +94,30 @@ class UserController extends Controller
             'adms_kecamatan.nama as kecamatan',
             'adms_kelurahan.nama as kelurahan',
             'role.name as roles',
+            'role.id as role_id',
             DB::raw("count(member_delegate.id) AS total")
         ])
         ->groupBy('users.id')
         ->orderBy('users.id', 'DESC');
 
         if ($role == '2') {
-            $user = $user->where('users.provinsi_id', $auth->provinsi_id)
-            ->where('role.id', '>', $role);
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id);
+            // ->where('role.id', '>', $role);
         }
 
         if ($role == '3') {
-            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)
-            ->where('role.id', '>', $role);
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id);
+            // ->where('role.id', '>', $role);
         }
 
         if ($role == '4') {
-            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id)
-            ->where('role.id', '>', $role);
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id);
+            // ->where('role.id', '>', $role);
         }
 
         if ($role == '5') {
-            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id)->where('users.kelurahan_id', $auth->kelurahan_id)
-            ->where('role.id', '>', $role);
+            $user = $user->where('users.provinsi_id', $auth->provinsi_id)->where('users.kabupaten_id', $auth->kabupaten_id)->where('users.kecamatan_id', $auth->kecamatan_id)->where('users.kelurahan_id', $auth->kelurahan_id);
+            // ->where('role.id', '>', $role);
         }
 
         $name = '';
@@ -128,7 +129,7 @@ class UserController extends Controller
         $paginate = $user->paginate(10);
         $user = $paginate->items();
         // $user = $user->get();
-        return view('user.index', compact('user','paginate', 'name'));
+        return view('user.index', compact('user','paginate', 'name', 'role'));
     }
 
     public function show($id) {
@@ -172,6 +173,7 @@ class UserController extends Controller
 
     public function edit($id) {
         $this->authorize('access', [\App\User::class, Auth::user()->role, 'edit']);
+        $role = Auth::user()->role;
 
         $user = User::leftJoin('users as us', function($join) {
             $join->on('us.id', '=', 'users.created_by');
@@ -208,8 +210,15 @@ class UserController extends Controller
         ->where('users.id', $id)
         ->first();
 
+        if(!$user) return redirect()->back()->withErrors(['error' => 'Gagal', 'keterangan' => 'User tidak dapat ditemukan.']);
+
         $status = Helper::statusAdmin();
-        $roles = Role::whereNull('deleted_by')->get();
+        $roles = Role::whereNull('deleted_by');
+
+        if($user->id == Auth::id()) $roles->where('id', '>=', $role);
+        else $roles->where('id', '>', $role);
+            
+        $roles = $roles->get();
 
         $role_childs = Config::where('code', 'role_child_'.$user->role_id)
             ->get();
@@ -328,6 +337,7 @@ class UserController extends Controller
             'users.kecamatan_id',
             'adms_kecamatan.nama as kecamatan',
             'role.role_child_id',
+            'role.role_id as role_id',
             DB::raw("count(member_delegate.id) AS total_member")
         ])
         ->first();

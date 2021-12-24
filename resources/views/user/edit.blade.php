@@ -115,9 +115,15 @@
 
                         <div class="card-footer bg-gray-100 border-top-0">
                             <div class="row">
+                                @if(Auth::user()->role < $user->role_id || $user->id == Auth::user()->id)
                                 <div class="col text-left">
                                     <button type="submit" class="btn btn-primary mr-2">Simpan</button>
                                 </div>
+                                @else
+                                <div class="col text-left">
+                                    <button type="button" class="btn btn-default mr-2 btn-disabled">Simpan</button>
+                                </div>
+                                @endif
                                 <div class="col text-right">
                                     <a href="{{ route('admin.user.index') }}" class="btn btn-danger">Batal</a>
                                 </div>

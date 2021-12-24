@@ -116,7 +116,11 @@
                             <div class="row">
                                 <div class="col text-left"></div>
                                 <div class="col text-right">
+                                    @if(Auth::user()->role < $user->role_id || $user->id == Auth::user()->id)
                                     <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                    @else
+                                    <button type="button" class="btn btn-default mr-2 btn-disabled">Simpan</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
