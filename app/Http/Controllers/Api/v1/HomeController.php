@@ -88,12 +88,11 @@ class HomeController extends Controller
 
 
             if ($user->gender == '1') {
-                $kuis = DB::select("SELECT * FROM kuisioner WHERE deleted_by IS NULL AND gender in ('all', '1') ORDER BY id DESC");    
+                $kuis = DB::select("SELECT * FROM kuisioner WHERE deleted_by IS NULL AND apv = 'APV300' AND gender in ('all', '1') ORDER BY id DESC");    
             } else {
-                $kuis = DB::select("SELECT * FROM kuisioner WHERE deleted_by IS NULL AND gender in ('all', '2') ORDER BY id DESC");
+                $kuis = DB::select("SELECT * FROM kuisioner WHERE deleted_by IS NULL AND apv = 'APV300' AND gender in ('all', '2') ORDER BY id DESC");
             }
             
-
             $result = [];
             foreach ($kuis as $key => $row) {
                 //if ($row->gender == $user->gender || $row->gender == 'all') {

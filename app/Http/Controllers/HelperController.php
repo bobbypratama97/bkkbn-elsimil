@@ -424,8 +424,8 @@ class HelperController extends Controller
                 <br /><br />
 
                 <div class="form-group">
-                    <label>Formula perhitungan bobot</label>
-                    <textarea name="formula" rows="4" class="form-control"></textarea>
+                    <label>Formula perhitungan bobot <span style="font-size: 8px">(contoh: hasil_pertanyaan_1 + hasil_pertanyaan_2 )</span></label>
+                    <textarea name="formula" rows="4" class="form-control" required></textarea>
                 </div>
             ';
 
@@ -1329,8 +1329,8 @@ class HelperController extends Controller
                 <br /><br />
 
                 <div class="form-group">
-                    <label>Formula perhitungan bobot</label>
-                    <textarea name="formula" rows="4" class="form-control" '.$disable.'>'.$header['formula'].'</textarea>
+                    <label>Formula perhitungan bobot <span style="font-size: 8px">(contoh: hasil_pertanyaan_1 + hasil_pertanyaan_2 )</span></label>
+                    <textarea name="formula" rows="4" class="form-control" '.$disable.' required>'.$header['formula'].'</textarea>
                 </div>
             ';
 

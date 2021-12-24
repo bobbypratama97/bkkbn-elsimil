@@ -17,6 +17,14 @@
                     <div class="alert-text"><strong>Perhatian</strong><br />{!! Session::get( 'success' ) !!}</div>
                 </div>
                 @endif
+                @if ($errors->has('error'))
+                <div class="alert alert-custom alert-danger" role="alert">
+                    <div class="alert-icon">
+                        <i class="flaticon-warning"></i>
+                    </div>
+                    <div class="alert-text"><strong>{{ $errors->first('error') }}</strong><br />{{ $errors->first('keterangan') }}</div>
+                </div>
+                @endif
 
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
@@ -66,27 +74,46 @@
                                     <td>{{ $row->created_at }}</td>
                                     <td>{{ $row->total }}</td>
                                     <td class="text-center" width="14%" style=" white-space: nowrap;">
+                                        @if($role < $row->role_id || $row->id == Auth::user()->id)
                                         <a href="{{ route('admin.user.delegasi', $row->id) }}" class="btn btn-icon btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Pendampingan Catin">
                                             <i class="flaticon2-avatar"></i>
                                         </a>
-                                        @can('access', [\App\User::class, Auth::user()->role, 'show'])
+                                        @else
+                                        <a href="#" class="btn btn-icon btn-sm btn-default btndisable" data-toggle="tooltip" data-placement="top" title="Pendampingan Catin">
+                                            <i class="flaticon2-avatar"></i>
+                                        </a>
+                                        @endif
+                                        
+                                        @can('access', [\App\User::class, $role, 'show'])
                                         <a href="{{ route('admin.user.show', $row->id) }}" class="btn btn-icon btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Detail">
                                             <i class="flaticon2-menu-1"></i>
                                         </a>
                                         @endcan
-                                        @if ($row->id != '1')
+
                                         @can('access', [\App\User::class, Auth::user()->role, 'edit'])
+                                        @if($role < $row->role_id || $row->id == Auth::user()->id)
                                         <a href="{{ route('admin.user.edit', $row->id) }}" class="btn btn-icon btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Ubah">
                                             <i class="flaticon2-edit"></i>
                                         </a>
+                                        @else
+                                        <a href="#" class="btn btn-icon btn-sm btn-default btndisable" data-toggle="tooltip" data-placement="top" title="Ubah">
+                                            <i class="flaticon2-edit"></i>
+                                        </a>
+                                        @endif
                                         @endcan
                                         @can('access', [\App\User::class, Auth::user()->role, 'delete'])
+                                        @if($role < $row->role_id || $row->id == Auth::user()->id)
                                         <button class="btn btn-icon btn-sm btn-danger hapus" id="hapus"  data-toggle="tooltip"
                                                 data-placement="top" title="Hapus" data-id="{{ $row->id }}">
                                             <i class="flaticon2-trash"></i>
-                                       </button>
+                                        </button>
+                                        @else
+                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="hapus"  data-toggle="tooltip"
+                                                data-placement="top" title="Hapus" data-id="{{ $row->id }}">
+                                            <i class="flaticon2-trash"></i>
+                                        </button>
+                                        @endif
                                        @endcan
-                                       @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -184,6 +211,24 @@
                             });
                         }
                     })
+                }
+            }
+        });
+    });
+
+    $('#kt_datatable tbody').on('click', '.btndisable', function () {
+        bootbox.dialog({
+            title: 'Perhatian',
+            centerVertical: true,
+            closeButton: false,
+            message: "Anda tidak dapat mengakses halaman ini.",
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: 'btn-info',
+                    callback: function() {
+                        // window.location.href = data.url;
+                    }
                 }
             }
         });
