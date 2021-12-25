@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions;
+use Illuminate\Support\Facades\Validator;
 
 use Carbon\Carbon;
 
@@ -231,16 +232,42 @@ class KuisController extends Controller
 
     public function submitkuis(Request $request) {
         $data = $request->all();
-        //print_r ($data); die;
-        $header = $data['data'][0] ?? null;
-        if(!$header) {
+
+        //validasi input 
+        $validators = Validator::make($request->all(), [
+            'user_id' => ['required'],
+            'data.*.kuis_id' => ['required'],
+            'data.*.header_id' => ['required'],
+            'data.*.jenis' => ['required'],
+            'data.*.pertanyaan.*.kuis_id' => ['required'],
+            'data.*.pertanyaan.*.header_id' => ['required'],
+            'data.*.pertanyaan.*.pertanyaan_id' => ['required'],
+            'data.*.pertanyaan.*.tipe' => ['required'],
+            'data.*.pertanyaan.*.value' => ['required'],
+            'data.*.pertanyaan.*.file_name' => ['nullable'],
+        ], [
+            'required' => 'Data yang anda masukan tidak lengkap (:attribute)'
+        ]);
+
+        if ($validators->fails()) {
             return response()->json([
                 'code' => 401,
                 'error' => true,
                 'title' => 'Perhatian',
-                'message' => 'Data yang dimasukan belum lengkap.'
+                'message' => $validators->errors()->first(),
             ], 401);
         }
+
+        // print_r ($data); die;
+        $header = $data['data'][0];
+        // if(!$header) {
+        //     return response()->json([
+        //         'code' => 401,
+        //         'error' => true,
+        //         'title' => 'Perhatian',
+        //         'message' => 'Data yang dimasukan belum lengkap.'
+        //     ], 401);
+        // }
 
         $kuis = Kuis::where('id', $header['kuis_id'])->select(['gender', 'title', 'max_point'])->first();
 
@@ -346,6 +373,18 @@ class KuisController extends Controller
             }
 
             if ($row['jenis'] == 'combine') {
+                $bobotQ = [
+                    'id' => 0,
+                    'kondisi' => '',
+                    'label' => '',
+                    'nilai' => '',
+                    'bobot' => '',
+                    'value' => '',
+                    'rating' => '',
+                    'color' => '',
+                    'formula_value' => ''
+                ];
+
                 $find = KuisHeader::where('id', $row['header_id'])->first();
 
                 $saveHeader = new KuisResultHeader;
@@ -358,16 +397,8 @@ class KuisController extends Controller
                 $saveHeader->created_by = $request->user_id;
 
                 if ($saveHeader->save()) {
-                    $value1 = $row['pertanyaan'][0]['value'];
-                    $value2 = $row['pertanyaan'][1]['value'];
-                    if(!$value1 || !$value2) {
-                        return response()->json([
-                            'code' => 401,
-                            'error' => true,
-                            'title' => 'Perhatian',
-                            'message' => 'Data yang dimasukan belum lengkap.'
-                        ], 401);
-                    }
+                    $value1 = (double)$row['pertanyaan'][0]['value'] ?? 0;
+                    $value2 = (double)$row['pertanyaan'][1]['value'] ?? 0;
 
                     $result = 0;
                     if (!empty($find->formula)) {
@@ -440,7 +471,7 @@ class KuisController extends Controller
                             ];
                         }
 
-                        //print_r ($bobotQ);
+                        // print_r ($bobotQ);die;
 
                         $pertanyaan = KuisDetail::where('id', $rows['pertanyaan_id'])->first();
 
