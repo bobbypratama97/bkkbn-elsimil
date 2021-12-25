@@ -243,10 +243,11 @@ class KuisController extends Controller
             'data.*.pertanyaan.*.header_id' => ['required'],
             'data.*.pertanyaan.*.pertanyaan_id' => ['required'],
             'data.*.pertanyaan.*.tipe' => ['required'],
-            'data.*.pertanyaan.*.value' => ['required'],
+            'data.*.pertanyaan.*.value' => ['required_unless:data.*.pertanyaan.*.tipe,upload'],
             'data.*.pertanyaan.*.file_name' => ['nullable'],
         ], [
-            'required' => 'Data yang anda masukan tidak lengkap (:attribute)'
+            'required' => 'Data yang anda masukan tidak lengkap (:attribute)',
+            'required_unless' => 'Data yang anda masukan tidak lengkap (:attribute)'
         ]);
 
         if ($validators->fails()) {
@@ -260,14 +261,6 @@ class KuisController extends Controller
 
         // print_r ($data); die;
         $header = $data['data'][0];
-        // if(!$header) {
-        //     return response()->json([
-        //         'code' => 401,
-        //         'error' => true,
-        //         'title' => 'Perhatian',
-        //         'message' => 'Data yang dimasukan belum lengkap.'
-        //     ], 401);
-        // }
 
         $kuis = Kuis::where('id', $header['kuis_id'])->select(['gender', 'title', 'max_point'])->first();
 
