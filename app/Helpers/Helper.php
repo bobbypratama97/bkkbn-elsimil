@@ -582,7 +582,7 @@ class Helper {
 		$status = ['' => 'Pilih Status', '1' => 'Draft', '2' => 'Publish'];
 
 		if (!empty($data)) {
-			$status = $status[$data];
+			$status = $status[$data] ?? '';
 		}
 
 		return $status;
