@@ -44,7 +44,7 @@
                                 <div class="form-group">
                                     <label>Thumbnail</label>
                                     <div id="dropzone" class="dropzone alert dropzone-default dropzone-success unclick">
-                                        <img src="{{ URL::to('/') }}/uploads/kuesioner/{{ $kuis->thumbnail }}">
+                                        <img style="width: 100%;" src="{{ URL::to('/') }}/uploads/kuesioner/{{ $kuis->thumbnail }}">
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                 <div class="form-group">
                                     <label>Gambar Intro</label>
                                     <div id="dropzone" class="dropzone alert dropzone-default dropzone-success unclick">
-                                        <img src="{{ URL::to('/') }}/uploads/kuesioner/{{ $kuis->image }}" style="width:34%;">
+                                        <img src="{{ URL::to('/') }}/uploads/kuesioner/{{ $kuis->image }}" style="width:100%;">
                                     </div>
                                 </div>
                             </div>
