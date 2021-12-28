@@ -74,12 +74,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="nama" class="font-weight-bold">User Pengakses</label>
-									<ul>
-										@foreach ($user as $row)
-										<li>{{ $row->name }}</li>
-										@endforeach
-									</ul>
+									<a href="{{ route('admin.user.index', ['role' => $role[0]->id]) }}" class="btn btn-primary mr-auto"><i class="fa fa-user fa-fw"></i>List User</a>
 								</div>
 							</div>
 						</div>

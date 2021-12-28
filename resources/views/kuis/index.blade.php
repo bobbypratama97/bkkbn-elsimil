@@ -70,7 +70,7 @@
                                     <th>Status</th>
                                     <th>Tanggal Dibuat</th>
                                     <th>Dibuat Oleh</th>
-                                    <th width="14%">Aksi</th>
+                                    <th width="14%" >Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -98,7 +98,7 @@
                                     </td>
                                     <td>{{ $row->created_at }}</td>
                                     <td>{!! Helper::customUser($row->name) !!}</td>
-                                    <td>
+                                    <td style="white-space: nowrap">
                                         @can('access', [\App\Kuis::class, Auth::user()->role, 'preview'])
                                         @if ($row->apv == 'APV400' || $row->apv == 'APV100')
                                         <a href="{{ route('admin.kuis.preview', $row->id) }}" class="btn btn-icon btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Ajukan Approval">
@@ -121,7 +121,7 @@
                                             <i class="flaticon-notepad"></i>
                                         </a>
                                         @endcan
-                                        @can('access', [\App\Kuid::class, Auth::user()->role, 'delete'])
+                                        @can('access', [\App\Kuis::class, Auth::user()->role, 'delete'])
                                         <button class="btn btn-icon btn-sm btn-danger hapus" id="hapus"    title="Hapus" data-id="{{ $row->id }}">
                                             <i class="flaticon2-trash"></i>
                                        </button>

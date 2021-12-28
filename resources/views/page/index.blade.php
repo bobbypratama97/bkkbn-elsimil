@@ -41,7 +41,7 @@
                         @endcan
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: normal;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -60,7 +60,7 @@
                                     <td>{!! Helper::status($row->status) !!}</td>
                                     <td>{{ $row->created_at }}</td>
                                     <td>{!! Helper::customUser($row->nama) !!}</td>
-                                    <td class="text-center">
+                                    <td class="text-center" style="white-space: nowrap;">
                                         @can('access', [\App\Page::class, Auth::user()->role, 'edit'])
                                         <a href="{{ route('admin.page.edit', $row->id) }}" class="btn btn-icon btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Ubah">
                                             <i class="flaticon2-edit"></i>
@@ -94,31 +94,31 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('#kt_datatable').DataTable({
-            "sScrollX": "100%",
-            //"sScrollXInner": "110%",
-            "bLengthChange": false,
-            "ordering": false,
-            "iDisplayLength": 10,
-            "oLanguage": {
-                "sSearch": "Cari : ",
-                "oPaginate": {
-                    "sFirst": "Hal. Pertama",
-                    "sPrevious": "Sebelumnya",
-                    "sNext": "Berikutnya",
-                    "sLast": "Hal. Terakhir"
-                }
-            },
-            "language": {
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "infoEmpty": "Menampilkan 0 dari _MAX_ data",
-                "zeroRecords": "Tidak ada data",
-                "sInfoFiltered":   "",
-            },
-            columnDefs: [
-                { "width": "50px", "targets": [0] }
-            ]
-        });
+        // var table = $('#kt_datatable').DataTable({
+        //     "sScrollX": "100%",
+        //     //"sScrollXInner": "110%",
+        //     "bLengthChange": false,
+        //     "ordering": false,
+        //     "iDisplayLength": 10,
+        //     "oLanguage": {
+        //         "sSearch": "Cari : ",
+        //         "oPaginate": {
+        //             "sFirst": "Hal. Pertama",
+        //             "sPrevious": "Sebelumnya",
+        //             "sNext": "Berikutnya",
+        //             "sLast": "Hal. Terakhir"
+        //         }
+        //     },
+        //     "language": {
+        //         "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        //         "infoEmpty": "Menampilkan 0 dari _MAX_ data",
+        //         "zeroRecords": "Tidak ada data",
+        //         "sInfoFiltered":   "",
+        //     },
+        //     columnDefs: [
+        //         { "width": "50px", "targets": [0] }
+        //     ]
+        // });
     });
 
     $('#kt_datatable tbody').on('click', '.hapus', function () {

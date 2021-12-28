@@ -215,17 +215,21 @@ class ChatController extends Controller
         }
     }
 
-    public function type(Request $request){
-        $role_childs = Config::select('configs.name', 'configs.value as type', DB::Raw('if(md.id is not null, 1, 0) as status'))
-            ->join('role_user as role', 'role.role_child_id', 'configs.value')
+    public function typeBackup(Request $request){
+        $role_childs = Config::select('configs.name', 'configs.value as type', 
+                DB::Raw('if(md.id is not null, 1, 0) as status'),
+                'md.user_id', 
+                'role.id'
+            )
+            ->leftJoin('role_user as role', 'role.role_child_id', 'configs.value')
             ->leftJoin('member_delegate as md', function($q) use($request){
                 $q->on('md.user_id', 'role.user_id')
                     ->where('md.status', 1)
                     ->where('md.member_id', $request->id);
             })
-            ->where('code', 'LIKE', '%role_child_%')
+            ->where('code', 'LIKE', 'role_child_%')
             ->orderBy('configs.value', 'desc')
-            ->groupBy('configs.value')
+            // ->groupBy('configs.value')
             ->get();
 
         return response()->json([
@@ -233,6 +237,43 @@ class ChatController extends Controller
             'error'   => false,
             'message' => 'List Chat type',
             'data' => $role_childs
+        ], 200);
+    }
+
+    public function type(Request $request){
+        $member_delegate = MemberDelegate::select('member_delegate.user_id', 'role_user.role_child_id')
+            ->join('role_user', 'role_user.user_id', 'member_delegate.user_id')
+            ->where('member_delegate.member_id', $request->id)
+            ->where('member_delegate.status', 1)
+            ->whereRaw('member_delegate.deleted_at is null')
+            ->whereRaw('role_user.role_child_id is not null')
+            ->get();
+
+        $exist_role_child = [];
+        foreach ($member_delegate as $value) {
+            $exist_role_child[$value->role_child_id] = $value;
+        }
+
+        $chat_type = Config::select(
+                'configs.name', 'configs.value as type'
+            )
+            ->where('code', 'LIKE', 'role_child_%')
+            ->orderBy('configs.value', 'desc')
+            ->get();
+
+        foreach ($chat_type as $vtype) {
+            $chat_type_resp[] = [
+                'name' => $vtype['name'],
+                'type' => $vtype['type'],
+                'status' => (isset($exist_role_child[$vtype['type']]) ? 1 : 0)
+            ];
+        }
+
+        return response()->json([
+            'code' => 200,
+            'error'   => false,
+            'message' => 'List Chat type',
+            'data' => $chat_type_resp
         ], 200);
     }
 

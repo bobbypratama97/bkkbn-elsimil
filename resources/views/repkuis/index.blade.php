@@ -42,8 +42,8 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-lg-3">
-                                <label>Provinsi</label>
-                                <select name="" class="form-control select2" id="provinsi">
+                                <label>Provinsi </label>
+                                <select name="" class="form-control select2" id="provinsi" data-allow-clear="{{$roles->role_id <2?"true":""}}">
                                     <option value="">Pilih</option>
                                     @foreach ($provinsi as $key => $row)
                                     <option value="{{ $row->provinsi_kode }}" {{ ($roles->role_id != '1') ? 'selected' : '' }}>{{ $row->nama }}</option>
@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label>Kabupaten</label>
-                                <select name="" class="form-control select2" id="kabupaten">
+                                <select name="" class="form-control select2" id="kabupaten" data-allow-clear="{{$roles->role_id <3?"true":""}}">
                                     <option value="">Pilih</option>
                                     @foreach ($kabupaten as $key => $row)
                                     <option value="{{ $row->kabupaten_kode }}" {{ ($roles->role_id != '1' && $roles->role_id != '2') ? 'selected' : '' }}>{{ $row->nama }}</option>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label>Kecamatan</label>
-                                <select name="" class="form-control select2" id="kecamatan">
+                                <select name="" class="form-control select2" id="kecamatan" data-allow-clear="{{$roles->role_id <4?"true":""}}">
                                     <option value="">Pilih</option>
                                     @foreach ($kecamatan as $key => $row)
                                     <option value="{{ $row->kecamatan_kode }}" {{ ($roles->role_id != '1' && $roles->role_id != '2' && $roles->role_id != '3') ? 'selected' : '' }}>{{ $row->nama }}</option>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label>Kelurahan</label>
-                                <select name="" class="form-control select2" id="kelurahan">
+                                <select name="" class="form-control select2" id="kelurahan" data-allow-clear="{{$roles->role_id <5?"true":""}}">
                                     <option value="">Pilih</option>
                                     @foreach ($kelurahan as $key => $row)
                                     <option value="{{ $row->kelurahan_kode }}" {{ ($roles->role_id != '1' && $roles->role_id != '2' && $roles->role_id != '3' && $roles->role_id != '4') ? 'selected' : '' }}>{{ $row->nama }}</option>
@@ -173,6 +173,8 @@
 
         $('.select2').select2({
             placeholder: "Pilih",
+			    allowClear: true,
+
             "language": {
                 "noResults": function(){
                     return "Tidak ada data";
@@ -193,6 +195,12 @@
             $("#kt_daterangepicker .form-control").val(a.format("DD/MM/YYYY")+" - "+t.format("DD/MM/YYYY"))
         }));
 
+        // $(document).on('select2:unselecting', '.select2', function() {
+        //     var id = $(this).attr('id')
+            
+        //     $('#'+id).select2().trigger('change')
+        // })
+
         $('#provinsi').on('change', function() {
             $.preloader.start({
                 modal:true,
@@ -200,6 +208,12 @@
             });
 
             var provinsi = $('#provinsi').val();
+            if(provinsi == '' || provinsi == null) {
+                $('#kabupaten, #kecamatan, #kelurahan').empty().trigger('change');
+                $.preloader.stop();
+                return true
+            }
+            
             $.ajax({
                 type: "POST",
                 url: '{{ route('kabupaten') }}',
@@ -214,6 +228,7 @@
                 },
                 failure: function(errMsg) {
                     alert(errMsg);
+                    $.preloader.stop();
                 }
             });
         });
@@ -225,6 +240,16 @@
             });
 
             var kabupaten = $('#kabupaten').val();
+            if(kabupaten == '' || kabupaten == null) {
+                // $('#kecamatan').select2('destroy');
+                // $('#kecamatan').empty();
+                // $('#kecamatan').select2({'placeholder': 'Pilih'});
+                $('#kecamatan, #kelurahan').empty().trigger('change');
+
+                $.preloader.stop();
+                return true
+            }
+
             $.ajax({
                 type: "POST",
                 url: '{{ route('kecamatan') }}',
@@ -238,6 +263,7 @@
                 },
                 failure: function(errMsg) {
                     alert(errMsg);
+                    $.preloader.stop();
                 }
             });
         });
@@ -249,6 +275,13 @@
             });
 
             var kecamatan = $('#kecamatan').val();
+            
+            if(kecamatan == '' || kecamatan == null) {
+                $('#kelurahan').empty().trigger('change');
+                $.preloader.stop();
+                return true
+            }
+
             $.ajax({
                 type: "POST",
                 url: '{{ route('kelurahan') }}',
@@ -261,11 +294,13 @@
                 },
                 failure: function(errMsg) {
                     alert(errMsg);
+                    $.preloader.stop();
                 }
             });
         });
 
         $('#lihat').on('click', function() {
+			btn=$(this);
             $.preloader.start({
                 modal:true,
                 src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
@@ -326,7 +361,7 @@
                 });*/
 
                 $('#grafik-hasil').hide();
-
+				btnText=btn.html();
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('admin.repkuis.search') }}',
@@ -343,8 +378,12 @@
                         "gender": gender 
                     },
                     dataType: "json",
+					   beforeSend:function(){
+						btn.text('Loading data...');
+						},
                     success: function(data) {
-                            console.log(data)
+					btn.empty().append(btnText);						
+
                         if (data.count == '0') {
                             bootbox.alert({
                                 title: 'Perhatian',
@@ -356,20 +395,16 @@
                         } else {
                             $('#grafik-hasil').show();
 
-                            for (var i = 1; i < 20; i++) {
-                                $('#own-' + i).hide();
-                                $('#myChart-' + i).hide();
-                            }
-
+                                 $('canvas[id^="myChart-"],div[id^="own-"]').hide();
+								$('canvas[id^="myChart-"]').empty();
+ 
                             $.each(data.data, function(index, item) {
-                                
-                                $('#myChart-' + index).show();
-                                $('#own-' + index).show();
-
-                                var ctx = document.getElementById('myChart-' + index).getContext('2d');
-                                var myChart = new Chart(ctx, {
+                                $('canvas[id^="myChart-"],div[id^="own-"]').show();
+  								var ctx=myChart="";
+                                 ctx = document.getElementById('myChart-' + index).getContext('2d');
+								   myChart = new Chart(ctx, {
                                     animation: 'easeInQuad',
-                                    type: 'pie',
+                                    type: 'doughnut',
                                     data: {
                                         labels: item.legend,
                                         datasets: [{
@@ -381,7 +416,7 @@
                                     options: {
                                         showAllTooltips: true,
                                         responsive: true,
-                                        title: {
+                                         title: {
                                             display: true,
                                             text: item.label
                                         },

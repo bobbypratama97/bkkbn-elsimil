@@ -153,12 +153,13 @@ class ChatController extends Controller
                     ->where('chat_message.last', 1);
             })
             ->leftJoin('users', 'users.id', 'chat_header.responder_id')
-            ->where('chat_header.type', Auth::user()->roleChild)
+            // ->where('chat_header.type', Auth::user()->roleChild)
             ->whereRaw('responder_id = '.$user->id);
             // ->whereRaw('(role_user.role_id = 1 OR (responder_id = '.$user->id.' OR responder_id IS NULL))');
 
         if($condition != '') $query->whereRaw('1=1 '.$condition);
             
+        // return $query->toSql();
         // $list = DB::select($sql)->paginate(10);
         $paginate = $query->paginate(10);
         $list = $paginate->items(); 
@@ -1128,6 +1129,85 @@ class ChatController extends Controller
         ]);
 
         die();
+    }
+
+    public function create(Request $request) {
+        DB::beginTransaction();
+        try {
+            if(!request('member_id')) {
+                return response()->json([
+                    'msg' => 'Catin tidak ditemukan',//request('message'),
+                    'redirect' => 0
+                ]);
+            }
+    
+            //cek chat header user 
+            $chat_user = ChatHeader::select('chat_header.id', 'chat_message.id as chat_message_id')
+                ->leftJoin('chat_message', 'chat_message.chat_id', 'chat_header.id')
+                ->where('chat_header.member_id', $request->member_id)
+                ->where('chat_header.responder_id', Auth::user()->id)
+                ->whereRaw('chat_header.deleted_at is null')
+                ->first();
+    
+            if(isset($chat_user->chat_message_id)) {
+                //redirect ke inbox
+                return response()->json([
+                    'redirect' => 1,
+                    'msg' => 'Berhasil dikirim.',
+                    'url' => route('admin.chat.show', [$chat_user->id])
+                ]);
+                // return url('admin/inbox/chat/'.$chat_user->id);
+            }
+    
+            //find member detail
+            $member = Member::where('id', $request->member_id)
+                ->first();
+    
+            //store chat header
+            if(!isset($chat_user->id)){
+                $store_chat_header = ChatHeader::insertGetId([
+                    'member_id' => $member->id,
+                    'responder_id' => Auth::user()->id,
+                    'provinsi_kode' => $member->provinsi_id,
+                    'kabupaten_kode' => $member->kabupaten_id,
+                    'kecamatan_kode' => $member->kecamatan_id,
+                    'kelurahan_kode' => $member->kelurahan_id,
+                    'status' => 0,
+                    'type' => Auth::user()->roleChild,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'created_by' => Auth::user()->id
+                ]);
+            }else $store_chat_header = $chat_user->id;
+            
+            $insert = new ChatMessage;
+            $insert->chat_id = $store_chat_header;
+            $insert->member_id = $member->id;
+            $insert->response_id = Auth::id();
+            $insert->message = 'Hi '.$member->name;//$request->message;
+            $insert->status = 'reply';
+            $insert->last = 1;
+            $insert->created_at = date('Y-m-d H:i:s');
+            $insert->created_by = Auth::id();
+
+            $insert->save();
+    
+            DB::commit();
+            return response()->json([
+                'redirect' => 1,
+                'msg' => 'Berhasil dikirim.',
+                'url' => route('admin.chat.show', [$store_chat_header])
+            ]);
+    
+            die();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return response()->json([
+                'msg' => $th->getMessage(),
+                'redirect' => 0
+            ]);
+    
+            die();
+        }
     }
 
 }

@@ -259,25 +259,25 @@ class DashboardController extends Controller
                 'text' => 'Provinsi'
             ];
 
-            $kabupaten = Kabupaten::select('nama')->where('kabupaten_kode', $auth->kabupaten_id)->first();
+            // $kabupaten = Kabupaten::select('nama')->where('kabupaten_kode', $auth->kabupaten_id)->first();
             $members['kabupaten'] = [
                 'count' => $provinsi->total,
-                'label' => $kabupaten->nama,
-                'text' => 'Kabupaten / Kota'
+                'label' => 'Semua Kabupaten / Kota',//$kabupaten->nama,
+                'text' => 'Semua Kabupaten / Kota'
             ];
 
-            $kecamatan = Kecamatan::select('nama')->where('kecamatan_kode', $auth->kecamatan_id)->first();
+            // $kecamatan = Kecamatan::select('nama')->where('kecamatan_kode', $auth->kecamatan_id)->first();
             $members['kecamatan'] = [
                 'count' => $provinsi->total,
-                'label' => $kecamatan->nama,
-                'text' => 'Kecamatan'
+                'label' => 'Semua Kecamatan',
+                'text' => 'Semua Kecamatan'
             ];
 
-            $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
+            // $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
             $members['kelurahan'] = [
                 'count' => $provinsi->total,
-                'label' => $kelurahan->nama,
-                'text' => 'Kelurahan'
+                'label' => 'Semua Kelurahan',
+                'text' => 'Semua Kelurahan'
             ];
 
         }
@@ -317,18 +317,18 @@ class DashboardController extends Controller
                 'text' => 'Kabupaten / Kota'
             ];
 
-            $kecamatan = Kecamatan::select('nama')->where('kecamatan_kode', $auth->kecamatan_id)->first();
+            // $kecamatan = Kecamatan::select('nama')->where('kecamatan_kode', $auth->kecamatan_id)->first();
             $members['kecamatan'] = [
                 'count' => $kabupaten->total,
-                'label' => $kecamatan->nama,
-                'text' => 'Kecamatan'
+                'label' => 'Semua Kecamatan',
+                'text' => 'Semua Kecamatan'
             ];
 
-            $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
+            // $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
             $members['kelurahan'] = [
                 'count' => $kabupaten->total,
-                'label' => $kelurahan->nama,
-                'text' => 'Kelurahan'
+                'label' => 'Semua Kelurahan',
+                'text' => ' Semua Kelurahan'
             ];
 
         }
@@ -386,11 +386,11 @@ class DashboardController extends Controller
                 'text' => 'Kecamatan'
             ];
 
-            $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
+            // $kelurahan = Kelurahan::select('nama')->where('kelurahan_kode', $auth->kelurahan_id)->first();
             $members['kelurahan'] = [
                 'count' => $kecamatan->total ?? 0,
-                'label' => $kelurahan->nama ?? '-',
-                'text' => 'Kelurahan'
+                'label' => 'Semua Kelurahan',
+                'text' => 'Semua Kelurahan'
             ];
 
         }

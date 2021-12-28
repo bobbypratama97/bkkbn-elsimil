@@ -197,6 +197,22 @@
         console.log(id)
         document.getElementById(id).select();
         document.execCommand('copy');
+
+        bootbox.dialog({
+            title: 'Perhatian',
+            centerVertical: true,
+            closeButton: false,
+            message: "<p class='text-center'> Link Berhasil di-Copy, silahkan Paste/Tempel di Whatsaap tim anda </p>",
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: 'btn-info',
+                    callback: function() {
+                        //window.location.href = '{{ route('admin.member.index') }}';
+                    }
+                }
+            }
+        });
     }
 
     $(document).ready(function() {

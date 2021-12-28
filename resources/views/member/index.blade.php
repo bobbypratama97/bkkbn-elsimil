@@ -45,7 +45,7 @@
                             <button type="submit" class="btn btn-success">Filter </button>
                         </form>
 
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: nowrap;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: normal;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -57,7 +57,7 @@
                                     <th>Gender</th>
                                     <th>Status</th>
                                     <th>Tanggal Daftar</th>
-                                    <th>Petugas KB</th>
+                                    <th>Petugas Pendamping</th>
                                     <th width="14%">Aksi</th>
                                 </tr>
                             </thead>
@@ -74,7 +74,7 @@
                                     <td>{!! Helper::statusUser($row['is_active']) !!}</td>
                                     <td>{{ $row['created_at'] }}</td>
                                     <td>{{ (!empty($row['petugas'])) ? $row['petugas'] : '-' }}</td>
-                                    <td class="text-right" width="14%">
+                                    <td class="text-right" width="14%" style="white-space: nowrap">
                                         {{-- @if ($row['gender'] == 2)
                                             <a href="{{ route('admin.member.ibuhamil', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Tambah Kuesioner Ibu Hamil" style="background-color: #EB30EF">
                                                 <i class="flaticon2-notepad"></i>
@@ -97,13 +97,22 @@
                                         <button class="btn btn-icon btn-sm btn-warning kelola" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
                                             <i class="flaticon-businesswoman"></i>
                                         </button>
+                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Chat catin" data-id="{{ $row['id'] }}">
+                                                <i class="flaticon-chat"></i>
+                                        </button>
                                         @elseif ($row['petugas_id'] == Auth::user()->id)
                                         <button class="btn btn-icon btn-sm btn-default btndisableself" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
                                                 <i class="flaticon-businesswoman"></i>
                                         </button>
+                                        <button class="btn btn-icon btn-sm btn-primary chatcatin" id="kelola"  title="Chat catin" data-id="{{ $row['id'] }}">
+                                                <i class="flaticon-chat"></i>
+                                        </button>
                                         @else
                                         <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
                                                 <i class="flaticon-businesswoman"></i>
+                                        </button>
+                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Chat catin" data-id="{{ $row['id'] }}">
+                                                <i class="flaticon-chat"></i>
                                         </button>
                                         @endif
                                     </td>
@@ -235,7 +244,7 @@
             title: 'Perhatian',
             centerVertical: true,
             closeButton: false,
-            message: "Sudah punya pendamping, tidak dapat dampingi catin ini.",
+            message: "Untuk mendampingin catin ini harap menguhubungi petugas KB di Tim anda.",
             buttons: {
                 ok: {
                     label: "OK",
@@ -253,7 +262,7 @@
             title: 'Perhatian',
             centerVertical: true,
             closeButton: false,
-            message: "Catin sudah berhasil didampingi.",
+            message: "Catin telah menjadi tanggung jawab anda.",
             buttons: {
                 ok: {
                     label: "OK",
@@ -261,6 +270,63 @@
                     callback: function() {
                         // window.location.href = data.url;
                     }
+                }
+            }
+        });
+    });
+
+    $('#kt_datatable tbody').on('click', '.chatcatin', function () {
+        var id = $(this).attr('data-id');
+
+        bootbox.confirm({
+            title: 'Perhatian',
+            message: "<p class='text-center'>Mulai percakapan ?</p>",
+            centerVertical: true,
+            closeButton: false,
+            buttons: {
+                confirm: { label: 'Yakin', className: 'btn-success' },
+                cancel: { label: 'Batalkan', className: 'btn-danger' }
+            },
+            callback: function (result) {
+                if (result == true) {
+                    $.preloader.start({
+                        modal:true,
+                        src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
+                    });
+
+                    $.ajax({
+                        url: '{{ route('admin.chat.create') }}',
+                        type: 'POST',
+                        data: {member_id : id, '_token': "{{ csrf_token() }}"},
+                        dataType: 'json',
+                        success: function( data ) {
+                            $.preloader.stop();
+
+                            if (data.redirect == 0) {
+                                bootbox.dialog({
+                                    title: 'Perhatian',
+                                    centerVertical: true,
+                                    closeButton: false,
+                                    message: "<p class='text-center'>" + data.msg + "</p>",
+                                    buttons: {
+                                        ok: {
+                                            label: "OK",
+                                            className: 'btn-info',
+                                            callback: function() {
+                                                // if(data.redirect == 1){
+                                                //     window.location.href = data.url;
+                                                // }
+                                            }
+                                        }
+                                    }
+                                });
+                            } else {
+                                if(data.redirect == 1){
+                                    window.location.href = data.url;
+                                }
+                            }
+                        }
+                    })
                 }
             }
         });
