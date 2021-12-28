@@ -265,7 +265,7 @@ class ChatController extends Controller
             $chat_type_resp[] = [
                 'name' => $vtype['name'],
                 'type' => $vtype['type'],
-                'status' => (isset($exist_role_child[$vtype['type']]) ? 1 : 0)
+                'status' => (string)(isset($exist_role_child[$vtype['type']]) ? 1 : 0)
             ];
         }
 
