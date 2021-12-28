@@ -260,7 +260,15 @@ class KuisController extends Controller
         }
 
         // print_r ($data); die;
-        $header = $data['data'][0];
+        $header = $data['data'][0] ?? null;
+        if ($header == null) {
+            return response()->json([
+                'code' => 401,
+                'error' => true,
+                'title' => 'Perhatian',
+                'message' => 'Data yang anda masukan tidak lengkap (null)'
+            ], 401);
+        }
 
         $kuis = Kuis::where('id', $header['kuis_id'])->select(['gender', 'title', 'max_point'])->first();
 

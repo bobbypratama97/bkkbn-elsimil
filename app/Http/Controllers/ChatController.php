@@ -1184,7 +1184,7 @@ class ChatController extends Controller
             $insert->member_id = $member->id;
             $insert->response_id = Auth::id();
             $insert->message = 'Hi '.$member->name;//$request->message;
-            $insert->status = 'send';
+            $insert->status = 'reply';
             $insert->last = 1;
             $insert->created_at = date('Y-m-d H:i:s');
             $insert->created_by = Auth::id();

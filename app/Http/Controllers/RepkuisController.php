@@ -530,7 +530,7 @@ class RepkuisController extends Controller
         }
 
         if (!empty($request->gender)) {
-            $self->where('kuisioner_result.gender', $request->gender);
+            $self->where('kuisioner_result.kuis_gender', $request->gender);
         }
 
         if (!empty($request->label)) {
