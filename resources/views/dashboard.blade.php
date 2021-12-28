@@ -37,14 +37,14 @@
 							<div class="list-group">
 							  
 							  
-							  <a href="{{ route('admin.chat.index') }}" class="list-group-item d-flex justify-content-between align-items-center">
+							  <a href="{{ route('admin.chat.search', ['search'=> 'all']) }}" class="list-group-item d-flex justify-content-between align-items-center">
 							 <div><i class="fas fa-fw fa-comment-dots text-danger"></i> Chat yang belum ditanggapi.</div>
 								<span class="badge badge-primary  badge-pill">{{ $resallnorespchat[0]->total }}</span>
 							  </a> 
 							  
 							  
 							  
-							  <a href="{{ route('admin.repkuis.detail', ['kuesioner' => '', 'tanggal' => '', 'provinsi' => $provcur, 'kabupaten' => $kabcur, 'kecamatan' => $keccur, 'kelurahan' => '', 'nik' => '', 'nama' => '', 'gender' => '']) }}" class="list-group-item d-flex justify-content-between align-items-center">
+							  <a href="{{ route('admin.repkuis.detail', ['kuesioner' => '', 'tanggal' => '', 'provinsi' => $provcur, 'kabupaten' => $kabcur, 'kecamatan' => $keccur, 'kelurahan' => '', 'nik' => '', 'nama' => '', 'gender' => '', 'search'=> 'all']) }}" class="list-group-item d-flex justify-content-between align-items-center">
 								 <div><i class="fas fa-fw fa-notes-medical text-danger"></i> Kuesioner yang belum dikomentari.</div>
 								<span class="badge badge-primary  badge-pill">{{ $resallnorespondkuis[0]->total }}</span>
 							  </a> 
