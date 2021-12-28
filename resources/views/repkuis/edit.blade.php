@@ -160,7 +160,12 @@
                             </div>
                             @if (empty($member->petugas_id))
                             <div class="card-body py-4 text-center">
-                                Anda belum bisa memberikan ulasan karena catin ini belum menjadi tanggung jawab Anda.
+                                <div class="form-group">
+                                    <label>Ulasan Penilaian</label>
+                                    <textarea class="form-control" rows="5" name="komentar" disabled>{{ (isset($komentar->komentar)) ? $komentar->komentar : '' }}</textarea>
+                                </div>
+                                <!-- Anda belum bisa memberikan ulasan karena catin ini belum menjadi tanggung jawab Anda. -->
+                                Fitur ulasan hanya dapat diberikan oleh Petugas Bidan
                             </div>
                             <div class="card-footer bg-gray-100 border-top-0">
                                 <div class="row">
@@ -170,34 +175,42 @@
                                 </div>
                             </div>
                             @else
-                            <form class="form" method="POST" action="{{ route('admin.repkuis.update', $kuis->id) }}">
-                            @method('PUT')
-                            @csrf
-                            <input type="hidden" name="fullurl" value="{{ $fullurl }}">
-                            <div class="card-body py-4">
+                            @if ($member->petugas_id != Auth::id() || $is_comment == 0)
+                            <div class="card-body py-4 text-center">
                                 <div class="form-group">
                                     <label>Ulasan Penilaian</label>
-                                    <textarea class="form-control" rows="5" name="komentar" required>{{ (isset($komentar->komentar)) ? $komentar->komentar : '' }}</textarea>
+                                    <textarea class="form-control" rows="5" name="komentar" disabled>{{ (isset($komentar->komentar)) ? $komentar->komentar : '' }}</textarea>
                                 </div>
+                                <!-- Anda belum bisa memberikan ulasan karena catin ini belum menjadi tanggung jawab Anda. -->
+                                Fitur ulasan hanya dapat diberikan oleh Petugas Bidan
                             </div>
-                            @if ($member->petugas_id != Auth::id() || $is_comment == 0)
                             <div class="card-footer bg-gray-100 border-top-0">
                                 <div class="row">
-                                    <div class="col text-center">
-                                        Anda tidak bisa memberikan ulasan karena catin ini bukan tanggung jawab Anda
+                                    <div class="col text-right">
+                                        <button type="button" id="kelola" data-id="{{ $member->id }}" class="btn mr-2" disabled>Dampingi catin ini</button>
                                     </div>
                                 </div>
                             </div>
                             @else
-                            <div class="card-footer bg-gray-100 border-top-0">
-                                <div class="row">
-                                    <div class="col text-right">
-                                        <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                <form class="form" method="POST" action="{{ route('admin.repkuis.update', $kuis->id) }}">
+                                @method('PUT')
+                                @csrf
+                                <input type="hidden" name="fullurl" value="{{ $fullurl }}">
+                                <div class="card-body py-4">
+                                    <div class="form-group">
+                                        <label>Ulasan Penilaian</label>
+                                        <textarea class="form-control" rows="5" name="komentar" required>{{ (isset($komentar->komentar)) ? $komentar->komentar : '' }}</textarea>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="card-footer bg-gray-100 border-top-0">
+                                    <div class="row">
+                                        <div class="col text-right">
+                                            <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
                             @endif
-                            </form>
                             @endif
                         </div>
                     </div>

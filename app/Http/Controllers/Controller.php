@@ -13,4 +13,5 @@ class Controller extends BaseController
 
     public $accept_email = ['gmail.com', 'yahoo.com', 'yahoo.co.id'];
     public $role_child_id = 1;
+    public $role_child_bidan = 3;
 }
