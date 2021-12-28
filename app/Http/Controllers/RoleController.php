@@ -34,7 +34,9 @@ class RoleController extends Controller
 
 		$role = Role::select(['role.*', 'users.name AS nama'])->leftJoin('users', function($join) {
 			$join->on('users.id', '=', 'role.created_by');
-		})->get();
+		})
+		->whereRaw('deleted_by is null')
+		->get();
 
 		return view('role.index', ['role' => $role]);
 	}
@@ -103,14 +105,14 @@ class RoleController extends Controller
 
 		$role = Role::complex($id);
 		$tree = Module::hierarchy($role[0]->combined);
-		$user = UserRole::leftJoin('users', function($join) {
-			$join->on('users.id', '=', 'role_user.user_id');
-		})
-		->select(['users.name'])
-		->where('role_user.role_id', $id)
-		->get();
+		// $user = UserRole::leftJoin('users', function($join) {
+		// 	$join->on('users.id', '=', 'role_user.user_id');
+		// })
+		// ->select(['users.name'])
+		// ->where('role_user.role_id', $id)
+		// ->get();
 
-		return view('role.show', ['role' => $role, 'tree' => $tree, 'user' => $user]);
+		return view('role.show', ['role' => $role, 'tree' => $tree]);
 	}
 
 	public function edit($id)

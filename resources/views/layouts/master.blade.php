@@ -312,7 +312,7 @@
                                                                         </g>
                                                                     </svg>
                                                                 </span>
-                                                                <span class="menu-text">Admin CMS</span>
+                                                                <span class="menu-text">Petugas</span>
                                                             </a>
                                                         </li>
                                                         @endif

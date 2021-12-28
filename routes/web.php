@@ -121,6 +121,8 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('history', 'ChatController@history')->name('chat.history');
 		Route::post('refresh', 'ChatController@refresh')->name('chat.refresh');
 		Route::post('leave', 'ChatController@leave')->name('chat.leave');
+		Route::post('create', 'ChatController@create')->name('chat.create');
+		Route::get('show', 'ChatController@show')->name('chat.show');
 		Route::resource('chat', 'ChatController')->except(['create', 'edit', 'store', 'update', 'destroy']);
 	});
 

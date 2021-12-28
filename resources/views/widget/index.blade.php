@@ -54,7 +54,7 @@
                                     <td>{!! Helper::status($row->status) !!}</td>
                                     <td>{{ $row->created_at }}</td>
                                     <td>{!! Helper::customUser($row->nama) !!}</td>
-                                    <td>
+                                    <td style="white-space: nowrap">
                                         @can('access', [\App\Widget::class, Auth::user()->role, 'edit'])
                                         <a href="{{ route('admin.widget.edit', $row->id) }}" class="btn btn-icon btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Ubah">
                                             <i class="flaticon2-edit"></i>

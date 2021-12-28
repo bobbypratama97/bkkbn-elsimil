@@ -2,131 +2,131 @@
 
 @section('content')
 
-<div class="d-flex flex-column flex-root">
-    <!--begin::Login-->
-    <div class="login login-4 login-signin-on d-flex flex-row-fluid">
-        <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('assets/media/bg/bg-3.jpg');">
-            <div class="login-form p-7 position-relative overflow-hidden">
-                <!--begin::Login Header-->
-                <div class="d-flex flex-center mb-15">
-                    <a href="#">
-                        <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-100px" alt="" />
-                    </a>
-                </div>
-                <!--end::Login Header-->
-                <!--begin::Login Sign in form-->
-                <div>
-                    <div class="text-center mb-20">
-                        <h3>Pendaftaran Akses</h3>
-                        <div class="text-muted font-weight-bold">Tuliskan informasi diri anda secara lengkap dan benar.</div>
-                    </div>
-                    @if ($errors->any())
-                    <div class="alert alert-custom alert-danger" role="alert">
-                        <div class="alert-icon">
-                            <i class="flaticon-warning"></i>
-                        </div>
-                        <div class="alert-text">
-                            <strong>Perhatian</strong>
-                            <ul>
-                                @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                    @endif
-
-                    <form class="form" method="POST" action="{{ route('register') }}" >
-                        @csrf
-                        <div class="form-group">
-                            <label class="pl-8">NIK</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Isi dengan NIK" name="nik" id="nik" value="{{ old('nik') }}" aria-describedby="basic-addon2">
-                                <div class="input-group-append" id="search">
-                                    <span class="input-group-text">
-                                        <i class="la la-search icon-lg"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Nama Lengkap</label>
-                            <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi dengan Nama Lengkap" name="name" id="name" value="{{ old('name') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Nama lengkap harus diisi')" oninput="setCustomValidity('')" />
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Nomor Telepon</label>
-                            <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi dengan Nomor Telepon yang valid" name="no_telp" value="{{ old('no_telp') }}" autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon harus diisi')" oninput="setCustomValidity('')" />
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Email</label>
-                            <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang valid" name="email" value="{{ old('email') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Password</label>
-                            <input class="form-control h-auto form-control py-4 px-8" type="password" placeholder="Isi password Anda" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Nomor SK</label>
-                            <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nomor SK Anda" name="no_sk" />
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Sertifikat</label>
-                            <textarea class="form-control h-auto form-control py-4 px-8" placeholder="Tulis sertifikat yang pernah anda dapatkan dipisahi dengan koma(,)" name="sertifikat" /></textarea>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Provinsi</label>
-                            <select class="form-control select2" id="provinsi" name="provinsi_id" required required oninvalid="this.setCustomValidity('Provinsi harus diisi')" oninput="setCustomValidity('')">
-                            </select>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Kabupaten</label>
-                            <select class="form-control select2" id="kabupaten" name="kabupaten_id" required required oninvalid="this.setCustomValidity('Kabupaten harus diisi')" oninput="setCustomValidity('')">
-                            </select>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Kecamatan</label>
-                            <select class="form-control select2" id="kecamatan" name="kecamatan_id" required required oninvalid="this.setCustomValidity('Kecamatan harus diisi')" oninput="setCustomValidity('')">
-                            </select>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="pl-8">Kelurahan</label>
-                            <select class="form-control select2" id="kelurahan" name="kelurahan_id" required required oninvalid="this.setCustomValidity('Kelurahan harus diisi')" oninput="setCustomValidity('')">
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="pl-8">Roles</label>
-                            <select class="form-control select2" id="roles" name="role" onchange="roleChange(event)" required oninvalid="this.setCustomValidity('Role harus diisi')" oninput="setCustomValidity('')">
-                            </select>
-
-                            <label></label>
-                            <select class="form-control select2" id="rolechild" name="rolechild" style="display: block;" >
-                            </select>
-                        </div>
-                        <div class="form-group d-flex flex-wrap flex-center mt-10">
-                            <button type="submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">SIMPAN</button>
-                        </div>
-                    </form>
-                    <div class="mt-10 text-center">
-                        <a href="{{ route('password.request') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Lupa Password ?</a>
-                    </div>
-                    <div class="mt-10 text-center">
-                        <span class="opacity-70 mr-4">Sudah punya akun ?</span>
-                        <a href="{{ route('login') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Masuk!</a>
-                    </div>
-                </div>
-                <!--end::Login Sign up form-->
+<div class="d-flex flex-column flex-root"> 
+  <!--begin::Login-->
+  <div class="login login-4 login-signin-on d-flex flex-row-fluid">
+    <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('assets/media/bg/bg-3.jpg');">
+      <div class="login-form p-7 position-relative overflow-hidden"> 
+        <!--begin::Login Header-->
+        <div class="d-flex flex-center mb-15"> <a href="#"> <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-100px" alt="" /> </a> </div>
+        <!--end::Login Header--> 
+        <!--begin::Login Sign in form-->
+        <div>
+          <div class="text-center mb-20">
+            <h3>Pendaftaran Akses</h3>
+            <div class="text-muted font-weight-bold">Tuliskan informasi diri anda secara lengkap dan benar.</div>
+          </div>
+          @if ($errors->any())
+          <div class="alert alert-custom alert-danger" role="alert">
+            <div class="alert-icon"> <i class="flaticon-warning"></i> </div>
+            <div class="alert-text"> <strong>Perhatian</strong>
+              <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+              </ul>
             </div>
+          </div>
+          @endif
+          <form class="form" method="POST" action="{{ route('register') }}" >
+            @csrf
+            <fieldset>
+              <legend><strong>Informasi Umum dan Login</strong></legend>
+              <div class="form-group mb-5">
+                <label class="pl-8">Nama Lengkap</label>
+                <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nama Lengkap sesuai KTP" name="name" id="name" value="{{ old('name') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Nama lengkap harus diisi')" oninput="setCustomValidity('')" />
+              </div>
+              <div class="form-group">
+                <label class="pl-8">No KTP</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Isi dengan NO KTP" name="nik" id="nik" value="{{ old('nik') }}" aria-describedby="basic-addon2">
+                  <div class="input-group-append" id="search"> <span class="input-group-text"> <i class="la la-search icon-lg"></i> </span> </div>
+                </div>
+              </div>
+              <div class="form-group mb-5">
+                <label class="pl-8">Nomor Telepon</label>
+                <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi dengan Nomor Telepon yang valid" name="no_telp" value="{{ old('no_telp') }}" autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon harus diisi')" oninput="setCustomValidity('')" />
+              </div>
+              <div class="form-group mb-5">
+                <label class="pl-8">Email</label>
+                <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang valid" name="email" value="{{ old('email') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Email harus diisi')"  oninput="setCustomValidity('')" />
+              </div>
+              <div class="form-group mb-5">
+                <label class="pl-8">Password</label>
+                <input class="form-control h-auto form-control py-4 px-8" type="password" minlength="6" placeholder="Isi password Anda min 6 karakter" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Informasi data pekerjaan</strong></legend>
+              <div class="form-group mb-5">
+                <label class="pl-8">Nomor SK</label>
+                <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nomor SK Anda" name="no_sk" />
+              </div>
+              <div class="form-group mb-5">
+                <label class="pl-8">Sertifikat</label>
+                <textarea class="form-control h-auto form-control py-4 px-8" placeholder="Tulis sertifikat yang pernah anda dapatkan dan dipisahi dengan tanda koma(,)" name="sertifikat" /></textarea>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group mb-5">
+                    <label class="">Provinsi</label>
+                    <select class="form-control select2" id="provinsi" name="provinsi_id" required  oninvalid="this.setCustomValidity('Provinsi harus diisi')" oninput="setCustomValidity('')">
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group mb-5">
+                    <label class="">Kabupaten</label>
+                    <select class="form-control select2" id="kabupaten" name="kabupaten_id"  required oninvalid="this.setCustomValidity('Kabupaten harus diisi')" oninput="setCustomValidity('')">
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group mb-5">
+                    <label class="">Kecamatan</label>
+                    <select class="form-control select2" id="kecamatan" name="kecamatan_id" required oninvalid="this.setCustomValidity('Kecamatan harus diisi')" oninput="setCustomValidity('')">
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group mb-5">
+                    <label class="">Kelurahan</label>
+                    <select class="form-control select2" id="kelurahan" name="kelurahan_id" required oninvalid="this.setCustomValidity('Kelurahan harus diisi')" oninput="setCustomValidity('')">
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Permohonan Hak Akses</strong></legend>
+              <div class="form-group">
+                <select class="form-control select2" id="roles" name="role" onchange="roleChange(event)" required oninvalid="this.setCustomValidity('Role harus diisi')" oninput="setCustomValidity('')">
+                </select>
+                <label></label>
+                <select class="form-control select2" id="rolechild" name="rolechild" style="display: block;" >
+                </select>
+              </div>
+            </fieldset>
+            <div class="form-group d-flex flex-wrap flex-center mt-10">
+              <button type="submit" class="btn btn-primary btn-block font-weight-bold px-9 py-4 my-3 mx-2">SIMPAN</button>
+            </div>
+          </form>
+          <div class="mt-10 text-center"> <a href="{{ route('password.request') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Lupa Password ?</a> </div>
+          <div class="mt-10 text-center"> <span class="opacity-70 mr-4">Sudah punya akun ?</span> <a href="{{ route('login') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Masuk!</a> </div>
         </div>
+        <!--end::Login Sign up form--> 
+      </div>
     </div>
-    <!--end::Login-->
+  </div>
+  <!--end::Login--> 
 </div>
-
-@push('script')
-<script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
-<script src="{{ asset('assets/plugins/bootbox/bootbox.js') }}"></script>
-
+@push('script') 
+<script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script> 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+<script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script> 
+<script src="{{ asset('assets/plugins/bootbox/bootbox.js') }}"></script> 
 <script type="text/javascript">
     $(document).ready(function() {
         $('#provinsi').select2({
@@ -363,7 +363,7 @@
             }
         })
     }
-</script>
+</script> 
 @endpush
 
-@endsection
+@endsection 

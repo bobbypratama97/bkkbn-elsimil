@@ -125,6 +125,10 @@ class UserController extends Controller
             $name = $request->name;
             $user = $user->where('users.name', 'like', '%' . $request->name . '%');
         }
+        if (isset($request->role)) {
+            $role = $request->role;
+            $user = $user->where('role.id', $role);
+        }
 
         $paginate = $user->paginate(10);
         $user = $paginate->items();
@@ -213,10 +217,11 @@ class UserController extends Controller
         if(!$user) return redirect()->back()->withErrors(['error' => 'Gagal', 'keterangan' => 'User tidak dapat ditemukan.']);
 
         $status = Helper::statusAdmin();
+        
         $roles = Role::whereNull('deleted_by');
 
         if($user->id == Auth::id()) $roles->where('id', '>=', $role);
-        else $roles->where('id', '>', $role);
+        else if(Auth::user()->role != 1) $roles->where('id', '>', $role);
             
         $roles = $roles->get();
 

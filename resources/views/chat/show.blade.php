@@ -226,7 +226,7 @@
             }
         });
 
-        $("#chat-enter").on('keydown', function (e) {
+        $("#chat-enter").on('keyup', function (e) {
             $('#message').val($(this).val());
 
             if (e.key === 'Enter' || e.keyCode === 13) {
@@ -251,6 +251,7 @@
             var chat = $('#chat_id').val();
             var member = $('#member_id').val();
             var message = $('#message').val();
+            console.log(message);return
 
             $('#chat-enter').val('');
 

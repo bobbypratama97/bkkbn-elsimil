@@ -74,7 +74,7 @@
                                     <td>{{ $row->content }}</td>
                                     <td>{{ $row->created_at }}</td>
                                     <td>{!! Helper::customUser($row->nama) !!}</td>
-                                    <td class="text-right">
+                                    <td class="text-right" style="white-space: nowrap;">
                                         @can('access', [\App\Notifikasi::class, Auth::user()->role, 'send'])
                                         <button class="btn btn-icon btn-sm btn-success kirim" id="kirim"  data-toggle="tooltip"
                                                 data-placement="top" title="Kirim Notifikasi" data-id="{{ $row->id }}">

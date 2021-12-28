@@ -65,11 +65,12 @@
 								<div class="col-md-5">
 									<div class="form-group">
 										<label for="nama" class="font-weight-bold">Akses Menu</label>
-										<div id="tree"></div>
+										<div id="tree" class="card card-body"></div>
 									</div>
 								</div>
 								<div class="col-md-7">
-									<div class="form-group">
+									<a href="{{ route('admin.user.index', ['role' => $role[0]->id]) }}" class="btn btn-primary mr-auto"><i class="fa fa-user fa-fw"></i>List User</a>
+									<!-- <div class="form-group">
 										<label for="nama" class="font-weight-bold">User Pengakses</label>
 										<table id="userlist" class="table table-bordered" cellspacing="0" width="100%">
 											<thead>
@@ -80,7 +81,7 @@
 												</tr>
 											</thead>
 										</table>
-									</div>
+									</div> -->
 								</div>
 							</div>
 

@@ -61,7 +61,7 @@
                                     <td>{{ $row->created_at }}</td>
                                     <td>{!! Helper::customUser($row->nama) !!}</td>
                                     <td>{!! Helper::customUser($row->proceed_name) !!}</td>
-                                    <td>
+                                    <td style="white-space: nowrap">
                                         @can('access', [\App\Kuis::class, Auth::user()->role, 'review'])
                                         <a href="{{ route('admin.kuis.review', $row->id) }}" class="btn btn-icon btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Detail">
                                             <i class="flaticon2-menu-1"></i>

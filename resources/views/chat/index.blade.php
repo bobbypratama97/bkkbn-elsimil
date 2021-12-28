@@ -44,7 +44,8 @@
                             <div class="form-group mr-3">
                                 <input value="{{ app('request')->input('keyword') }}" name="keyword" width="100%" class="form-control" placeholder="Cari berdasarkan Nama, Pesan, Status, Petugas">
                             </div>
-                            <button type="submit" class="btn btn-success">Search</button>
+                            <button type="submit" class="btn btn-success">Search</button>&nbsp;
+                            <a href="{{ route('admin.member.index', ['s' => 'm']) }}" class="btn btn-primary"><i class="flaticon-chat"></i>Mulai Percakapan</a>
                         </form>
 
                         <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
