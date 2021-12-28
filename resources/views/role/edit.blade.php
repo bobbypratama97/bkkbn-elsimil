@@ -50,7 +50,7 @@
 
 									<div class="form-group">
 										<label for="nama" class="font-weight-bold">Status</label>
-										@if ($role[0]->id == '1' || $role[0]->id == '2' || $role[0]->id == '3' || $role[0]->id == '4')
+										@if ($role[0]->id == '1' || $role[0]->id == '2' || $role[0]->id == '3' || $role[0]->id == '4' || $role[0]->id == '5')
 										<select id="status" name="status" class="form-control" required disabled>
 										@else
 										<select id="status" name="status" class="form-control" required>

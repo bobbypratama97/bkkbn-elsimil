@@ -35,11 +35,12 @@
                                     <option value="m" {{ (isset($search) && $search == "m") ? "selected" : ""}}>Catin saya</option>
                                     <option value="h" {{ (isset($search) && $search == "h") ? "selected" : ""}}>Sudah punya petugas</option>
                                     <option value="nh" {{ (isset($search) && $search == "nh") ? "selected" : ""}}>Belum punya petugas</option>
+                                    <option value="hp" {{ (isset($search) && $search == "hp") ? "selected" : ""}}>Berdasarkan Nomor HP</option>
                                 </select>
                             </div>
 
                             <div class="form-group mr-3">
-                                <label for="name">Nama Catin : </label>
+                                <label for="name">Keyword : </label>
                                 <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="" aria-controls="kt_datatable" _vkenabled="true">
                             </div>
                             <button type="submit" class="btn btn-success">Filter </button>

@@ -57,13 +57,13 @@
                         <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: normal;">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Deskripsi</th>
-                                    <th>Status</th>
-                                    <th>Tanggal Dibuat</th>
-                                    <th>Dibuat Oleh</th>
-                                    <th width="9%">Aksi</th>
+                                    <th style="width:5%">No</th>
+                                    <th style="width:10%">Nama</th>
+                                    <th style="width:25%">Deskripsi</th>
+                                    <th style="width:10%">Status</th>
+                                    <th style="width:15%">Tanggal Dibuat</th>
+                                    <th style="width:20%">Dibuat Oleh</th>
+                                    <th style="width:10%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,7 +87,7 @@
                                         </a>
                                         @endcan
                                         @can('access', [\App\Role::class, Auth::user()->role, 'delete'])
-                                        @if ($row->id != 1 && $row->id != 2 && $row->id != 3 && $row->id != 4)
+                                        @if ($row->id != 1 && $row->id != 2 && $row->id != 3 && $row->id != 4 && $row->id != 5)
                                         <button class="btn btn-icon btn-sm btn-danger hapus" id="hapus"  data-toggle="tooltip"
                                                 data-placement="top" title="Hapus" data-id="{{ $row->id }}" data-parent="{{ $row->kuis_id }}">
                                             <i class="flaticon2-trash"></i>
