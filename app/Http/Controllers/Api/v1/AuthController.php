@@ -373,13 +373,13 @@ class AuthController extends Controller
         $check = Member::where('email', $request->email)->first();
 
         if ($check) {
-            Helper::sendMail([
-                'id' => $check->id, 
-                'tipe' => $request->tipe, 
-                'name' => $check->name, 
-                'email' => $check->email, 
-                'url' => 'vrf'
-            ]);
+            // Helper::sendMail([
+            //     'id' => $check->id, 
+            //     'tipe' => $request->tipe, 
+            //     'name' => $check->name, 
+            //     'email' => $check->email, 
+            //     'url' => 'vrf'
+            // ]);
 
             return response()->json([
                 'code' => 200,

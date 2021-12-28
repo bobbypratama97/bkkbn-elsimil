@@ -451,16 +451,16 @@ class KuisController extends Controller
                 $tanggal = $tanggal . ' pukul ' . $date[1];
 
                 try {
-                    Helper::sendMail([
-                        'id' => $kuis->id,
-                        'tipe' => 1,
-                        'name' => $name,
-                        'email' => $user[0]['email'],
-                        'cc' => $cc,
-                        'content' => $kuis->title,
-                        'date' => $tanggal,
-                        'url' => 'apv'
-                    ]);
+                    // Helper::sendMail([
+                    //     'id' => $kuis->id,
+                    //     'tipe' => 1,
+                    //     'name' => $name,
+                    //     'email' => $user[0]['email'],
+                    //     'cc' => $cc,
+                    //     'content' => $kuis->title,
+                    //     'date' => $tanggal,
+                    //     'url' => 'apv'
+                    // ]);
                 } catch (\Throwable $th) {
                     //throw $th;
                 }

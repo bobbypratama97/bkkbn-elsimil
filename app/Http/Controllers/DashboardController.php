@@ -120,8 +120,8 @@ class DashboardController extends Controller
 
         $infonorespondchat = "
             SELECT COUNT(*) AS total FROM chat_header ch
-            LEFT JOIN chat_message cm ON cm.chat_id = ch.id AND cm.last = 1 AND cm.status = 'send'
-            LEFT JOIN members mb ON mb.id = ch.member_id
+            JOIN chat_message cm ON cm.chat_id = ch.id AND cm.last = 1 AND cm.status = 'send'
+            JOIN members mb ON mb.id = ch.member_id
             {$whereChats}
         ";
         $resnorespondchat = DB::select($infonorespondchat);
@@ -137,16 +137,17 @@ class DashboardController extends Controller
 
         $infoallnoresponsechat = "
             SELECT COUNT(*) AS total FROM chat_header ch
-            LEFT JOIN chat_message cm ON cm.chat_id = ch.id AND cm.last = 1 AND cm.status = 'send'
-            LEFT JOIN members mb ON mb.id = ch.member_id
+            JOIN chat_message cm ON cm.chat_id = ch.id AND cm.last = 1 AND cm.status = 'send'
+            JOIN members mb ON mb.id = ch.member_id
             {$whereAllChats}
         ";
         $resallnorespchat = DB::select($infoallnoresponsechat);
+        // return $infoallnoresponsechat;
 
         $infoallnorespkuis = "
             SELECT COUNT(*) AS total FROM kuisioner_result kr 
             LEFT JOIN kuisioner_result_comment krc ON krc.result_id = kr.id
-            LEFT JOIN members mb ON mb.id = kr.member_id
+            JOIN members mb ON mb.id = kr.member_id
             {$whereAllKuis}
         ";
         $resallnorespondkuis = DB::select($infoallnorespkuis);
@@ -176,6 +177,7 @@ class DashboardController extends Controller
         //echo $sql;
 
         $chat = DB::select($sql);
+        // return $chat;
 
         $sql1 = "
             SELECT count(*) AS total

@@ -42,13 +42,13 @@ class ForgotPasswordController extends Controller
                     'keterangan' => 'Email yang Anda masukkan salah. Silahkan ulangi kembali.'
                 ]);
         } else {
-            Helper::sendMail([
-                'id' => $check->id, 
-                'tipe' => $request->tipe, 
-                'name' => $check->name, 
-                'email' => $check->email, 
-                'url' => 'cpw'
-            ]);
+            // Helper::sendMail([
+            //     'id' => $check->id, 
+            //     'tipe' => $request->tipe, 
+            //     'name' => $check->name, 
+            //     'email' => $check->email, 
+            //     'url' => 'cpw'
+            // ]);
 
             return view('auth.suksesfg');
         }

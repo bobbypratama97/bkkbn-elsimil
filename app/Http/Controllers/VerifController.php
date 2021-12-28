@@ -142,13 +142,13 @@ class VerifController extends Controller
     public function resend(Request $request) {
     	$check = User::where('email', $request->email)->first();
 
-        Helper::sendMail([
-            'id' => $check->id, 
-            'tipe' => 1, 
-            'name' => $check->name, 
-            'email' => $check->email, 
-            'url' => 'vrf'
-        ]);
+        // Helper::sendMail([
+        //     'id' => $check->id, 
+        //     'tipe' => 1, 
+        //     'name' => $check->name, 
+        //     'email' => $check->email, 
+        //     'url' => 'vrf'
+        // ]);
 
         $output['email'] = $check->email;
 
