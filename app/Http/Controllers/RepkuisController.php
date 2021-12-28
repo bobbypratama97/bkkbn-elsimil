@@ -976,7 +976,11 @@ class RepkuisController extends Controller
                     'ios_badgeCount' => 1,
                 ];
 
-                $send = OneSignal::sendNotificationCustom($parameters);
+                try {
+                    $send = OneSignal::sendNotificationCustom($parameters);
+                } catch (\Throwable $th) {
+                    // throw $th;
+                }
             }
         }
 

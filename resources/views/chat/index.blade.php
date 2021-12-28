@@ -86,7 +86,7 @@
                                         <!-- <a href="{{ route('admin.chat.show', $row->chatid) }}" class="btn btn-icon btn-sm btn-info"  title="Lihat Percakapan"><i class="flaticon2-talk"></i></a> -->
                                         <a href="#" class="btn btn-icon btn-sm btn-default otherresp"  title="Lihat Percakapan"><i class="flaticon2-talk"></i></a>
                                         @else
-                                        <button class="flaticon2-talk btn btn-icon btn-sm btn-info check"  title="Lihat Percakapan" data-id="{{ $row->id }}" data-chatid="{{ $row->chatid }}">
+                                        <button class="flaticon2-talk btn btn-icon btn-sm btn-info noresponder"  title="Lihat Percakapan" data-id="{{ $row->id }}" data-chatid="{{ $row->chatid }}">
                                         </button>
                                         @endif
                                         @endcan
@@ -222,6 +222,27 @@
             centerVertical: true,
             closeButton: false,
             message: "Sudah punya pendamping, tidak dapat melihat.",
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: 'btn-info',
+                    callback: function() {
+                        // window.location.href = data.url;
+                    }
+                }
+            }
+        });
+    });
+
+    $('#kt_datatable tbody').on('click', '.noresponder', function () {
+        var id = $(this).attr('data-id');
+        var chatid = $(this).attr('data-chatid');
+
+        bootbox.dialog({
+            title: 'Perhatian',
+            centerVertical: true,
+            closeButton: false,
+            message: "Belum punya pendamping, tidak dapat melihat.",
             buttons: {
                 ok: {
                     label: "OK",
