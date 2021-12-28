@@ -873,7 +873,7 @@ class RepkuisController extends Controller
 
         // echo('<pre>');
         // print_r($member);die;
-        if(Auth::user()->roleChild == $this->role_child_id) $is_comment = 1;
+        if(Auth::user()->roleChild == $this->role_child_bidan) $is_comment = 1;
         else $is_comment = 0;
 
         //get member couple 

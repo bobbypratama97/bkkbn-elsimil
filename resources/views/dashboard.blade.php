@@ -52,7 +52,7 @@
 							  
 							  <a href="{{ route('admin.member.index', ['s' => 'nh']) }}" class="list-group-item d-flex justify-content-between align-items-center">
 							 <div><i class="fas fa-fw fa-user-clock text-danger"></i> Catin belum punya ptgs. pendamping. </div>
-								<span class="badge badge-primary  badge-pill">{{ $resallunmap[0]->total }}/{{ number_format($members['kecamatan']['count'], 0, ',', '.') }}</span>
+								<span class="badge badge-primary  badge-pill">{{ $resallunmap[0]->total }}/{{ number_format($members['kelurahan']['count'], 0, ',', '.') }}</span>
 							  </a> 
 							  
 							  

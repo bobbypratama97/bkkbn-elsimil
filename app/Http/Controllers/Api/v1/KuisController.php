@@ -246,8 +246,8 @@ class KuisController extends Controller
             'data.*.pertanyaan.*.value' => ['required_unless:data.*.pertanyaan.*.tipe,upload'],
             'data.*.pertanyaan.*.file_name' => ['nullable'],
         ], [
-            'required' => 'Data yang anda masukan tidak lengkap (:attribute)',
-            'required_unless' => 'Data yang anda masukan tidak lengkap (:attribute)'
+            'required' => 'Data yang anda masukan tidak lengkap',
+            'required_unless' => 'Data yang anda masukan tidak lengkap'
         ]);
 
         if ($validators->fails()) {
