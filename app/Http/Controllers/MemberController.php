@@ -110,6 +110,7 @@ class MemberController extends Controller
         }
 
         $search = 'all';
+        $name = '';
         if (isset($request->s)) {
             if ($request->s == 'all') {
                 $search = 'all';
@@ -122,11 +123,14 @@ class MemberController extends Controller
             } else if ($request->s == 'm') {
                 $self = $self->where('member_delegate.user_id', Auth::id());
                 $search = 'm';
+            } else if ($request->s == 'hp' && isset($request->name)) {
+                $self = $self->where('members.no_telp', 'like', '%' . $request->name . '%');
+                $search = 'hp';
+                $name = $request->name;
             }
         }
 
-        $name = '';
-        if (isset($request->name)) {
+        if (isset($request->name) && ($request->s != 'hp')) {
             $name = $request->name;
             $self = $self->where('members.name', 'like', '%' . $request->name . '%');
         }

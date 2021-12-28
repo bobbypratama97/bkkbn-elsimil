@@ -111,7 +111,7 @@ class AkunController extends Controller
     public function updateprofile(Request $request) {
         try {
 
-            $existPhone = Member::where('no_telp', substr($request->phone, 1))->where('id', '!=', $request->id)->first();
+            $existPhone = Member::where('no_telp', (int)$request->phone)->where('id', '!=', $request->id)->first();
 
             if ($existPhone) {
                 return response()->json([
@@ -168,7 +168,7 @@ class AkunController extends Controller
 
             $update = Member::where('id', $request->id)->update([
                 'name' => ucwords($request->name),
-                'no_telp' => $request->no_telp,
+                'no_telp' => $request->phone,
                 'email' => $request->email,
                 //'no_ktp' => $request->no_ktp,
                 'foto_pic' => $imgLatest,

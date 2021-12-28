@@ -35,7 +35,7 @@ class RoleController extends Controller
 		$role = Role::select(['role.*', 'users.name AS nama'])->leftJoin('users', function($join) {
 			$join->on('users.id', '=', 'role.created_by');
 		})
-		->whereRaw('deleted_by is null')
+		->whereRaw('role.deleted_by is null')
 		->get();
 
 		return view('role.index', ['role' => $role]);
