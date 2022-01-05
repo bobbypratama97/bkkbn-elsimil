@@ -65,7 +65,7 @@
                             <div class="card-body pt-2">
                                 <a href="#" class="btn btn-block btn-sm font-weight-bolder text-uppercase py-4 mb-4 mt-4" style="background-color: {{ $summary[$i]['rating_color'] }}">{{ $summary[$i]['label'] }}</a>
 
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" style="border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                                     <thead>
                                         <tr>
                                             <td>Kondisi</td>
@@ -163,7 +163,7 @@
                                                     </div>
                                                 </div>
                                                 @if ($row['jenis'] == 'widget')
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" style="border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                                                     <thead>
                                                         <tr>
                                                             <td>Komponen</td>
@@ -196,7 +196,7 @@
                                                 </div>
 
                                                 @if ($row['detail']['pilihan'] == 'angka')
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" style="border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                                                     <thead>
                                                         <tr>
                                                             <td>Kondisi</td>
@@ -217,7 +217,7 @@
                                                 @endif
 
                                                 @if ($row['detail']['pilihan'] == 'dropdown' || $row['detail']['pilihan'] == 'radio')
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" style="border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                                                     <thead>
                                                         <tr>
                                                             <td>Pilihan</td>
@@ -236,7 +236,7 @@
                                                 @endif
 
                                                 @if (isset($rows['file']) && !empty($rows['file']))
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" style="border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                                                     <thead>
                                                         <tr>
                                                             <td>File</td>
@@ -268,13 +268,13 @@
 
                                                 @if (isset($row['bobot']) && !empty($row['bobot']))
                                                 @foreach($row['bobot'] as $keys => $rows)
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" style="border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                                                     <thead>
                                                         <tr>
-                                                            <td>Kondisi</td>
-                                                            <td>Label</td>
-                                                            <td>Bobot</td>
-                                                            <td>Rating</td>
+                                                            <th width="50%">Kondisi</th>
+                                                            <th width="50%">Label</th>
+                                                            <th width="50%">Bobot</th>
+                                                            <th width="50%">Rating</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -288,7 +288,7 @@
                                                 </table>
 
                                                 @if (isset($rows['file']) && !empty($rows['file']))
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" style="border-spacing: 0; width: 100% !important;display: block;overflow-x:auto !important;">
                                                     <thead>
                                                         <tr>
                                                             <td>File</td>

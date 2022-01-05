@@ -70,7 +70,7 @@
                                     <th>Status</th>
                                     <th>Tanggal Dibuat</th>
                                     <th>Dibuat Oleh</th>
-                                    <th width="14%" >Aksi</th>
+                                    <th width="14%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

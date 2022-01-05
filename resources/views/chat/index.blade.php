@@ -48,16 +48,16 @@
                             <a href="{{ route('admin.member.index', ['s' => 'm']) }}" class="btn btn-primary"><i class="flaticon-chat"></i>Mulai Percakapan</a>
                         </form>
 
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: normal;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
-                                    <th>Thumbnail</th>
-                                    <th>Nama</th>
-                                    <th>Pesan</th>
-                                    <th>Status</th>
-                                    <th>Petugas</th>
-                                    <th width="30">Aksi</th>
+                                    <th width="10%">Thumbnail</th>
+                                    <th width="20%">Nama</th>
+                                    <th width="30%">Pesan</th>
+                                    <th width="5%">Status</th>
+                                    <th width="10%">Petugas</th>
+                                    <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -11,9 +11,10 @@
                 <div class="card card-custom">
                     <div class="card-body">
                         <!--begin::Details-->
-                        <div class="d-flex">
+                        <div class="row m-0">
                             <!--begin: Pic-->
-                            <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
+                            <!-- <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3"> -->
+                            <div class="col-md-3 col-xs-12">
                                 <div class="card-body p-0 rounded mb-3 text-center bg-light-primary">
                                     <div class="row m-0">
                                         <div class="col-12 p-0">
@@ -43,7 +44,8 @@
                             </div>
                             <!--end::Pic-->
                             <!--begin::Info-->
-                            <div class="flex-grow-1">
+                            <div class="col-md-9 col-xs-12">
+                            <!-- <div class="flex-grow-1"> -->
                                 <!--begin::Title-->
                                 <div class="d-flex justify-content-between flex-wrap mt-1 mb-3">
                                     <div class="d-flex mr-3">

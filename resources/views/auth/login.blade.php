@@ -10,7 +10,7 @@
                 <!--begin::Login Header-->
                 <div class="d-flex flex-center mb-15">
                     <a href="#">
-                        <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-100px" alt="" />
+                        <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-80px" alt="" />
                     </a>
                 </div>
                 <!--end::Login Header-->
