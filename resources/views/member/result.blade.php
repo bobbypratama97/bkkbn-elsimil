@@ -31,7 +31,7 @@
                                 </div>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: normal;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -56,7 +56,7 @@
                                     <td><button type="button" class="btn font-size-sm unclick" style="background-color: {{ $row->rating_color }}"><span class="font-weight-bolder text-white">{{ $row->label }}</span></button></td>
                                     <td>{{ (!empty($row->petugas)) ? $row->petugas : '-' }}</td>
                                     <td>{{ (!empty($row->komentar)) ? 'Sudah' : 'Belum' }}</td>
-                                    <td>
+                                    <td style="white-space: nowrap;">
                                         <div class="row text-center">
                                             <div class="col-lg-12">
                                                 <a href="{{ route('admin.repkuis.history', [$row->kuis_id, $row->member_id]) }}" class="btn btn-icon btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="History Kuesioner">

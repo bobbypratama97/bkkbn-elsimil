@@ -217,9 +217,7 @@ class ChatController extends Controller
 
     public function typeBackup(Request $request){
         $role_childs = Config::select('configs.name', 'configs.value as type', 
-                DB::Raw('if(md.id is not null, 1, 0) as status'),
-                'md.user_id', 
-                'role.id'
+                DB::Raw('if(md.id is not null, 1, 0) as status')
             )
             ->leftJoin('role_user as role', 'role.role_child_id', 'configs.value')
             ->leftJoin('member_delegate as md', function($q) use($request){
@@ -229,7 +227,7 @@ class ChatController extends Controller
             })
             ->where('code', 'LIKE', 'role_child_%')
             ->orderBy('configs.value', 'desc')
-            // ->groupBy('configs.value')
+            ->groupBy('configs.value')
             ->get();
 
         return response()->json([
@@ -244,7 +242,6 @@ class ChatController extends Controller
         $member_delegate = MemberDelegate::select('member_delegate.user_id', 'role_user.role_child_id')
             ->join('role_user', 'role_user.user_id', 'member_delegate.user_id')
             ->where('member_delegate.member_id', $request->id)
-            ->where('member_delegate.status', 1)
             ->whereRaw('member_delegate.deleted_at is null')
             ->whereRaw('role_user.role_child_id is not null')
             ->get();
