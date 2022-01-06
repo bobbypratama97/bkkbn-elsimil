@@ -8,7 +8,7 @@
     <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('assets/media/bg/bg-3.jpg');">
       <div class="login-form p-7 position-relative overflow-hidden"> 
         <!--begin::Login Header-->
-        <div class="d-flex flex-center mb-15"> <a href="#"> <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-100px" alt="" /> </a> </div>
+        <div class="d-flex flex-center mb-15"> <a href="#"> <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-80px" alt="" /> </a> </div>
         <!--end::Login Header--> 
         <!--begin::Login Sign in form-->
         <div>
@@ -49,22 +49,22 @@
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Email</label>
-                <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang valid" name="email" value="{{ old('email') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Email harus diisi')"  oninput="setCustomValidity('')" />
+                <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang valid" name="email" value="{{ old('email') }}" autocomplete="off" />
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Password</label>
-                <input class="form-control h-auto form-control py-4 px-8" type="password" minlength="6" placeholder="Isi password Anda min 6 karakter" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
+                <input class="form-control h-auto form-control py-4 px-8" type="password" minlength="6" placeholder="Password yang digunakan untuk masuk aplikasi petugas" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
               </div>
             </fieldset>
             <fieldset>
               <legend><strong>Informasi data pekerjaan</strong></legend>
               <div class="form-group mb-5">
                 <label class="pl-8">Nomor SK</label>
-                <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nomor SK Anda" name="no_sk" />
+                <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nomor SK Anda" name="no_sk" value="{{ old('no_sk') }}"/>
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Sertifikat</label>
-                <textarea class="form-control h-auto form-control py-4 px-8" placeholder="Tulis sertifikat yang pernah anda dapatkan dan dipisahi dengan tanda koma(,)" name="sertifikat" /></textarea>
+                <textarea class="form-control h-auto form-control py-4 px-8" placeholder="Tulis sertifikat yang pernah anda dapatkan dan dipisahi dengan tanda koma(,)" name="sertifikat" / >{{ old('sertifikat') }}</textarea>
               </div>
               <div class="row">
                 <div class="col-6">
@@ -109,6 +109,27 @@
                 </select>
               </div>
             </fieldset>
+            <fieldset>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-5">
+                    <label for="captcha" class="text-md-right">Captcha</label>
+                    <div class=" captcha">
+                        <span>{!! captcha_img('mini') !!}</span>
+                        <button type="button" class="btn btn-danger" class="reload" id="reload">
+                        &#x21bb;
+                        </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-5">
+                    <label for="captcha" class="text-md-right">Enter Captcha</label>
+                    <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required oninvalid="this.setCustomValidity('Captcha harus diisi')" oninput="setCustomValidity('')">
+                  </div>
+                </div>
+              </div>
+            </fieldset>
             <div class="form-group d-flex flex-wrap flex-center mt-10">
               <button type="submit" class="btn btn-primary btn-block font-weight-bold px-9 py-4 my-3 mx-2">SIMPAN</button>
             </div>
@@ -128,6 +149,16 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script> 
 <script src="{{ asset('assets/plugins/bootbox/bootbox.js') }}"></script> 
 <script type="text/javascript">
+    $('#reload').click(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'reload-captcha',
+            success: function (data) {
+                $(".captcha span").html(data.captcha);
+            }
+        });
+    });
+
     $(document).ready(function() {
         $('#provinsi').select2({
             placeholder: "Pilih Provinsi",

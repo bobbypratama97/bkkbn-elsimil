@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Validator;
 
 use Helper;
 use Session;
@@ -65,6 +66,23 @@ class LoginController extends Controller
     }
 
     public function login(Request $request) {
+        $messages = [
+            'captcha' => 'Captcha tidak sesuai. Silahkan coba lagi'
+        ];
+        $validator = Validator::make($request->all(), [
+            'captcha' => ['required','captcha'],
+
+        ], $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors([
+                    'error' => 'Login gagal', 
+                    'keterangan' => $validator->errors()->first()
+                ]);
+        }
+
         $email = $request->get($this->username());
         
         if($this->username() == 'no_telp' && $email != 0) {

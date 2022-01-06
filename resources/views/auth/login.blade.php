@@ -35,6 +35,25 @@
                         <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                            <div class="form-group mb-5">
+                                <label for="captcha" class="text-md-right">Captcha</label>
+                                <div class=" captcha">
+                                    <span>{!! captcha_img('mini') !!}</span>
+                                    <button type="button" class="btn btn-danger" class="reload" id="reload">
+                                    &#x21bb;
+                                    </button>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-md-6">
+                            <div class="form-group mb-5">
+                                <label for="captcha" class="text-md-right">Enter Captcha</label>
+                                <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required oninvalid="this.setCustomValidity('Captcha harus diisi')" oninput="setCustomValidity('')">
+                            </div>
+                            </div>
+                        </div>
                         <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
                             <div class="checkbox-inline"></div>
                             <a href="{{ route('password.request') }}" id="kt_login_forgot" class="text-muted text-hover-primary">Lupa Password ?</a>
@@ -43,7 +62,7 @@
                         <button type="submit" class="btn btn-primary  btn-block font-weight-bold btn-lg">Masuk</button>
 
 						<p class="mt-5"><small>Belum Punya Akun?</small> <br><br><a href="{{ route('register') }}" id="kt_login_signup" class="btn btn-success btn-lg btn-block font-weight-bold "> Daftar!</a>
-</p>
+                        </p>
 						
                     </form> 
                 </div>
@@ -54,4 +73,21 @@
     <!--end::Login-->
 </div>
 
+@push('script') 
+<script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script> 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+<script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script> 
+<script src="{{ asset('assets/plugins/bootbox/bootbox.js') }}"></script> 
+<script type="text/javascript">
+    $('#reload').click(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'reload-captcha',
+            success: function (data) {
+                $(".captcha span").html(data.captcha);
+            }
+        });
+    });
+</script>
+@endpush
 @endsection
