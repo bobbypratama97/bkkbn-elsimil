@@ -46,6 +46,21 @@
                                 <input type="text" class="form-control" value="{{ $user->no_telp }}" name="no_telp" required />
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Password</label> &nbsp; <span style="font-size: 9px;font-weight: bold;"><input type="checkbox" onchange="changePassword(this)" id="is_change_password" name="is_change_password"/> Ubah Password</span>
+                                        <input id="password" type="password" class="form-control" value="00000000" name="password" required disabled />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Konfirmasi Password</label>
+                                        <input id="confirm_password" type="password" class="form-control" value="00000000" name="password_confirmation" required disabled />
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="text" class="form-control" value="{{ $user->email }}" name="email" required />
@@ -60,26 +75,26 @@
                                 <textarea type="text" class="form-control" name="sertifikat" />{{ $user->sertifikat }}</textarea>
                             </div>
 
-                            <div class="form-group row">
-                                <div class="col-3">
+                            <div class="row">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Provinsi</label>
                                         <input type="text" class="form-control" value="{{ $user->provinsi }}" disabled />
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Kabupaten</label>
                                         <input type="text" class="form-control" value="{{ $user->kabupaten }}" disabled />
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Kecamatan</label>
                                         <input type="text" class="form-control" value="{{ $user->kecamatan }}" disabled />
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Kelurahan</label>
                                         <input type="text" class="form-control" value="{{ $user->kelurahan }}" disabled />
@@ -188,6 +203,22 @@
                 // document.getElementById("rolechild").style.display = "none";
             }
         })
+    }
+
+    function changePassword(data){
+        var password = document.getElementById('password')
+        var confirm_password = document.getElementById('confirm_password')
+        if($('#is_change_password').is(':checked')){
+            $('#password').val('')
+            $('#confirm_password').val('')
+            password.removeAttribute('disabled')
+            confirm_password.removeAttribute('disabled')
+        }else{
+            $('#password').val('00000000')
+            $('#confirm_password').val('00000000')
+            password.setAttribute('disabled','disabled')
+            confirm_password.setAttribute('disabled','disabled')
+        }
     }
 
 </script>
