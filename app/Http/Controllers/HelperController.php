@@ -2870,7 +2870,7 @@ class HelperController extends Controller
     }
 
     public function getRole(){
-        $select = '<option value="">Pilih Role</option>';
+        $select = '<option value="">Petugas Pendamping/Admin</option>';
         $roles = [
             ['id' => 4, 'nama' => 'Admin', 'is_child' => 0],
             ['id' => 5, 'nama' => 'Petugas Pendamping', 'is_child' => 1]
