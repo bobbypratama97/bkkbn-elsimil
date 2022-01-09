@@ -8,13 +8,13 @@
     <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('assets/media/bg/bg-3.jpg');">
       <div class="login-form p-7 position-relative overflow-hidden"> 
         <!--begin::Login Header-->
-        <div class="d-flex flex-center mb-15"> <a href="#"> <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-100px" alt="" /> </a> </div>
+        <div class="d-flex flex-center mb-15"> <a href="#"> <img src="{{ asset('assets/media/logos/logo-new.png') }}" class="max-h-80px" alt="" /> </a> </div>
         <!--end::Login Header--> 
         <!--begin::Login Sign in form-->
         <div>
           <div class="text-center mb-20">
             <h3>Pendaftaran Akses</h3>
-            <div class="text-muted font-weight-bold">Tuliskan informasi diri anda secara lengkap dan benar.</div>
+            <div class="text-muted font-weight-bold">Tuliskan Data Anda secara Lengkap dan Benar.</div>
           </div>
           @if ($errors->any())
           <div class="alert alert-custom alert-danger" role="alert">
@@ -37,10 +37,10 @@
                 <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nama Lengkap sesuai KTP" name="name" id="name" value="{{ old('name') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Nama lengkap harus diisi')" oninput="setCustomValidity('')" />
               </div>
               <div class="form-group">
-                <label class="pl-8">No KTP</label>
+                <label class="pl-8">Nomor KTP</label>
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="Isi dengan NO KTP" name="nik" id="nik" value="{{ old('nik') }}" aria-describedby="basic-addon2">
-                  <div class="input-group-append" id="search"> <span class="input-group-text"> <i class="la la-search icon-lg"></i> </span> </div>
+                  <!-- <div class="input-group-append" id="search"> <span class="input-group-text"> <i class="la la-search icon-lg"></i> </span> </div> -->
                 </div>
               </div>
               <div class="form-group mb-5">
@@ -49,22 +49,22 @@
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Email</label>
-                <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang valid" name="email" value="{{ old('email') }}" autocomplete="off" required oninvalid="this.setCustomValidity('Email harus diisi')"  oninput="setCustomValidity('')" />
+                <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang Valid (Opsional)" name="email" value="{{ old('email') }}" autocomplete="off" />
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Password</label>
-                <input class="form-control h-auto form-control py-4 px-8" type="password" minlength="6" placeholder="Isi password Anda min 6 karakter" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
+                <input class="form-control h-auto form-control py-4 px-8" type="password" minlength="6" placeholder="Password untuk Elsimil (minimal 6 Karakter)" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
               </div>
             </fieldset>
             <fieldset>
-              <legend><strong>Informasi data pekerjaan</strong></legend>
+              <legend><strong>Informasi Penugasan</strong></legend>
               <div class="form-group mb-5">
                 <label class="pl-8">Nomor SK</label>
-                <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nomor SK Anda" name="no_sk" />
+                <input class="form-control h-auto form-control py-4 px-8" type="text" placeholder="Isi Nomor SK Tim Pendamping Keluarga" name="no_sk" value="{{ old('no_sk') }}"/>
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Sertifikat</label>
-                <textarea class="form-control h-auto form-control py-4 px-8" placeholder="Tulis sertifikat yang pernah anda dapatkan dan dipisahi dengan tanda koma(,)" name="sertifikat" /></textarea>
+                <textarea class="form-control h-auto form-control py-4 px-8" placeholder="Tuliskan Sertifikat Pelatihan Pendampingan Keluarga yang Pernah Anda Dapatkan." name="sertifikat" / >{{ old('sertifikat') }}</textarea>
               </div>
               <div class="row">
                 <div class="col-6">
@@ -100,7 +100,7 @@
               </div>
             </fieldset>
             <fieldset>
-              <legend><strong>Permohonan Hak Akses</strong></legend>
+              <legend><strong>Mendaftar Sebagai ?</strong></legend>
               <div class="form-group">
                 <select class="form-control select2" id="roles" name="role" onchange="roleChange(event)" required oninvalid="this.setCustomValidity('Role harus diisi')" oninput="setCustomValidity('')">
                 </select>
@@ -109,12 +109,33 @@
                 </select>
               </div>
             </fieldset>
+            <fieldset>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-5">
+                    <label for="captcha" class="text-md-right">Captcha</label>
+                    <div class=" captcha">
+                        <span>{!! captcha_img('mini') !!}</span>
+                        <button type="button" class="btn btn-danger" class="reload" id="reload">
+                        &#x21bb;
+                        </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-5">
+                    <label for="captcha" class="text-md-right">Enter Captcha</label>
+                    <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required oninvalid="this.setCustomValidity('Captcha harus diisi')" oninput="setCustomValidity('')">
+                  </div>
+                </div>
+              </div>
+            </fieldset>
             <div class="form-group d-flex flex-wrap flex-center mt-10">
               <button type="submit" class="btn btn-primary btn-block font-weight-bold px-9 py-4 my-3 mx-2">SIMPAN</button>
             </div>
           </form>
           <div class="mt-10 text-center"> <a href="{{ route('password.request') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Lupa Password ?</a> </div>
-          <div class="mt-10 text-center"> <span class="opacity-70 mr-4">Sudah punya akun ?</span> <a href="{{ route('login') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Masuk!</a> </div>
+          <div class="mt-10 text-center"> <span class="opacity-70 mr-4">Sudah Pernah Mendaftar?</span> <a href="{{ route('login') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">MASUK</a> </div>
         </div>
         <!--end::Login Sign up form--> 
       </div>
@@ -128,6 +149,16 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script> 
 <script src="{{ asset('assets/plugins/bootbox/bootbox.js') }}"></script> 
 <script type="text/javascript">
+    $('#reload').click(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'reload-captcha',
+            success: function (data) {
+                $(".captcha span").html(data.captcha);
+            }
+        });
+    });
+
     $(document).ready(function() {
         $('#provinsi').select2({
             placeholder: "Pilih Provinsi",
@@ -166,7 +197,7 @@
         });
 
         $('#roles').select2({
-            placeholder: "Pilih Role",
+            placeholder: "Pilih Petugas Pendamping / Admin",
             "language": {
                 "noResults": function(){
                     return "Tidak ada data";
@@ -175,7 +206,7 @@
         });
 
         $('#rolechild').select2({
-            placeholder: "Pilih Petugas",
+            placeholder: "Pilih Tim Pendamping Keluarga",
             "language": {
                 "noResults": function(){
                     return "Tidak ada data";
@@ -343,7 +374,7 @@
         $.get(route, function(res) {
             var select = document.getElementById("rolechild");
             if(res.length > 0){
-                select.innerHTML = '<option value="">Pilih Petugas</option>'
+                select.innerHTML = '<option value="">Pilih Tim Pendamping Keluarga</option>'
                 res.forEach(element => {
                     let option = document.createElement("option");
                     option.text = element.name;

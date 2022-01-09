@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Mews\Captcha\CaptchaServiceProvider::class,
     ],
 
     /*
@@ -233,7 +234,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Helper' => App\Helpers\Helper::class,
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class, 
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Captcha' => Mews\Captcha\Facades\Captcha::class, 
     ],
 
 ];

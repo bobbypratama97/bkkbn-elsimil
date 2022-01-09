@@ -346,13 +346,17 @@ class AuthController extends Controller
         $check = Member::where('email', $request->email)->first();
 
         if ($check) {
-            // Helper::sendMail([
-            //     'id' => $check->id, 
-            //     'tipe' => 2, 
-            //     'name' => $check->name, 
-            //     'email' => $check->email, 
-            //     'url' => 'cpw'
-            // ]);
+            try {
+                Helper::sendMail([
+                    'id' => $check->id, 
+                    'tipe' => 2, 
+                    'name' => $check->name, 
+                    'email' => $check->email, 
+                    'url' => 'cpw'
+                ]);
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
 
             return response()->json([
                 'code' => 200,

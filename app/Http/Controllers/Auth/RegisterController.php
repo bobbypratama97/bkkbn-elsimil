@@ -64,20 +64,23 @@ class RegisterController extends Controller
             'password.min' => 'Password minimal :min karakter',
             'no_telp.unique' => 'Nomor Telepon sudah terdaftar. Silahkan Login atau klik Lupa Password',
             'unique' => ':attribute sudah terdaftar.',
+            'captcha' => 'Captcha tidak sesuai. Silahkan coba lagi'
         );
 
         return Validator::make($data, [
             //'nik' => ['required', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'no_telp' => ['required', 'numeric', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
             // 'regex:/(.*)@(gmail|yahoo|)\.com/i',
             'password' => ['required', 'string', 'min:6'],
             'provinsi_id' => ['required'],
             'kabupaten_id' => ['required'],
             'kecamatan_id' => ['required'],
             'kelurahan_id' => ['required'],
-            'role' => ['required']
+            'role' => ['required'],
+            'captcha' => ['required','captcha'],
+
         ], $messages);
 
         if ($validator->fails()) {
@@ -94,17 +97,19 @@ class RegisterController extends Controller
 
     public function register(\Illuminate\Http\Request $request) {
         $this->validator($request->all())->validate();
-
+        
         //validasi email domain
-        $email = $request->email;
-        list($username, $domain) = explode('@', $email);
-        if(!in_array($domain, $this->accept_email)){
-            return redirect()->back()
-                ->withInput()
-                ->withErrors([
-                    'error' => 'Registrasi gagal', 
-                    'keterangan' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
-                ]);
+        if($request->email != null){
+            $email = $request->email;
+            list($username, $domain) = explode('@', $email);
+            if(!in_array($domain, $this->accept_email)){
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors([
+                        'error' => 'Registrasi gagal', 
+                        'keterangan' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
+                    ]);
+            }
         }
         // if (!checkdnsrr($domain, 'MX')) {
 
@@ -180,4 +185,9 @@ class RegisterController extends Controller
             'kelurahan_id' => $data['kelurahan_id']
         ]);
     }*/
+
+    public function reloadCaptcha()
+    {
+        return response()->json(['captcha'=> captcha_img('mini')]);
+    }
 }
