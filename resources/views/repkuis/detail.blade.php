@@ -44,7 +44,7 @@
                             <button type="submit" class="btn btn-success">Search</button>
                         </form>
 
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display: block;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -63,7 +63,7 @@
                             <tbody>
                                 @foreach($result as $key => $row)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($paginate->currentPage() * 10) - 10 + $key + 1 }}</td>
                                     <td>{{ $row['kuis_title'] }}</td>
                                     <td>{!! Helper::customUser($row['nama']) !!}<br /><small>{{ $row['kelurahan'] }}, {{ $row['kecamatan'] }}, {{ $row['kabupaten'] }}, {{ $row['provinsi'] }}</small></td>
                                     <td>{!! (isset($row['pasangan'])) ? Helper::customUser($row['pasangan']) : '-' !!}</td>
@@ -73,7 +73,7 @@
                                     <td><button type="button" class="btn font-size-sm unclick" style="background-color: {{ $row['rating_color'] }}"><span class="font-weight-bolder text-white">{{ $row['label'] }}</span></button></td>
                                     <td>{{ (!empty($row['petugas_id'])) ? $row['petugas'] : '-' }}</td>
                                     <td>{{ (!empty($row['komentar'])) ? 'Sudah' : 'Belum' }}</td>
-                                    <td>
+                                    <td style="white-space: nowrap;">
                                         <form method="POST" action="{{ route('admin.repkuis.details') }}">
                                             <input type="hidden" name="cu" value="{{ url()->full() }}">
                                             <input type="hidden" name="cid" value="{{ $row['id'] }}">
@@ -84,15 +84,35 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="float-left">
-                            @if (count($result) > 1)
-                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($result) }} dari {{ $paginate->total() }} data
-                            @else
-                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
-                            @endif
+                        <div class="paginate-large" style="display: none;">
+                            <div class="float-left">
+                                @if (count($result) > 1)
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($result) }} dari {{ $paginate->total() }} data
+                                @else
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                                @endif
                             </div>
-                        <div class="float-right">
-                            {{ $paginate->appends($_GET)->links() }}
+                            <div class="float-right">
+                                {{ $paginate->appends($_GET)->links() }}
+                            </div>
+                        </div>
+                        <div class="paginate-small" style="display: none;"> 
+                            <div class="float-left">
+                                @if (count($result) > 1)
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($result) }} dari {{ $paginate->total() }} data
+                                @else
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                                @endif
+                            </div>
+                            <div class="float-right">
+                                @if($paginate->previousPageUrl() != null)
+                                    <a href="{{$paginate->previousPageUrl()}}" class="btn btn-default pull-left"><i class="fa fa-chevron-left"></i> Sebelumnya</a>
+                                @endif
+                                &nbsp;
+                                @if($paginate->nextPageUrl() != null)
+                                    <a href="{{$paginate->nextPageUrl()}}" class="btn btn-default pull-right">Berikutnya <i class="fa fa-chevron-right"></i> </a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,7 +125,14 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
-    // $(document).ready(function() {
+    $(document).ready(function() {
+        if(screen.width < 768){
+            $(".paginate-large").hide()
+            $(".paginate-small").show()
+        }else{
+            $(".paginate-large").show()
+            $(".paginate-small").hide()
+        }
     //     var table = $('#kt_datatable').DataTable({
     //         "scrollX":"100%",
     //         searching: false,
@@ -131,7 +158,7 @@
     //             { "width": "50px", "targets": [0] }
     //         ]
     //     });
-    // });
+    });
 </script>
 @endpush
 

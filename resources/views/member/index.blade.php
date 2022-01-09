@@ -145,11 +145,11 @@
                     </div>
                     <div class="float-right">
                         @if($paginate->previousPageUrl() != null)
-                            <a href="{{$paginate->previousPageUrl()}}" class="prev_btn pull-left"><i class="fa fa-chevron-left"></i> Sebelumnya</a>
+                            <a href="{{$paginate->previousPageUrl()}}" class="btn btn-default pull-left"><i class="fa fa-chevron-left"></i> Sebelumnya</a>
                         @endif
                         &nbsp;
                         @if($paginate->nextPageUrl() != null)
-                            <a href="{{$paginate->nextPageUrl()}}" class="prev_btn pull-right">Selanjutnya <i class="fa fa-chevron-right"></i> </a>
+                            <a href="{{$paginate->nextPageUrl()}}" class="btn btn-default pull-right">Berikutnya <i class="fa fa-chevron-right"></i></a>
                         @endif
                     </div>
                 </div>

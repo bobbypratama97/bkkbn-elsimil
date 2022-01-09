@@ -29,6 +29,8 @@ Route::get('apv/{id}', 'VerifController@approve')->name('apv');
 Route::post('/resend', 'VerifController@resend')->name('resend');
 Route::get('lgn/{id}', 'VerifController@lgn')->name('lgn');
 
+Route::get('reload-captcha', 'Auth\RegisterController@reloadCaptcha')->name('reloadCaptcha');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/carinik', 'HelperController@carinik')->name('carinik');
 Route::post('/provinsi', 'HelperController@provinsi')->name('provinsi');

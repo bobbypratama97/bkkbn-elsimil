@@ -18,7 +18,7 @@
                 <div class="login-signin">
                     <div class="mb-20">
                         <h3>Lupa Password ?</h3>
-                        <div class="text-muted font-weight-bold">Silahkan masukkan email Anda untuk mengatur kata sandi baru pada link yang akan kami kirim.</div>
+                        <div class="text-muted font-weight-bold">Silahkan masukkan email anda atau nomor telepon untuk mengatur kata sandi baru pada link yang akan kami kirim.</div>
                     </div>
                     @if ($errors->has('error'))
                     <div class="alert alert-custom alert-danger" role="alert">
@@ -32,7 +32,7 @@
                         @csrf
                         <input type="hidden" name="tipe" value="1">
                         <div class="form-group mb-10">
-                            <input class="form-control form-control-solid h-auto py-4 px-8" type="text" placeholder="Isi dengan Email yang valid" name="email" autocomplete="off" value="{{ old('email') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
+                            <input class="form-control form-control-solid h-auto py-4 px-8" type="text" placeholder="Isi dengan Email atau Nomor Telepon yang valid" name="email" autocomplete="off" value="{{ old('email') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
                         </div>
                         <div class="form-group d-flex flex-wrap flex-center mt-10">
                             <button id="kt_login_forgot_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Request</button>

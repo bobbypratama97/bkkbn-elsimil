@@ -36,6 +36,7 @@ use App\ChatHeader;
 use App\Config;
 use App\KuisResult;
 use App\KuisResultComment;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -233,10 +234,13 @@ class UserController extends Controller
 
     public function update(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'email' => ['required','email','unique:users,email,'.$id]
+            'email' => ['required','email','unique:users,email,'.$id],
+            'password' => ['nullable', 'required_with:password_confirmation', 'same:password_confirmation'],
+            'password_confirmation' =>  ['nullable']
         ], [
             'unique' => ':attribute sudah terdaftar.',
-            'required' => ':attribute harus diisi.'
+            'required' => ':attribute harus diisi.',
+            'same' => ':attribute harus sama.',
         ]);
 
         if ($validator->fails()) {
@@ -260,6 +264,13 @@ class UserController extends Controller
             'updated_at' => date('Y-m-d H:i:s'),
             'updated_by' => Auth::id()
         ]);
+
+        //update password
+        if($request->has('is_change_password') || $request->is_change_password == 'on'){
+            User::where('id', $id)->update([
+                'password' => Hash::make($request->password)
+            ]);
+        }
 
         $check = UserRole::where('user_id', $id)->first();
         if ($check) {
@@ -290,7 +301,7 @@ class UserController extends Controller
             // ]);
         }
 
-        $msg = 'Pengubahan data admin CMS berhasil';
+        $msg = 'Pengubahan data petugas CMS berhasil';
         return redirect()->route('admin.user.index')->with('success', $msg);
     }
 

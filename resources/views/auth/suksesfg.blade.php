@@ -19,9 +19,11 @@
                     <div class="mb-5">
                         <h3>Selamat</h3>
                         <div class="text-muted font-weight-bold">
-                            Silahkan akses link yang kami kirimkan ke email Anda untuk melakukan perubahan password.
+                            Silahkan akses link yang kami kirimkan ke email Anda ({{$email}}) untuk melakukan perubahan password.
                         </div>
                         <div class="text-muted font-weight-bold"></div>
+                        </br>
+                        <a href="/" class="btn btn-success">Kembali Ke Awal</a>
                     </div>
                 </div>
                 <!--end::Login forgot password form-->

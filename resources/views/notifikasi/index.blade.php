@@ -97,15 +97,35 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="float-left">
-                            @if (count($notifikasi) > 1)
-                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($notifikasi) }} dari {{ $paginate->total() }} data
-                            @else
-                                Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
-                            @endif
+                        <div class="paginate-large" style="display: none;">
+                            <div class="float-left">
+                                @if (count($notifikasi) > 1)
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($notifikasi) }} dari {{ $paginate->total() }} data
+                                @else
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                                @endif
+                            </div>
+                            <div class="float-right">
+                                {{ $paginate->appends($_GET)->links() }}
+                            </div>
                         </div>
-                        <div class="float-right">
-                            {{ $paginate->appends($_GET)->links() }}
+                        <div class="paginate-small" style="display: none;"> 
+                            <div class="float-left">
+                                @if (count($notifikasi) > 1)
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} sampai {{ (($paginate->currentPage() * 10) - 10) + count($notifikasi) }} dari {{ $paginate->total() }} data
+                                @else
+                                    Menampilkan {{ ($paginate->currentPage() * 10) - 10 + 1 }} dari {{ $paginate->total() }} data
+                                @endif
+                            </div>
+                            <div class="float-right">
+                                @if($paginate->previousPageUrl() != null)
+                                    <a href="{{$paginate->previousPageUrl()}}" class="btn btn-default pull-left"><i class="fa fa-chevron-left"></i> Sebelumnya</a>
+                                @endif
+                                &nbsp;
+                                @if($paginate->nextPageUrl() != null)
+                                    <a href="{{$paginate->nextPageUrl()}}" class="btn btn-default pull-right">Berikutnya <i class="fa fa-chevron-right"></i> </a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -118,7 +138,14 @@
 <script src="{{ asset('assets/plugins/spinner/jquery.preloaders.js') }}"></script>
 
 <script type="text/javascript">
-    // $(document).ready(function() {
+    $(document).ready(function() {
+        if(screen.width < 768){
+            $(".paginate-large").hide()
+            $(".paginate-small").show()
+        }else{
+            $(".paginate-large").show()
+            $(".paginate-small").hide()
+        }
     //     var table = $('#kt_datatable').DataTable({
     //         "sScrollX": "100%",
     //         //"sScrollXInner": "110%",
@@ -144,7 +171,7 @@
     //             { "width": "50px", "targets": [0] }
     //         ]
     //     });
-    // });
+    });
 
     $('#kt_datatable tbody').on('click', '.hapus', function () {
         var id = $(this).attr('data-id');
