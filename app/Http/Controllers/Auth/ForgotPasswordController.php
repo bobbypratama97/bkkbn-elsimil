@@ -29,7 +29,7 @@ class ForgotPasswordController extends Controller
 
     function index(Request $request) {
         if ($request->tipe == 1) {
-            $check = User::where('email', $request->email)->first();
+            $check = User::where('email', $request->email)->orWhere('no_telp', Helper::phoneNumber($request->email))->first();
         } else {
             $check = Member::where('email', $request->email)->first();
         }
@@ -39,9 +39,18 @@ class ForgotPasswordController extends Controller
                 ->withInput()
                 ->withErrors([
                     'error' => 'Pengiriman link gagal', 
-                    'keterangan' => 'Email yang Anda masukkan salah. Silahkan ulangi kembali.'
+                    'keterangan' => 'Email atau Nomor Telepon yang Anda masukkan salah. Silahkan ulangi kembali.'
                 ]);
         } else {
+            if($check->email == null){
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors([
+                        'error' => 'Pengiriman link gagal', 
+                        'keterangan' => 'Kami tidak dapat mengirimkan akses link perubahan password dikarenakan Email Anda belum didaftarkan. Silakan hubungi Admin Anda untuk meminta password baru.'
+                    ]);
+            }
+
             try {
                 Helper::sendMail([
                     'id' => $check->id, 
@@ -54,7 +63,7 @@ class ForgotPasswordController extends Controller
                 //throw $th;
             }
 
-            return view('auth.suksesfg');
+            return view('auth.suksesfg', ['email' => $check->email]);
         }
     }
 }
