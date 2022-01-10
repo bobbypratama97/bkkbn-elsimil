@@ -35,10 +35,13 @@
                         <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
+						
+						 
+						<div class="card card-body text-left mb-5">
+                        <div class="row ">
+                            <div class="col-12">
                             <div class="form-group mb-5">
-                                <label for="captcha" class="text-md-right">Captcha</label>
+								<label for="captcha"><strong>Tuliskan kode yang ada pada gambar</strong></label>
                                 <div class=" captcha">
                                     <span>{!! captcha_img('mini') !!}</span>
                                     <button type="button" class="btn btn-danger" class="reload" id="reload">
@@ -47,13 +50,14 @@
                                 </div>
                             </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12">
                             <div class="form-group mb-5">
-                                <label for="captcha" class="text-md-right">Enter Captcha</label>
-                                <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required oninvalid="this.setCustomValidity('Captcha harus diisi')" oninput="setCustomValidity('')">
+                                <input id="captcha" type="text" class="form-control" autocomplete="off" placeholder="4 digit kode" name="captcha" required oninvalid="this.setCustomValidity('Captcha harus diisi')" oninput="setCustomValidity('')">
                             </div>
                             </div>
+								
                         </div>
+						</div>
                         <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
                             <div class="checkbox-inline"></div>
                             <a href="{{ route('password.request') }}" id="kt_login_forgot" class="text-muted text-hover-primary">Lupa Password ?</a>
