@@ -136,7 +136,7 @@
 				  </div>
             </fieldset>
             <div class="form-group d-flex flex-wrap flex-center mt-10">
-              <button type="submit" class="btn btn-primary btn-block font-weight-bold px-9 py-4 my-3 mx-2">SIMPAN</button>
+              <button type="submit" class="btn btn-primary btn-block font-weight-bold px-9 py-4 my-3 mx-2" return confirms('member-update')>SIMPAN</button>
             </div>
           </form>
           <div class="mt-10 text-center"> <a href="{{ route('password.request') }}" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Lupa Password ?</a> </div>
