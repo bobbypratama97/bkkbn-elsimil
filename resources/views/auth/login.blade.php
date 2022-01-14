@@ -27,10 +27,10 @@
                         <div class="alert-text"><strong>{{ $errors->first('error') }}</strong><br />{{ $errors->first('keterangan') }}</div>
                     </div>
                     @endif
-                    <form class="form" method="POST" action="{{ route('login') }}">
+                    <form id="formlogin" class="form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group mb-5">
-                            <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Email atau No Telepon Terdaftar" name="login" autocomplete="off" value="{{ old('login') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
+                            <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Email atau No Telepon Terdaftar" name="login" id="email" autocomplete="off" value="{{ old('login') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
                         </div>
                         <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
@@ -92,6 +92,34 @@
             }
         });
     });
+
+    function confirms(form_title)
+    {
+        let form = document.forms[form_title];
+        let email = $('#email').val()
+        
+        return false
+        
+        bootbox.confirm({
+            title: 'Perhatian',
+            message: "<p class='text-center'>Apakah Anda akan mendampingi catin ini ?</p>",
+            centerVertical: true,
+            closeButton: false,
+            buttons: {
+                confirm: { label: 'Yakin', className: 'btn-success' },
+                cancel: { label: 'Batalkan', className: 'btn-danger' }
+            },
+            callback: function (result) {
+                if(result == true){
+                    form.submit()
+                    return true
+                }else{
+                    return true
+                }
+            }
+        });
+        return false
+    }
 </script>
 @endpush
 @endsection

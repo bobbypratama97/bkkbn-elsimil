@@ -98,7 +98,7 @@ class LoginController extends Controller
                 ->withInput($request->only($this->username()))
                 ->withErrors([
                     'error' => 'Login gagal',
-                    'keterangan' => 'Data yang Anda masukkan salah. Silahkan ulangi kembali.'
+                    'keterangan' => 'Email atau no telepon yang Anda masukkan salah. Silahkan ulangi kembali.'
                 ]);
         } else if (!Hash::check($password, $user->password, [])) {
             return redirect()->back()
