@@ -99,19 +99,20 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
         
         //validasi email domain
-        if($request->email != null){
-            $email = $request->email;
-            list($username, $domain) = explode('@', $email);
-            if(!in_array($domain, $this->accept_email)){
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors([
-                        'error' => 'Registrasi gagal', 
-                        'keterangan' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
-                    ]);
-            }
-        }
+        // if($request->email != null){
+        //     $email = $request->email;
+        //     list($username, $domain) = explode('@', $email);
+        //     if(!in_array($domain, $this->accept_email)){
+        //         return redirect()->back()
+        //             ->withInput()
+        //             ->withErrors([
+        //                 'error' => 'Registrasi gagal', 
+        //                 'keterangan' => 'Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.'
+        //             ]);
+        //     }
+        // }
         // if (!checkdnsrr($domain, 'MX')) {
+        // }
 
         // print_r ($request->all()); die;
 

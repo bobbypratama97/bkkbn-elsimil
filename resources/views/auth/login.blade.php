@@ -63,7 +63,7 @@
                             <a href="{{ route('password.request') }}" id="kt_login_forgot" class="text-muted text-hover-primary">Lupa Password ?</a>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary  btn-block font-weight-bold btn-lg">MASUK</button>
+                        <button type="submit" class="btn btn-primary btn-block font-weight-bold btn-lg" >MASUK</button>
 
 						<p class="mt-5"><small>Belum Punya Akun?</small> <br><br><a href="{{ route('register') }}" id="kt_login_signup" class="btn btn-success btn-lg btn-block font-weight-bold "> DAFTAR</a>
                         </p>
