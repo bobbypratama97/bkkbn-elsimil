@@ -27,7 +27,7 @@
                         <div class="alert-text"><strong>{{ $errors->first('error') }}</strong><br />{{ $errors->first('keterangan') }}</div>
                     </div>
                     @endif
-                    <form id="formlogin" class="form" method="POST" action="{{ route('login') }}" onsubmit="return confirms('Are you sure?');">
+                    <form id="formlogin" class="form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Email atau No Telepon Terdaftar" name="login" id="email" autocomplete="off" value="{{ old('login') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
@@ -63,7 +63,7 @@
                             <a href="{{ route('password.request') }}" id="kt_login_forgot" class="text-muted text-hover-primary">Lupa Password ?</a>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary btn-block font-weight-bold btn-lg" onclick="return confirms('formlogin')">MASUK</button>
+                        <button type="submit" class="btn btn-primary btn-block font-weight-bold btn-lg" >MASUK</button>
 
 						<p class="mt-5"><small>Belum Punya Akun?</small> <br><br><a href="{{ route('register') }}" id="kt_login_signup" class="btn btn-success btn-lg btn-block font-weight-bold "> DAFTAR</a>
                         </p>
@@ -92,34 +92,6 @@
             }
         });
     });
-
-    function confirms(form_title)
-    {
-        let form = document.forms[form_title];
-        let email = $('#email').val()
-        
-        return false
-        
-        bootbox.confirm({
-            title: 'Perhatian',
-            message: "<p class='text-center'>Apakah Anda akan mendampingi catin ini ?</p>",
-            centerVertical: true,
-            closeButton: false,
-            buttons: {
-                confirm: { label: 'Yakin', className: 'btn-success' },
-                cancel: { label: 'Batalkan', className: 'btn-danger' }
-            },
-            callback: function (result) {
-                if(result == true){
-                    form.submit()
-                    return true
-                }else{
-                    return true
-                }
-            }
-        });
-        return false
-    }
 </script>
 @endpush
 @endsection

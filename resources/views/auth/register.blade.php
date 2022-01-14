@@ -28,7 +28,7 @@
             </div>
           </div>
           @endif
-          <form class="form" method="POST" action="{{ route('register') }}" >
+          <form id="formregis" class="form" method="POST" action="{{ route('register') }}" onsubmit="return confirms('formregis')">
             @csrf
             <fieldset>
               <legend><strong>Informasi Umum dan Login</strong></legend>
@@ -49,7 +49,7 @@
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Email</label>
-                <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang Valid (Opsional)" name="email" value="{{ old('email') }}" autocomplete="off" />
+                <input class="form-control h-auto form-control py-4 px-8" type="email" placeholder="Isi dengan Email yang Valid (Opsional)" name="email" id="email" value="{{ old('email') }}" autocomplete="off" />
               </div>
               <div class="form-group mb-5">
                 <label class="pl-8">Password</label>
@@ -398,6 +398,39 @@
                 // document.getElementById("rolechild").style.display = "none";
             }
         })
+    }
+
+    function confirms(form_title)
+    {
+        let form = document.forms[form_title];
+        let email = $('#email').val()
+        let name   = email.substring(0, email.lastIndexOf("@"));
+        let domain = email.substring(email.lastIndexOf("@") +1);
+        let regisdomain = ['gmail.com', 'yahoo.com', 'gmail.co.id'];
+
+        if(!regisdomain.includes(domain)){
+            bootbox.confirm({
+                title: 'Perhatian',
+                message: "<p class='text-center'>Mohon dipastikan kembali email yang anda masukan tidak ada kesalahan penulisan.</p>",
+                centerVertical: true,
+                closeButton: false,
+                buttons: {
+                    confirm: { label: 'Yakin', className: 'btn-success' },
+                    cancel: { label: 'Batalkan', className: 'btn-danger' }
+                },
+                callback: function (result) {
+                    if(result == true){
+                        form.submit()
+                        return true
+                    }else{
+                        return true
+                    }
+                }
+            });
+        }else{
+            form.submit()
+        }
+        return false
     }
 </script> 
 @endpush
