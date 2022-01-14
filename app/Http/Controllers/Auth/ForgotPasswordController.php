@@ -29,7 +29,14 @@ class ForgotPasswordController extends Controller
 
     function index(Request $request) {
         if ($request->tipe == 1) {
-            $check = User::where('email', $request->email)->orWhere('no_telp', Helper::phoneNumber($request->email))->first();
+            if(!Helper::phoneNumber($request->email)){
+                //cek by email
+                $check = User::where('email', $request->email)->first();
+            }else{
+                //cek by no hp
+                $check = User::where('no_telp', Helper::phoneNumber($request->email))->first();
+            }
+            // $check = User::where('email', $request->email)->orWhere('no_telp', Helper::phoneNumber($request->email))->first();
         } else {
             $check = Member::where('email', $request->email)->first();
         }

@@ -27,18 +27,21 @@
                         <div class="alert-text"><strong>{{ $errors->first('error') }}</strong><br />{{ $errors->first('keterangan') }}</div>
                     </div>
                     @endif
-                    <form class="form" method="POST" action="{{ route('login') }}">
+                    <form id="formlogin" class="form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group mb-5">
-                            <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Email atau No Telepon Terdaftar" name="login" autocomplete="off" value="{{ old('login') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
+                            <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Email atau No Telepon Terdaftar" name="login" id="email" autocomplete="off" value="{{ old('login') }}" required oninvalid="this.setCustomValidity('Email harus diisi')" oninput="setCustomValidity('')" />
                         </div>
                         <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="password" required oninvalid="this.setCustomValidity('Password harus diisi')" oninput="setCustomValidity('')" />
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
+						
+						 
+						<div class="card card-body text-left mb-5">
+                        <div class="row ">
+                            <div class="col-12">
                             <div class="form-group mb-5">
-                                <label for="captcha" class="text-md-right">Captcha</label>
+								<label for="captcha"><strong>Tuliskan kode yang ada pada gambar</strong></label>
                                 <div class=" captcha">
                                     <span>{!! captcha_img('mini') !!}</span>
                                     <button type="button" class="btn btn-danger" class="reload" id="reload">
@@ -47,19 +50,20 @@
                                 </div>
                             </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12">
                             <div class="form-group mb-5">
-                                <label for="captcha" class="text-md-right">Enter Captcha</label>
-                                <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required oninvalid="this.setCustomValidity('Captcha harus diisi')" oninput="setCustomValidity('')">
+                                <input id="captcha" type="text" class="form-control" autocomplete="off" placeholder="4 digit kode" name="captcha" required oninvalid="this.setCustomValidity('Captcha harus diisi')" oninput="setCustomValidity('')">
                             </div>
                             </div>
+								
                         </div>
+						</div>
                         <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
                             <div class="checkbox-inline"></div>
                             <a href="{{ route('password.request') }}" id="kt_login_forgot" class="text-muted text-hover-primary">Lupa Password ?</a>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary  btn-block font-weight-bold btn-lg">MASUK</button>
+                        <button type="submit" class="btn btn-primary btn-block font-weight-bold btn-lg" >MASUK</button>
 
 						<p class="mt-5"><small>Belum Punya Akun?</small> <br><br><a href="{{ route('register') }}" id="kt_login_signup" class="btn btn-success btn-lg btn-block font-weight-bold "> DAFTAR</a>
                         </p>
@@ -88,6 +92,34 @@
             }
         });
     });
+
+    function confirms(form_title)
+    {
+        let form = document.forms[form_title];
+        let email = $('#email').val()
+        
+        return false
+        
+        bootbox.confirm({
+            title: 'Perhatian',
+            message: "<p class='text-center'>Apakah Anda akan mendampingi catin ini ?</p>",
+            centerVertical: true,
+            closeButton: false,
+            buttons: {
+                confirm: { label: 'Yakin', className: 'btn-success' },
+                cancel: { label: 'Batalkan', className: 'btn-danger' }
+            },
+            callback: function (result) {
+                if(result == true){
+                    form.submit()
+                    return true
+                }else{
+                    return true
+                }
+            }
+        });
+        return false
+    }
 </script>
 @endpush
 @endsection
