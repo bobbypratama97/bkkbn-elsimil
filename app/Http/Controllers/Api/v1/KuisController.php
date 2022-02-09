@@ -552,9 +552,12 @@ class KuisController extends Controller
                     foreach ($row['pertanyaan'] as $keys => $rows) {
                         if ($rows['tipe'] == 'angka') {
                             $findQ = KuisDetail::where('header_id', $row['header_id'])->first();
-                            if ($findQ->bobot == '1') {
+                            if ($findQ->bobot == '1') { 
                                 $value = $rows['value'];
 
+                                //convert coma(,) to dot(.)
+                                $value = str_replace(',', '.', $value);
+                                
                                 $findB = KuisBobot::where('header_id', $row['header_id'])->select(['id', 'kondisi', 'label', 'nilai', 'bobot', 'rating', 'rating_color'])->get()->toArray();
 
                                 $compare = [];

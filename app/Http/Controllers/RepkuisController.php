@@ -96,7 +96,7 @@ class RepkuisController extends Controller
         return view('repkuis.index', compact('kuis', 'gender', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'roles'));
     }
 
-    public function search(Request $request) {
+    public function searchbackup(Request $request) {
         $res = Kuis::select([
             'pertanyaan_header.id as header_id', 
             'pertanyaan_header.caption', 
@@ -123,7 +123,7 @@ class RepkuisController extends Controller
         ->orderBy('pertanyaan_header.position')
         ->get();
 
-        //print_r ($res);
+        // return $res->toSql();
 
         $total = [0];
         $final = [];
@@ -296,6 +296,164 @@ class RepkuisController extends Controller
         return response()->json($output);
 
         die();
+    }
+
+    public function search(Request $request) {
+        try {
+            $whereSummary = '';
+            $result = KuisResultDetail::select([
+                    'ph.caption',
+                    DB::raw('pertanyaan_bobot_label as label'),
+                    DB::raw('pertanyaan_rating as rating'),
+                    'pertanyaan_rating_color as rating_color',
+                    DB::raw('COUNT(*) as hitung')
+                ])
+                ->join('kuisioner_result as kr', 'kr.id', 'kuisioner_result_detail.result_id')
+                ->join('members as mb', 'mb.id', 'kr.member_id')
+                ->join('adms_provinsi as adp', 'adp.provinsi_kode', 'mb.provinsi_id')
+                ->join('pertanyaan_header as ph', 'ph.id', 'kuisioner_result_detail.header_id')
+                ->where('kr.kuis_id', $request->kuesioner)
+                ->where('kr.status', 1)
+                ->where('pertanyaan_bobot_id', '<>', 0);
+
+            if (!empty($request->tanggal)) {
+                $exp = explode(' - ', $request->tanggal);
+
+                $start = explode('/', $exp[0]);
+                $start = $start[2] . '-' . $start[1] . '-' . $start[0];
+                $end = explode('/', $exp[1]);
+                $end = $end[2] . '-' . $end[1] . '-' . $end[0];
+
+                // $result->whereBetween('kuisioner_result.created_at', [$start, $end]);
+                $result->whereBetween(DB::raw('date(kr.created_at)'), [$start, $end]);
+                $whereSummary .= " AND (date(kuisioner_result.created_at) BETWEEN '".$start."' AND '".$end."')";
+            }
+
+            if (!empty($request->provinsi)) {
+                $result->where('mb.provinsi_id', $request->provinsi);
+                $whereSummary .= " AND members.provinsi_id = ".$request->provinsi;
+            }
+
+            if (!empty($request->kabupaten)) {
+                $result->where('mb.kabupaten_id', $request->kabupaten);
+                $whereSummary .= " AND members.kabupaten_id = ".$request->kabupaten;
+            }
+
+            if (!empty($request->kecamatan)) {
+                $result->where('mb.kecamatan_id', $request->kecamatan);
+                $whereSummary .= " AND members.kecamatan_id = ".$request->kecamatan;
+            }
+
+            if (!empty($request->kelurahan)) {
+                $result->where('mb.kelurahan_id', $request->kelurahan);
+                $whereSummary .= " AND members.kelurahan_id = ".$request->kelurahan;
+            }
+
+            if (!empty($request->nik)) {
+                $cekKtp = Helper::dcNik($request->nik);
+                $result->where('mb.no_ktp', 'LIKE', '%' . $cekKtp . '%');
+                $whereSummary .= " AND members.no_ktp LIKE '%".$cekKtp."%'";
+            }
+
+            if (!empty($request->nama)) {
+                $result->where('mb.name', $request->nama);
+                $whereSummary .= " AND members.name = '".$request->nama."'";
+            }
+
+            if (!empty($request->gender)) {
+                $result->where('kr.kuis_gender', $request->gender);
+                $whereSummary .= " AND kuisioner_result.kuis_gender = ".$request->gender;
+            }
+
+            $result = $result->groupBy(['ph.id', 'pertanyaan_bobot_id'])
+                ->orderBy('pertanyaan_detail_title')
+                ->get();
+
+            $fin = $final = [];
+            foreach ($result as $vals) {
+                $fin[$vals['caption']][] = $vals;
+            }
+    
+            $i = 1;
+            foreach ($fin as $k => $v) {
+                $jumlah = 0;
+                foreach ($v as $kz => $vz) {
+                    $final[$i]['label'] = $k;
+                    $final[$i]['legend'][] = $vz['label'] . ' (' .$vz['hitung']. ')';
+                    $final[$i]['color'][] = $vz['rating_color'];
+                    $final[$i]['value'][] = $vz['hitung'];
+    
+                    $jumlah = $jumlah + $vz['hitung'];
+                }
+                $final[$i]['jumlah'] = $jumlah;
+    
+                $i++;
+            }
+    
+            foreach ($final as $key => $row) {
+                foreach ($row['value'] as $keys => $rows) {
+                    $final[$key]['legend'][$keys] = ($final[$key]['jumlah'] != '0') ? $final[$key]['legend'][$keys] . ' - (' . round($rows / $final[$key]['jumlah'], 1) * 100 . '%)' : '0%';
+                }
+            }
+    
+            $output = [
+                'count' => count($final),
+                'data' => $final,
+            ];
+
+            //get summary report
+            $summary = "SELECT kuisioner_result.kuis_id, max(kuisioner_summary.`label`) as label, max(kuisioner_summary.`rating_color`) as rating_color, COUNT(kuisioner_result.id) AS total
+                    FROM
+                        kuisioner_result  
+                        JOIN members ON members.id =kuisioner_result.`member_id`
+                        JOIN kuisioner_summary ON kuisioner_summary.id = kuisioner_result.`summary_id`
+                    WHERE kuisioner_result.label IS NOT NULL
+                        AND kuisioner_result.kuis_id = ".$request->kuesioner."
+                        AND kuisioner_result.status = 1 {$whereSummary}
+                        GROUP BY kuisioner_summary.`kondisi`;
+                        ";
+            $summ = DB::select($summary);
+
+            $total = array_sum(array_column($summ, 'total'));
+            foreach ($summ as $keys => $rows) {
+                $rows->count = $rows->total ?? 0;
+                $rows->persen = ($total == '0') ? 0 : round($rows->count / $total, 1) * 100;
+            }
+
+            if($summ) {
+                $finKuis['label'] = 'Summary Kuisioner';
+                $finKuis['total'] = $total ?? 0;
+
+                foreach ($summ as $keys => $rows) {
+                    $finKuis['legend'][$keys] = $rows->label . ' ('.$rows->count.') ' . $rows->persen . ' %';
+                    $finKuis['color'][$keys] = $rows->rating_color;
+                    $finKuis['value'][$keys] = $rows->persen;
+                    $finKuis['jumlah'][$keys] = $rows->count;
+                    $finKuis['link'][$keys] = route('admin.repkuis.detail', [
+                        'label' => $rows->label, 
+                        'kuesioner' => $rows->kuis_id, 
+                        'search'=> 'all',
+                        'tanggal' => request('tanggal'),
+                        'provinsi' => request('provinsi'),
+                        'kabupaten' => request('kabupaten'),
+                        'kecamatan' => request('kecamatan'),
+                        'kelurahan' => request('kelurahan'),
+                        'nama' => request('nama'),
+                        'nik' => request('nik'),
+                        'gender' => request('gender')
+                    ]);
+                }
+
+                $output['summary'] = $finKuis;
+            }
+
+            return response()->json($output);
+
+            die();
+            
+        } catch (\Throwable $th) {
+            return serialize($th->getMessage());
+        }
     }
 
     public function download(Request $request) {

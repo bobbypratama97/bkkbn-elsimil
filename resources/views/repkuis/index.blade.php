@@ -140,7 +140,7 @@
 
                     <div class="card-body">
                         <div class="d-flex flex-row align-center justify-content-center">
-                            <div class="d-flex flex-row align-content-center" style="width:400px">
+                            <div class="d-flex flex-row align-content-center" id="summaryOwn" style="width:400px">
                                 <canvas class="charts" id="summaryChart"></canvas>
                             </div>
                         </div>
@@ -395,8 +395,15 @@
                         } else {
                             $('#grafik-hasil').show();
 
-                                 $('canvas[id^="myChart-"],div[id^="own-"]').hide();
-								$('canvas[id^="myChart-"]').empty();
+                            $('canvas[id^="myChart-"],div[id^="own-"]').hide();
+                            // $('canvas[id^="myChart-"]').empty();
+                            
+                            //delete canvas mychart
+                            $('canvas[id^="myChart-"]').remove();
+                            //append canvas
+                            for (let index = 0; index <= 20; index++) {
+                                $('#own-'+index).append('<canvas id="myChart-'+index+'"><canvas>')
+                            }
  
                             $.each(data.data, function(index, item) {
                                 $('canvas[id^="myChart-"],div[id^="own-"]').show();
@@ -436,6 +443,11 @@
                                     }
                                 });
                             });
+
+                            //delete canvas mychart
+                            $('canvas[id^="summaryChart"]').remove();
+                            //append canvas
+                            $('#summaryOwn').append('<canvas id="summaryChart"><canvas>')
 
                             $('#summaryChart').show();
                             var sum_data = data.summary
