@@ -36,7 +36,7 @@
 
                 <div class="card card-custom gutter-b example example-compact">
                     <div class="card-header">
-                        <h3 class="card-title">Ubah Data Admin CMS :</h3>
+                        <h3 class="card-title">Ubah Data Catin :</h3>
                     </div>
 
                     <form method="POST" action="{{ route('admin.member.update', $member->id) }}">

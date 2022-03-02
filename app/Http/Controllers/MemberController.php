@@ -25,15 +25,22 @@ use App\MemberCouple;
 use App\MemberDelegate;
 use App\MemberDelegateLog;
 use App\ChatHeader;
+use App\Kabupaten;
+use App\Kecamatan;
+use App\Kelurahan;
 use App\KuisResult;
 use App\Kuis;
 use App\KuisResultDetail;
+use App\UserRole;
 
 use App\KuesionerHamil;
 use App\LogbookHistory;
+use App\Provinsi;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Validation\Rule;
 
 class MemberController extends Controller
 {
@@ -60,6 +67,7 @@ class MemberController extends Controller
         $role = Auth::user()->role;
         $role_child = Auth::user()->roleChild;
         $role_dampingi = $this->role_child_id; //hanya role yg bisa mendapingi pertama kali
+        $roles = UserRole::where('user_id', $auth->id)->first();
 
         if($role_child != $role_dampingi) $is_dampingi = false;
         else $is_dampingi = true;
@@ -79,9 +87,9 @@ class MemberController extends Controller
         ->leftJoin('member_delegate', function($join) {
             $join->on('members.id', '=', 'member_delegate.member_id');
         })
-        // ->leftJoin('users', function($join) {
-        //     $join->on('users.id', '=', 'member_delegate.user_id');
-        // })
+        ->leftJoin('users', function($join) {
+            $join->on('users.id', '=', 'member_delegate.user_id');
+        })
         ->select([
             'members.*',
             'adms_provinsi.nama as provinsi',
@@ -92,50 +100,137 @@ class MemberController extends Controller
             // 'users.name as petugas'
         ]);
 
+        if ($role == '1') {
+            $kelurahan = [];
+            $kecamatan = [];
+            $kabupaten = [];
+            $provinsi = Provinsi::whereNull('deleted_by')->get();
 
-        if ($role == '2') {
+            if($request->provinsi != '') $kabupaten = Kabupaten::where('provinsi_kode', $request->provinsi)->whereNull('deleted_by')->orderBy('nama')->get();
+            if($request->kabupaten != '') $kecamatan = Kecamatan::where('kabupaten_kode', $request->kabupaten)->whereNull('deleted_by')->orderBy('nama')->get();
+            if($request->kecamatan != '') $kelurahan = Kelurahan::where('kecamatan_kode', $request->kecamatan)->whereNull('deleted_by')->orderBy('nama')->get();
+        }
+        else if ($role == '2') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id);
-        }
 
-        if ($role == '3') {
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('provinsi_kode', $auth->provinsi_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = [];//Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+            $kelurahan = [];
+
+            if($request->kabupaten != '') $kecamatan = Kecamatan::where('kabupaten_kode', $request->kabupaten)->whereNull('deleted_by')->orderBy('nama')->get();
+            if($request->kecamatan != '') $kelurahan = Kelurahan::where('kecamatan_kode', $request->kecamatan)->whereNull('deleted_by')->orderBy('nama')->get();
+        }
+        else if ($role == '3') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id);
-        }
+            
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = [];
 
-        if ($role == '4') {
+            if($request->kecamatan != '') $kelurahan = Kelurahan::where('kecamatan_kode', $request->kecamatan)->whereNull('deleted_by')->orderBy('nama')->get();
+        }
+        else if ($role == '4') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id);
+            
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $auth->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kecamatan_kode', $auth->kecamatan_id)->orderBy('nama')->get();
         }
-
-        if ($role == '5') {
+        else if ($role == '5') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id)->where('members.kelurahan_id', $auth->kelurahan_id);
+
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $auth->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $auth->kelurahan_id)->orderBy('nama')->get();
+        }
+        else {
+            $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id)->where('members.kelurahan_id', $auth->kelurahan_id);
+
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $auth->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $auth->kelurahan_id)->orderBy('nama')->get();
         }
 
-        $search = 'all';
-        $name = '';
-        if (isset($request->s)) {
-            if ($request->s == 'all') {
-                $search = 'all';
-            } else if ($request->s == 'h') {
-                $self = $self->whereNotNull('member_delegate.user_id');
-                $search = 'h';
-            } else if ($request->s == 'nh') {
-                $self = $self->whereNull('member_delegate.user_id');
-                $search = 'nh';
-            } else if ($request->s == 'm') {
-                $self = $self->where('member_delegate.user_id', Auth::id());
-                $search = 'm';
-            } else if ($request->s == 'hp' && isset($request->name)) {
-                $self = $self->where('members.no_telp', 'like', '%' . $request->name . '%');
-                $search = 'hp';
-                $name = $request->name;
-            }
+        // $search = 'all';
+        // $name = '';
+        // if (isset($request->s)) {
+        //     if ($request->s == 'all') {
+        //         $search = 'all';
+        //     } else if ($request->s == 'h') {
+        //         $self = $self->whereNotNull('member_delegate.user_id');
+        //         $search = 'h';
+        //     } else if ($request->s == 'nh') {
+        //         $self = $self->whereNull('member_delegate.user_id');
+        //         $search = 'nh';
+        //     } else if ($request->s == 'm') {
+        //         $self = $self->where('member_delegate.user_id', Auth::id());
+        //         $search = 'm';
+        //     } else if ($request->s == 'hp' && isset($request->name)) {
+        //         $self = $self->where('members.no_telp', 'like', '%' . $request->name . '%');
+        //         $search = 'hp';
+        //         $name = $request->name;
+        //     }
+        // }
+
+        // if (isset($request->name) && ($request->s != 'hp')) {
+        //     $name = $request->name;
+        //     $self = $self->where('members.name', 'like', '%' . $request->name . '%');
+        // }
+
+        //filter wilayahs
+        if($request->provinsi != ''){
+            $self = $self->where('members.provinsi_id', $request->provinsi);
+        }
+        if($request->kabupaten != ''){
+            $self = $self->where('members.kabupaten_id', $request->kabupaten);
+        }
+        if($request->kecamatan != ''){
+            $self = $self->where('members.kecamatan_id', $request->kecamatan);
+        }
+        if($request->kelurahan != ''){
+            $self = $self->where('members.kelurahan_id', $request->kelurahan);
         }
 
-        if (isset($request->name) && ($request->s != 'hp')) {
-            $name = $request->name;
-            $self = $self->where('members.name', 'like', '%' . $request->name . '%');
+        //filter gender
+        if($request->gender != ''){
+            $self = $self->where('members.gender', $request->gender);
         }
 
-        $paginate = $self->orderBy('id', 'asc')->distinct('members.id')->paginate(10);
+        //filter status
+        if($request->status != ''){
+            $self = $self->where('members.is_active', $request->status);
+        }
+
+        //filter petugas
+        if($request->petugas != ''){
+            $self = $self->where('users.name', 'like', '%'.$request->petugas.'%');
+        }
+
+        //filter status pendamping 
+        if($request->status_pendamping != ''){
+            if($request->status_pendamping == 1) $self = $self->whereRaw('users.id is not null');
+            if($request->status_pendamping == 0) $self = $self->whereRaw('users.id is null');
+        }
+
+        //filter keyword
+        if ($request->keyword != ''){
+            $self = $self->where(function($q)use ($request){
+                $q->where('members.name', 'like', '%' . $request->keyword . '%');
+                    // ->orWhere('members.no_telp', 'like', '%' . (int)$request->keyword . '%');
+                    // ->where('members.email', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+
+        $paginate = $self->whereRaw('members.deleted_at is null')
+            ->orderBy('id', 'asc')
+            ->distinct('members.id')
+            ->paginate(10);
         $self = $paginate->items();
         foreach ($self as $key => $val) {
             // if($role == 5){
@@ -188,10 +283,19 @@ class MemberController extends Controller
         }
 
         $member = $self;
+        $selected_region = [
+            'prov' => $request->provinsi,
+            'kab' => $request->kabupaten,
+            'kec' => $request->kecamatan,
+            'kel' => $request->kelurahan
+        ];
+        $gender = $request->gender;
+        $status_pendamping = $request->status_pendamping;
+        $status = $request->status;
         // echo('<pre>');
         // print_r($member);die;
 
-        return view('member.index', compact('member', 'search', 'paginate', 'name', 'is_dampingi'));
+        return view('member.index', compact('member', 'gender','status_pendamping', 'status', 'paginate', 'is_dampingi', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'roles', 'selected_region'));
     }
 
     public function result($id) {
@@ -903,9 +1007,20 @@ class MemberController extends Controller
 
     public function update(Request $request)
     {
+        // return $request->all();
         $validator = Validator::make($request->all(), [
-            'email' => ['required','email','unique:members,email,'.$request->cid],
-            'no_telp' => ['required','numeric','unique:members,no_telp,'.$request->cid],
+            'email' => ['required','email', 
+                    Rule::unique('members')->where(function($q) use($request) {
+                        $q->whereRaw('deleted_at is null')
+                            ->where('id', '<>', $request->cid);
+                    }),
+                ],
+            'no_telp' => ['required','numeric',
+                Rule::unique('members')->where(function($q) use($request) {
+                    $q->whereRaw('deleted_at is null')
+                        ->where('id', '<>', $request->cid);
+                }),
+            ],
         ], [
             'unique' => ':attribute sudah terdaftar.',
             'required' => ':attribute harus diisi.'
@@ -930,5 +1045,26 @@ class MemberController extends Controller
 
         $member_upd->update();
         return redirect()->route('admin.member.index')->with('success', 'Data Catin berhasil diupdate.');
+    }
+
+    public function delete(Request $request) {
+        $update = Member::where('id', $request->id)->update([
+            'deleted_by' => Auth::id(),
+            'deleted_at' => date('Y-m-d H:i:s')
+        ]);
+
+        if ($update) {
+            $msg = 'Catin berhasil dihapus';
+            $output = Helper::successResponse($msg);
+        } else {
+            $msg = 'Catin gagal dihapus. Silahkan coba beberapa saat lagi';
+            $output = Helper::successResponse($msg);
+        }
+
+        $output = Helper::successResponse($msg);
+
+        return json_encode($output);
+
+        die();
     }
 }

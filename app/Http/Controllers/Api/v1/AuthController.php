@@ -76,7 +76,8 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $existPhone = Member::where('no_telp', substr($request->no_telp, 1))->first();
+            $existPhone = Member::where('no_telp', substr($request->no_telp, 1))
+                ->whereRaw('deleted_at is null')->first();
 
             if ($existPhone) {
                 return response()->json([
@@ -87,7 +88,7 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $existEmail = Member::where('email', $request->email)->first();
+            $existEmail = Member::where('email', $request->email)->whereRaw('deleted_at is null')->first();
 
             if ($existEmail) {
                 return response()->json([
@@ -99,7 +100,7 @@ class AuthController extends Controller
             }
 
             $cekKtp = Helper::dcNik($request->no_ktp);
-            $existKtp = Member::where('no_ktp', 'LIKE', '%' . $cekKtp . '%')->first();
+            $existKtp = Member::where('no_ktp', 'LIKE', '%' . $cekKtp . '%')->whereRaw('deleted_at is null')->first();
 
             if ($existKtp) {
                 return response()->json([

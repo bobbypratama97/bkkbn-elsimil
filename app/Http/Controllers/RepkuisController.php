@@ -88,6 +88,11 @@ class RepkuisController extends Controller
             $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
+        } else {
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
         }
 
         $kuis = Kuis::whereNull('deleted_by')->where('apv', 'APV300')->orderBy('id', 'DESC')->get();

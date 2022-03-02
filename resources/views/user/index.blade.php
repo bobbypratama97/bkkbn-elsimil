@@ -34,12 +34,108 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form class="form-inline mb-7" method="GET" action="{{ route('admin.user.index') }}">
-                            <div class="form-group mr-3">
+                        <form class="mb-7" method="GET" action="{{ route('admin.user.index') }}">
+                            <!-- <div class="form-group mr-3">
                                 <label for="name">Nama Admin : </label>
                                 <input type="search" name="name" value="{{ (isset($name)) ? $name : ""}}"  class="form-control form-control-sm ml-3" placeholder="" aria-controls="kt_datatable" _vkenabled="true">
                             </div>
-                            <button type="submit" class="btn btn-success">Filter </button>
+                            <button type="submit" class="btn btn-success">Filter </button> -->
+
+                            <div class="form-group row">
+                                <div class="col-lg-3">
+                                    <label>Keyword</label>
+                                    <input value="{{ $keyword }}" id="keyword" name="keyword" width="100%" class="form-control" placeholder="Cari berdasarkan Nama">
+                                </div>
+                                <div class="col-lg-3">
+                                    <label>Status</label>
+                                    <select name="status" class="form-control" id="status" data-allow-clear="{{$role <5?"true":""}}">
+                                        @foreach($status_list as $key => $val)
+                                            <option value="{{$key}}" {{ (isset($status) && $status == $key) ? 'selected' : '' }}>{{$val}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-3">
+                                    <label>Provinsi </label>
+                                    <select name="provinsi" class="form-control select2" id="provinsi" data-allow-clear="{{$role <2?"true":""}}">
+                                        <option value="">Pilih</option>
+                                        @foreach ($provinsi as $key => $row)
+                                        <option value="{{ $row->provinsi_kode }}" {{ ($role != '1') ? 'selected' : (($selected_region['prov'] == $row->provinsi_kode) ? 'selected' : '') }}>{{ $row->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label>Kabupaten</label>
+                                    <select name="kabupaten" class="form-control select2" id="kabupaten" data-allow-clear="{{$role <3?"true":""}}">
+                                        <option value="">Pilih</option>
+                                        @foreach ($kabupaten as $key => $row)
+                                        <option value="{{ $row->kabupaten_kode }}" {{ ($role != '1' && $role != '2') ? 'selected' : (($selected_region['kab'] == $row->kabupaten_kode) ? 'selected' : '') }}>{{ $row->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label>Kecamatan</label>
+                                    <select name="kecamatan" class="form-control select2" id="kecamatan" data-allow-clear="{{$role <4?"true":""}}">
+                                        <option value="">Pilih</option>
+                                        @foreach ($kecamatan as $key => $row)
+                                        <option value="{{ $row->kecamatan_kode }}" {{ ($role != '1' && $role != '2' && $role != '3') ? 'selected' : (($selected_region['kec'] == $row->kecamatan_kode) ? 'selected' : '') }}>{{ $row->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label>Kelurahan</label>
+                                    <select name="kelurahan" class="form-control select2" id="kelurahan" data-allow-clear="{{$role <5?"true":""}}">
+                                        <option value="">Pilih</option>
+                                        @foreach ($kelurahan as $key => $row)
+                                        <option value="{{ $row->kelurahan_kode }}" {{ ($role != '1' && $role != '2' && $role != '3' && $role != '4') ? 'selected' : (($selected_region['kel'] == $row->kelurahan_kode) ? 'selected' : '') }}>{{ $row->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-lg-3">
+                                    <label>Jumlah Member</label>
+                                    <input type="number" value="{{ $member_sum }}" id="member_sum" name="member_sum" width="100%" class="form-control" placeholder="Cari berdasarkan jumlah member">
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Role</label>
+                                    <select name="role_id" class="form-control" id="role" data-allow-clear="{{$role <5?"true":""}}">
+                                        <option value="">Pilih</option>
+                                        @foreach ($role_list as $value)
+                                            <option value="{{$value['id']}}" {{ (isset($role_id) && $role_id == $value['id']) ? 'selected' : '' }}>{{$value['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Rentang Waktu</label>
+                                    <div class='input-group' id='kt_daterangepicker'>
+                                        <input type='text' class="form-control" readonly="readonly" placeholder="Select date range" name="tanggal" id="tanggal" value="{{$tanggal}}"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="la la-calendar-check-o"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1">
+                                    <label>&nbsp;</label>
+                                    <div>
+                                        <button onclick="clearFilter()" type="button" class="btn btn-warning btn-block">Clear</button>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <label>&nbsp;</label>
+                                    <div>
+                                        <button type="submit" class="btn btn-success btn-block">Search</button>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                         <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display: block;">
                             <thead>
@@ -161,6 +257,142 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        var daterange = $('#tanggal').val()
+        var startdate = enddate = new Date()
+
+        if(daterange != '') {
+            var daterangearr = daterange.split('-')
+            
+            startdate = daterangearr[0].split('/')
+            startdate = new Date(startdate[2], startdate[1] - 1, startdate[0])
+            enddate = daterangearr[1].split('/')
+            enddate = new Date(enddate[2], enddate[1] - 1, enddate[0])
+        }
+
+        $('.select2').select2({
+            placeholder: "Pilih",
+			    allowClear: true,
+
+            "language": {
+                "noResults": function(){
+                    return "Tidak ada data";
+                }
+            },    
+        });
+
+        $("#kt_daterangepicker").daterangepicker({
+            dateLimit: {
+                'months': 3,
+                'days': -1
+            },
+            showDropdowns: false,
+            buttonClasses:" btn",
+            applyClass:"btn-primary",
+            cancelClass:"btn-secondary",
+            startDate: startdate,
+            endDate: enddate,
+        },(function(a,t,e){
+            $("#kt_daterangepicker .form-control").val(a.format("DD/MM/YYYY")+"-"+t.format("DD/MM/YYYY"))
+        }));
+
+        $('#provinsi').on('change', function() {
+            $.preloader.start({
+                modal:true,
+                src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
+            });
+
+            var provinsi = $('#provinsi').val();
+            if(provinsi == '' || provinsi == null) {
+                $('#kabupaten, #kecamatan, #kelurahan').empty().trigger('change');
+                $.preloader.stop();
+                return true
+            }
+            
+            $.ajax({
+                type: "POST",
+                url: '{{ route('kabupaten') }}',
+                data: { "_token": "{{ csrf_token() }}", "provinsi_id": provinsi },
+                dataType: "json",
+                success: function(data) {
+                    $('#kabupaten').html(data.content);
+                    $('#kecamatan').html('');
+                    $('#kelurahan').html('');
+
+                    $.preloader.stop();
+                },
+                failure: function(errMsg) {
+                    alert(errMsg);
+                    $.preloader.stop();
+                }
+            });
+        });
+
+        $('#kabupaten').on('change', function() {
+            $.preloader.start({
+                modal:true,
+                src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
+            });
+
+            var kabupaten = $('#kabupaten').val();
+            if(kabupaten == '' || kabupaten == null) {
+                // $('#kecamatan').select2('destroy');
+                // $('#kecamatan').empty();
+                // $('#kecamatan').select2({'placeholder': 'Pilih'});
+                $('#kecamatan, #kelurahan').empty().trigger('change');
+
+                $.preloader.stop();
+                return true
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '{{ route('kecamatan') }}',
+                data: { "_token": "{{ csrf_token() }}", "kabupaten_id": kabupaten },
+                dataType: "json",
+                success: function(data) {
+                    $('#kecamatan').html(data.content);
+                    $('#kelurahan').html('');
+
+                    $.preloader.stop();
+                },
+                failure: function(errMsg) {
+                    alert(errMsg);
+                    $.preloader.stop();
+                }
+            });
+        });
+
+        $('#kecamatan').on('change', function() {
+            $.preloader.start({
+                modal:true,
+                src : baseurl + '/assets/plugins/spinner/img/sprites.24.png'
+            });
+
+            var kecamatan = $('#kecamatan').val();
+            
+            if(kecamatan == '' || kecamatan == null) {
+                $('#kelurahan').empty().trigger('change');
+                $.preloader.stop();
+                return true
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '{{ route('kelurahan') }}',
+                data: { "_token": "{{ csrf_token() }}", "kecamatan_id": kecamatan },
+                dataType: "json",
+                success: function(data) {
+                    $('#kelurahan').html(data.content);
+
+                    $.preloader.stop();
+                },
+                failure: function(errMsg) {
+                    alert(errMsg);
+                    $.preloader.stop();
+                }
+            });
+        });
+
         if(screen.width < 768){
             $(".paginate-large").hide()
             $(".paginate-small").show()
@@ -260,6 +492,12 @@
             }
         });
     });
+
+    function clearFilter() {
+        $('#keyword').val("")
+        $('#member_sum').val("")
+        $('#tanggal').val("").datepicker("update")
+    }
 </script>
 @endpush
 

@@ -15,6 +15,7 @@ use Helper;
 
 use App\User;
 use App\UserRole;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -70,8 +71,22 @@ class RegisterController extends Controller
         return Validator::make($data, [
             //'nik' => ['required', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'no_telp' => ['required', 'numeric', 'unique:users'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
+            'no_telp' => [
+                'required', 
+                'numeric', 
+                Rule::unique('users')->where(function($q) {
+                    $q->whereRaw('deleted_at is null');
+                })
+            ],
+            'email' => [
+                'nullable', 
+                'string', 
+                'email', 
+                'max:255',   
+                Rule::unique('users')->where(function($q) {
+                    $q->whereRaw('deleted_at is null');
+                })
+            ],
             // 'regex:/(.*)@(gmail|yahoo|)\.com/i',
             'password' => ['required', 'string', 'min:6'],
             'provinsi_id' => ['required'],
@@ -114,7 +129,7 @@ class RegisterController extends Controller
         // if (!checkdnsrr($domain, 'MX')) {
         // }
 
-        // print_r ($request->all()); die;
+        
 
         $user = new User;
         $user->nik = Helper::encryptNik($request->nik);

@@ -26,6 +26,11 @@ use App\UserRole;
 use App\MemberDelegate;
 use App\MemberDelegateLog;
 
+use App\Provinsi;
+use App\Kabupaten;
+use App\Kecamatan;
+use App\Kelurahan;
+
 class ChatController extends Controller
 {
     /**
@@ -50,37 +55,54 @@ class ChatController extends Controller
 
         $user = Auth::user();
         $role = Auth::user()->role;
+        $roles = UserRole::where('user_id', $user->id)->first();
 
-        $where = '';
+        $where = $condition = '';
         if ($role == '1') {
             $condition = "";
+            $kelurahan = [];
+            $kecamatan = [];
+            $kabupaten = [];
+            $provinsi = Provinsi::whereNull('deleted_by')->get();
         }
 
-        if ($role == '2') {
+        else if ($role == '2') {
             $where = "
                 chat_header.provinsi_kode = '{$user->provinsi_id}' AND 
             ";
-            $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+            $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";$provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('provinsi_kode', $user->provinsi_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = [];//Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+            $kelurahan = [];//Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
         }
 
-        if ($role == '3') {
+        else if ($role == '3') {
             $where = "
                 chat_header.provinsi_kode = '{$user->provinsi_id}' AND 
                 chat_header.kabupaten_kode = '{$user->kabupaten_id}' AND 
             ";
-            $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+            $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";$provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = [];//Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
         }
 
-        if ($role == '4') {
+        else if ($role == '4') {
             $where = "
                 chat_header.provinsi_kode = '{$user->provinsi_id}' AND 
                 chat_header.kabupaten_kode = '{$user->kabupaten_id}' AND 
                 chat_header.kecamatan_kode = '{$user->kecamatan_id}' AND 
             ";
             $condition = "AND {$where} (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
         }
 
-        if ($role == '5') {
+        else if ($role == '5') {
             $where = "
                 chat_header.provinsi_kode = '{$user->provinsi_id}' AND 
                 chat_header.kabupaten_kode = '{$user->kabupaten_id}' AND 
@@ -88,8 +110,25 @@ class ChatController extends Controller
                 chat_header.kelurahan_kode = '{$user->kelurahan_id}' AND 
             ";
             $condition = "AND {$where} ((responder_id = {$user->id}))";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
         }
 
+        else {
+            $where = "
+                chat_header.provinsi_kode = '{$user->provinsi_id}' AND 
+                chat_header.kabupaten_kode = '{$user->kabupaten_id}' AND 
+                chat_header.kecamatan_kode = '{$user->kecamatan_id}' AND 
+                chat_header.kelurahan_kode = '{$user->kelurahan_id}' AND 
+            ";
+            $condition = "AND {$where} ((responder_id = {$user->id}))";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
+        }
         // $sql = "
         //     SELECT 
         //         members.id,
@@ -259,8 +298,15 @@ class ChatController extends Controller
         }
 
         $selected = 'mine';
+        $status = '';
+        $selected_region = [
+            'prov' => 0,
+            'kab' => 0,
+            'kec' => 0,
+            'kel' => 0 
+        ];
 
-        return view ('chat.index', compact('list', 'selected', 'paginate'));
+        return view ('chat.index', compact('list', 'selected', 'selected_region', 'paginate', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'roles', 'status'));
     }
 
     public function search(Request $request) {
@@ -276,6 +322,7 @@ class ChatController extends Controller
         $user = Auth::user();
         $role = Auth::user()->role;
         $roleChild = Auth::user()->roleChild;
+        $roles = UserRole::where('user_id', $user->id)->first();
 
         if ($request->search == 'mine') {
             // $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL)) AND type = {$roleChild}";
@@ -294,44 +341,99 @@ class ChatController extends Controller
         //     $filter = " AND (role_user.role_id = 1 OR (responder_id = {$user->id} OR responder_id IS NULL))";
         // }
 
+        //validasi status chat
+        if ($request->status == 'new') {
+            $filter .= " AND chat_message.status = 'send'";
+        } else if ($request->status == 'open') {
+            $filter .= " AND chat_header.responder_id <> chat_message.response_id";
+        } else if ($request->status == 'active') {
+            $filter .= " AND chat_header.responder_id = chat_message.response_id";
+            $filter .= " AND chat_message.status <> 'send'";
+        }
+
+        if($request->provinsi != ''){
+            $filter .= " AND chat_header.provinsi_kode = '{$request->provinsi}' ";
+        }
+        if($request->kabupaten != ''){
+            $filter .= " AND chat_header.kabupaten_kode = '{$request->kabupaten}' ";
+        }
+        if($request->kecamatan != ''){
+            $filter .= " AND chat_header.kecamatan_kode = '{$request->kecamatan}' ";
+        }
+        if($request->kelurahan != ''){
+            $filter .= " AND chat_header.kelurahan_kode = '{$request->kelurahan}' ";
+        }
+
         if($request->keyword != ''){
             $keyword = $request->keyword;
-            $filter .= ' and (users.name like "%'.$keyword.'%"';
-            $filter .= ' or members.name like "%'.$keyword.'%"';
-            $filter .= ' or chat_message.message like "%'.$keyword.'%"';
-            $filter .= ' or chat_message.status like "%'.$keyword.'%")';
+            // $filter .= ' and (users.name like "%'.$keyword.'%"';
+            $filter .= ' and members.name like "%'.$keyword.'%"';
+            // $filter .= ' and chat_message.message like "%'.$keyword.'%"';
+            // $filter .= ' or chat_message.status like "%'.$keyword.'%")';
+        }
+
+        if($request->petugas != ''){
+            $petugas = $request->petugas;
+            $filter .= ' and users.name like "%'.$petugas.'%"';
         }
 
         $where = '';
+        $condition = "{$filter}";
         if ($role == '1') {
             $condition = "{$filter}";
+            $kelurahan = [];
+            $kecamatan = [];
+            $kabupaten = [];
+            $provinsi = Provinsi::whereNull('deleted_by')->get();
+
+            if($request->provinsi != '') $kabupaten = Kabupaten::where('provinsi_kode', $request->provinsi)->whereNull('deleted_by')->orderBy('nama')->get();
+            if($request->kabupaten != '') $kecamatan = Kecamatan::where('kabupaten_kode', $request->kabupaten)->whereNull('deleted_by')->orderBy('nama')->get();
+            if($request->kecamatan != '') $kelurahan = Kelurahan::where('kecamatan_kode', $request->kecamatan)->whereNull('deleted_by')->orderBy('nama')->get();
         }
 
-        if ($role == '2') {
+        else if ($role == '2') {
             $where = "
                 AND chat_header.provinsi_kode = '{$user->provinsi_id}'
             ";
             $condition = "{$where} {$filter}";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('provinsi_kode', $user->provinsi_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = [];//Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+            $kelurahan = [];
+
+            if($request->kabupaten != '') $kecamatan = Kecamatan::where('kabupaten_kode', $request->kabupaten)->whereNull('deleted_by')->orderBy('nama')->get();
+            if($request->kecamatan != '') $kelurahan = Kelurahan::where('kecamatan_kode', $request->kecamatan)->whereNull('deleted_by')->orderBy('nama')->get();
         }
 
-        if ($role == '3') {
+        else if ($role == '3') {
             $where = "
                 AND chat_header.provinsi_kode = '{$user->provinsi_id}' 
                 AND chat_header.kabupaten_kode = '{$user->kabupaten_id}'
             ";
             $condition = "{$where} {$filter}";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = [];
+
+            if($request->kecamatan != '') $kelurahan = Kelurahan::where('kecamatan_kode', $request->kecamatan)->whereNull('deleted_by')->orderBy('nama')->get();
         }
 
-        if ($role == '4') {
+        else if ($role == '4') {
             $where = "
                 AND chat_header.provinsi_kode = '{$user->provinsi_id}' 
                 AND chat_header.kabupaten_kode = '{$user->kabupaten_id}' 
                 AND chat_header.kecamatan_kode = '{$user->kecamatan_id}'
             ";
             $condition = "{$where} {$filter}";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
+
         }
 
-        if ($role == '5') {
+        else if ($role == '5') {
             $where = "
                 AND chat_header.provinsi_kode = '{$user->provinsi_id}' 
                 AND chat_header.kabupaten_kode = '{$user->kabupaten_id}' 
@@ -339,6 +441,24 @@ class ChatController extends Controller
                 AND chat_header.kelurahan_kode = '{$user->kelurahan_id}'
             ";
             $condition = "{$where} {$filter}";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
+        }
+
+        else {
+            $where = "
+                AND chat_header.provinsi_kode = '{$user->provinsi_id}' 
+                AND chat_header.kabupaten_kode = '{$user->kabupaten_id}' 
+                AND chat_header.kecamatan_kode = '{$user->kecamatan_id}'
+                AND chat_header.kelurahan_kode = '{$user->kelurahan_id}'
+            ";
+            $condition = "{$where} {$filter}";
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
+            $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
         }
 
         // $sql = "
@@ -505,8 +625,15 @@ class ChatController extends Controller
         }
 
         $selected = $request->search;
+        $status = $request->status;
+        $selected_region = [
+            'prov' => $request->provinsi,
+            'kab' => $request->kabupaten,
+            'kec' => $request->kecamatan,
+            'kel' => $request->kelurahan
+        ];
 
-        return view ('chat.index', compact('list', 'selected', 'paginate'));
+        return view ('chat.index', compact('list', 'selected', 'selected_region', 'paginate', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'roles', 'status'));
     }
 
     public function show($id) {

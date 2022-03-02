@@ -44,20 +44,21 @@ class DashboardController extends Controller
         $provcur = $kabcur = $keccur = '';
 
         if ($role->role_id == '1') {
-            $whereKuis = " WHERE kr.status = 1 AND krc.id IS NULL";
+            $whereKuis = " WHERE kr.status = 1 AND kr.responder_id = {$auth->id} AND krc.id IS NULL";
             $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL";
             $whereUnmap = " WHERE md.member_id IS NULL";
+            $whereChats = " WHERE ch.responder_id = ".$auth->id;
         }
 
         if ($role->role_id == '2') {
             $whereChat = " WHERE members.provinsi_id = ". ($auth->provinsi_id ?? 0);
             $whereReview = " AND members.provinsi_id = ". ($auth->provinsi_id ?? 0);
 
-            $whereChats = " WHERE mb.provinsi_id = ". ($auth->provinsi_id ?? 0);
+            $whereChats = " WHERE ch.responder_id = ".$auth->id ." AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0);
 
             $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0);
 
-            $whereKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0);
+            $whereKuis = " WHERE kr.status = 1 AND kr.responder_id = {$auth->id} AND krc.id IS NULL AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0);
 
             $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0);
 
@@ -72,11 +73,11 @@ class DashboardController extends Controller
             $whereChat = " WHERE members.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND members.kabupaten_id = ". ($auth->kabupaten_id ?? 0);
             $whereReview = " AND members.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND members.kabupaten_id = ". ($auth->kabupaten_id ?? 0);
 
-            $whereChats = " WHERE mb.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ". ($auth->kabupaten_id ?? 0);
+            $whereChats = " WHERE ch.responder_id = ".$auth->id ." AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ". ($auth->kabupaten_id ?? 0);
 
             $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ". ($auth->kabupaten_id ?? 0) ." AND mb.kecamatan_id = ". ($auth->kecamatan_id ?? 0);
 
-            $whereKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ". ($auth->kabupaten_id ?? 0);
+            $whereKuis = " WHERE kr.status = 1 AND kr.responder_id = {$auth->id} AND krc.id IS NULL AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ". ($auth->kabupaten_id ?? 0);
 
             $whereAllKuis = " WHERE kr.status = 1 AND krc.id IS NULL AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ". ($auth->kabupaten_id ?? 0);
 
@@ -91,7 +92,7 @@ class DashboardController extends Controller
             $whereChat = " WHERE members.provinsi_id = ".($auth->provinsi_id ?? 0)." AND members.kabupaten_id = ".($auth->kabupaten_id ?? 0)." AND members.kecamatan_id = ".($auth->kecamatan_id ?? 0);
             $whereReview = " AND members.provinsi_id = ".($auth->provinsi_id ?? 0)." AND members.kabupaten_id = ".($auth->kabupaten_id ?? 0)." AND members.kecamatan_id = ".($auth->kecamatan_id ?? 0);
             
-            $whereChats = " WHERE ch.responder_id = ".$auth->id." AND mb.provinsi_id = ".($auth->provinsi_id ?? 0)." AND mb.kabupaten_id = ".($auth->kabupaten_id ?? 0)." AND mb.kecamatan_id = ".($auth->kecamatan_id ?? 0);
+            $whereChats = " WHERE ch.responder_id = ".$auth->id ." AND ch.responder_id = ".$auth->id." AND mb.provinsi_id = ".($auth->provinsi_id ?? 0)." AND mb.kabupaten_id = ".($auth->kabupaten_id ?? 0)." AND mb.kecamatan_id = ".($auth->kecamatan_id ?? 0);
             
             $whereAllChats = " WHERE (ch.responder_id is null OR ch.responder_id = {$auth->id}) AND mb.provinsi_id = ".($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ".($auth->kabupaten_id ?? 0) ." AND mb.kecamatan_id = ".($auth->kecamatan_id ?? 0);
             $whereKuis = " WHERE kr.status = 1 AND kr.responder_id = {$auth->id} AND krc.id IS NULL AND mb.provinsi_id = ". ($auth->provinsi_id ?? 0) ." AND mb.kabupaten_id = ".($auth->kabupaten_id ?? 0) ." AND mb.kecamatan_id = ".($auth->kecamatan_id ?? 0);
@@ -243,7 +244,7 @@ class DashboardController extends Controller
             ];
         }
 
-        if ($role->role_id == '2') {
+        else if ($role->role_id == '2') {
 
             $provinsi = Member::leftJoin('adms_provinsi', function($join) {
                 $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
@@ -284,7 +285,7 @@ class DashboardController extends Controller
 
         }
 
-        if ($role->role_id == '3') {
+        else if ($role->role_id == '3') {
             $provinsi = Member::leftJoin('adms_provinsi', function($join) {
                 $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
             })
@@ -335,7 +336,7 @@ class DashboardController extends Controller
 
         }
 
-        if ($role->role_id == '4') {
+        else if ($role->role_id == '4') {
             $provinsi = Member::leftJoin('adms_provinsi', function($join) {
                 $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
             })
@@ -397,7 +398,7 @@ class DashboardController extends Controller
 
         }
 
-        if ($role->role_id == '5') {
+        else if ($role->role_id == '5') {
             $provinsi = Member::leftJoin('adms_provinsi', function($join) {
                 $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
             })
@@ -469,6 +470,78 @@ class DashboardController extends Controller
                 'text' => 'Kelurahan'
             ];
 
+        }
+        else {
+            $provinsi = Member::leftJoin('adms_provinsi', function($join) {
+                $join->on('adms_provinsi.provinsi_kode', '=', 'members.provinsi_id');
+            })
+            ->select([
+                'adms_provinsi.nama as provinsi',
+                DB::raw('count(*) AS total')
+            ])
+            ->where('members.provinsi_id', $auth->provinsi_id)
+            ->first();
+
+            $members['provinsi'] = [
+                'count' => $provinsi->total,
+                'label' => $provinsi->provinsi,
+                'text' => 'Provinsi'
+            ];
+
+
+            $kabupaten = Member::leftJoin('adms_kabupaten', function($join) {
+                $join->on('adms_kabupaten.kabupaten_kode', '=', 'members.kabupaten_id');
+            })
+            ->select([
+                'adms_kabupaten.nama as kabupaten',
+                DB::raw('count(*) AS total')
+            ])
+            ->where('members.provinsi_id', $auth->provinsi_id)
+            ->where('members.kabupaten_id', $auth->kabupaten_id)
+            ->first();
+
+            $members['kabupaten'] = [
+                'count' => $kabupaten->total,
+                'label' => $kabupaten->kabupaten,
+                'text' => 'Kabupaten / Kota'
+            ];
+
+            $kecamatan = Member::leftJoin('adms_kecamatan', function($join) {
+                $join->on('adms_kecamatan.kecamatan_kode', '=', 'members.kecamatan_id');
+            })
+            ->select([
+                'adms_kecamatan.nama as kecamatan',
+                DB::raw('count(*) AS total')
+            ])
+            ->where('members.provinsi_id', $auth->provinsi_id)
+            ->where('members.kabupaten_id', $auth->kabupaten_id)
+            ->where('members.kecamatan_id', $auth->kecamatan_id)
+            ->first();
+
+            $members['kecamatan'] = [
+                'count' => $kecamatan->total,
+                'label' => $kecamatan->kecamatan,
+                'text' => 'Kecamatan'
+            ];
+
+            $kelurahan = Member::leftJoin('adms_kelurahan', function($join) {
+                $join->on('adms_kelurahan.kelurahan_kode', '=', 'members.kelurahan_id');
+            })
+            ->select([
+                'adms_kelurahan.nama as kelurahan',
+                DB::raw('count(*) AS total')
+            ])
+            ->where('members.provinsi_id', $auth->provinsi_id)
+            ->where('members.kabupaten_id', $auth->kabupaten_id)
+            ->where('members.kecamatan_id', $auth->kecamatan_id)
+            ->where('members.kelurahan_id', $auth->kelurahan_id)
+            ->first();
+
+            $members['kelurahan'] = [
+                'count' => $kelurahan->total,
+                'label' => $kelurahan->kelurahan,
+                'text' => 'Kelurahan'
+            ];
         }
 
         $array_role = [1, 2, 3];
