@@ -148,7 +148,7 @@
                                     <th>Status</th>
                                     <th>Role</th>
                                     <th>Tanggal Dibuat</th>
-                                    <th>Jumlah Member</th>
+                                    <th>Jumlah Catin</th>
                                     <th width="14%">Aksi</th>
                                 </tr>
                             </thead>
@@ -168,7 +168,7 @@
                                     <td>{!! Helper::statusAdmin($row->is_active) !!}</td>
                                     <td>{{ $row->roles }}</td>
                                     <td>{{ $row->created_at }}</td>
-                                    <td>{{ $row->total }}</td>
+                                    <td><a href="{{route('admin.member.index', ['petugas' => $row->name])}}">{{$row->total}}</a></td>
                                     <td class="text-center" width="14%" style=" white-space: nowrap;">
                                         @if($role < $row->role_id || $row->id == Auth::user()->id)
                                         <a href="{{ route('admin.user.delegasi', $row->id) }}" class="btn btn-icon btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Pendampingan Catin">

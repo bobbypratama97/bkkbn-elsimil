@@ -165,7 +165,7 @@
                                                 $petugas_arr = explode(',', $row['petugas'])
                                             @endphp
                                             @foreach ($petugas_arr as $petugas)
-                                                <a href="{{route('admin.user.index', ['name' => $petugas])}}">{{$petugas}}</a>,
+                                                <a href="{{route('admin.user.index', ['keyword' => $petugas])}}">{{$petugas}}</a>,
                                             @endforeach
                                         @else
                                         -

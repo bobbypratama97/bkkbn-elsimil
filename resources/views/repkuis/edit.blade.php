@@ -62,6 +62,7 @@
                                         </div>
                                         @endif
                                         <div>&nbsp;</div>
+                                        <a href="{{ route('admin.member.logbook',$member->id) }}" class="btn btn-success font-weight-bolder btn-md px-8 mr-5">Logbook</a>
                                         <a href="{{ $fullurl }}" class="btn btn-sm btn-danger font-weight-bolder text-uppercase">Kembali</a>
                                     </div>
                                 </div>
