@@ -90,7 +90,10 @@ class LoginController extends Controller
             $email = (int)$no_telp;
         }
 
-        $user = User::where($this->username(), $email)->first();
+        $user = User::where($this->username(), $email)
+            ->whereRaw('deleted_at is null')
+            ->first();
+
         $password = $request->password;
         // return $user;
         if (empty($user)) {
@@ -130,7 +133,7 @@ class LoginController extends Controller
                         'keterangan' => 'Mohon bersabar menunggu sampai proses approval selesai.'
                     ]);
             } else {
-                if (Auth::attempt([$this->username() => $email, 'password' => $password])) {
+                if (Auth::attempt([$this->username() => $email, 'password' => $password, 'deleted_at' => null])) {
                     $user = Auth::user();
                     Session::forget('role');
 

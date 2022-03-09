@@ -67,29 +67,29 @@ class RepkuisController extends Controller
             $kelurahan = [];
             $kecamatan = [];
             $kabupaten = [];
-            $provinsi = Provinsi::whereNull('deleted_by')->get();
+            $provinsi = Provinsi::whereNull('deleted_by')->orderBy('nama')->get();
         } else if($roles->role_id == '2') {
-            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->orderBy('nama')->get();
             $kabupaten = Kabupaten::where('provinsi_kode', $user->provinsi_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = [];//Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
             $kelurahan = [];//Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
         } else if($roles->role_id == '3') {
-            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->orderBy('nama')->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = [];//Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
         } else if($roles->role_id == '4') {
-            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->orderBy('nama')->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
         } else if($roles->role_id == '5') {
-            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->orderBy('nama')->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
         } else {
-            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->get();
+            $provinsi = Provinsi::where('provinsi_kode', $user->provinsi_id)->orderBy('nama')->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $user->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kelurahan_kode', $user->kelurahan_id)->orderBy('nama')->get();
@@ -370,8 +370,11 @@ class RepkuisController extends Controller
                 $whereSummary .= " AND kuisioner_result.kuis_gender = ".$request->gender;
             }
 
-            $result = $result->groupBy(['ph.id', 'pertanyaan_bobot_id'])
+            $result = $result->groupBy([
+                    'ph.id', 'pertanyaan_bobot_id', 'pertanyaan_id'
+                ])
                 ->orderBy('pertanyaan_detail_title')
+                ->distinct()
                 ->get();
 
             $fin = $final = [];

@@ -38,6 +38,7 @@ use App\KuisResult;
 use App\KuisResultComment;
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     /**
@@ -311,7 +312,14 @@ class UserController extends Controller
 
     public function update(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'email' => ['required','email','unique:users,email,'.$id],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->where(function($q) use($id) {
+                    $q->whereRaw('deleted_at is null')
+                        ->where('id', '<>', $id);
+                }), 
+            ],
             'password' => ['nullable', 'required_with:password_confirmation', 'same:password_confirmation'],
             'password_confirmation' =>  ['nullable']
         ], [

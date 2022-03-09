@@ -31,14 +31,14 @@ class ForgotPasswordController extends Controller
         if ($request->tipe == 1) {
             if(!Helper::phoneNumber($request->email)){
                 //cek by email
-                $check = User::where('email', $request->email)->first();
+                $check = User::where('email', $request->email)->whereRaw('deleted_at is null')->first();
             }else{
                 //cek by no hp
-                $check = User::where('no_telp', Helper::phoneNumber($request->email))->first();
+                $check = User::where('no_telp', Helper::phoneNumber($request->email))->whereRaw('deleted_at is null')->first();
             }
             // $check = User::where('email', $request->email)->orWhere('no_telp', Helper::phoneNumber($request->email))->first();
         } else {
-            $check = Member::where('email', $request->email)->first();
+            $check = Member::where('email', $request->email)->whereRaw('deleted_at is null')->first();
         }
 
         if (empty($check)) {

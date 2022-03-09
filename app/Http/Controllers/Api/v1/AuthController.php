@@ -240,6 +240,9 @@ class AuthController extends Controller
             $no_telp = Helper::phoneNumber($request->input('username'));
             $credentials[$field] = (int)$no_telp;
         }
+
+        //add filter deleted at
+        $credentials['deleted_at'] = null;
         // return $credentials;
         try {
             if (!$token = auth($this->guard)->attempt($credentials)) {
@@ -428,7 +431,7 @@ class AuthController extends Controller
             ], 200);
         }
 
-        $check = Member::where('email', $request->email)->first();
+        $check = Member::where('email', $request->email)->whereRaw('deleted_at is null')->first();
 
         if ($check) {
             return response()->json([

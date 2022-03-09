@@ -63,8 +63,9 @@
                                     <select name="status" class="form-control" id="status" data-allow-clear="{{$roles->role_id <5?"true":""}}">
                                         <option value="">Pilih</option>
                                         <option value="1" {{ (isset($status) && $status == "1") ? 'selected' : '' }}>Aktif</option>
-                                        <option value="0" {{ (isset($status) && $status == "0") ? 'selected' : '' }}>Tidak Aktif</option>
-                                        <!-- <option value="2" {{ (isset($status) && $status == "2") ? 'selected' : '' }}>Banned</option> -->
+                                        <option value="2" {{ (isset($status) && $status == "2") ? 'selected' : '' }}>Tidak Aktif</option>
+                                        <option value="3" {{ (isset($status) && $status == "3") ? 'selected' : '' }}>Banned</option>
+                                        <option value="4" {{ (isset($status) && $status == "4") ? 'selected' : '' }}>Belum Verifikasi</option>
                                     </select>
                                 </div>
                             </div>
@@ -131,7 +132,7 @@
                             </div>
                         </form>
 
-                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;display:block;white-space: normal;">
+                        <table class="table table-bordered table-checkable" id="kt_datatable" style="border-collapse: collapse; border-spacing: 0; width: 100% !important;overflow-x:auto !important;white-space: normal;">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
