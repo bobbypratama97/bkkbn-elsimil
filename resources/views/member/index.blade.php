@@ -173,11 +173,11 @@
                                         @endif
                                     </td>
                                     <td class="text-right" width="14%" style="white-space: nowrap">
-                                        {{-- @if ($row['gender'] == 2)
+                                        @if ($row['gender'] == 2)
                                             <a href="{{ route('admin.member.ibuhamil', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Tambah Kuesioner Ibu Hamil" style="background-color: #EB30EF">
                                                 <i class="flaticon2-notepad"></i>
                                             </a>
-                                        @endif --}}
+                                        @endif
                                         <a href="{{ route('admin.member.result', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Lihat Hasil Kuesioner">
                                             <i class="flaticon2-writing"></i>
                                         </a>
