@@ -626,7 +626,12 @@
                                         </div>
                                     @endif
                                 </div>
+                                @if($role_child_member != $role_child_bidan)
+                                <button disabled class="btn btn-default btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
+                                <span style="font-size: 9px;font-weight: bold;">*Hanya petugas bidan yang dapat mengisi</span>
+                                @else
                                 <button type="submit" class="btn btn-success btn-lg btn-block mt-6"><span class="font-weight-boldest">Simpan</span></button>
+                                @endif
                             </form>
                         </div>
                     </div>

@@ -138,6 +138,14 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::post('member/delete', 'MemberController@delete')->name('member.delete');
 		Route::resource('member', 'MemberController')->except(['create', 'store', 'destroy', 'update']);
 
+		Route::post('memberhamil/blokir', 'MemberHamilController@blokir')->name('memberhamil.blokir');
+		Route::get('memberhamil/{id}/result', 'MemberHamilController@result')->name('memberhamil.result');
+		Route::get('memberhamil/{id}/logbook', 'MemberHamilController@logbook')->name('memberhamil.logbook');
+		Route::post('memberhamil/logbook-update', 'MemberHamilController@logbookUpdate')->name('memberhamil.logbook_update');
+		Route::post('memberhamil/kelola', 'MemberHamilController@kelola')->name('memberhamil.kelola');
+		Route::put('memberhamil/update/{id}', 'MemberHamilController@update')->name('memberhamil.update');
+		Route::post('memberhamil/delete', 'MemberHamilController@delete')->name('memberhamil.delete');
+		Route::resource('memberhamil', 'MemberHamilController')->except(['create', 'store', 'destroy', 'update']);
         Route::prefix('member/{id}/kuesioner-ibu-hamil')->group(function(){
             #halaman index
             Route::get('/', 'MemberController@indexIbuHamil')->name('member.ibuhamil');
@@ -202,6 +210,10 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function() {
 		Route::resource('repkuis', 'RepkuisController')->except(['create', 'store', 'edit', 'show', 'destroy']);
 		//Route::post('reporting/kuesioner', 'ReportingController@kuesioner')->name('reporting.kuesioner');
 		//Route::resource('reporting', 'ReportingController')->except(['index', 'create', 'show', 'edit', 'destroy']);
+
+
+		Route::post('rephamil/search', 'RephamilController@search')->name('rephamil.search');
+		Route::resource('rephamil', 'RephamilController')->except(['create', 'store', 'edit', 'show', 'destroy']);
 	});
 
 	Route::prefix('master-data')->group(function() {

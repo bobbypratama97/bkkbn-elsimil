@@ -19,7 +19,7 @@
                     </div>
                 @endif
 
-                <form id="member-update" method="POST" action="{{ route('admin.member.update', $member->id) }}">
+                <form id="member-update" method="POST" action="{{ route('admin.memberhamil.update', $member->id) }}">
                 @csrf
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
@@ -29,7 +29,7 @@
                                 <input type="hidden" name="cid" value="{{ $member->id }}">
                                 <button type="submit" class="btn btn-success font-weight-bold py-3 px-6 mb-2 text-center btn-block" onclick="return confirms('member-update')">Update Data Catin</button>
                             </div>
-                            <a href="{{ route('admin.member.index') }}" class="btn btn-danger">Kembali</a>
+                            <a href="{{ route('admin.memberhamil.index') }}" class="btn btn-danger">Kembali</a>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         <h3 class="card-title">Ubah Data Catin :</h3>
                     </div>
 
-                    <form method="POST" action="{{ route('admin.member.update', $member->id) }}">
+                    <form method="POST" action="{{ route('admin.memberhamil.update', $member->id) }}">
                         @csrf
                         @method('PUT')
                         <div class="card-body">
@@ -71,6 +71,7 @@
                                 </select>
                             </div>
 
+                            @if($member->gender == 2)
                             <div class="form-group">
                                 <label>Status Kehamilan</label>
                                 <select class="form-control" id="jk" name="status_hamil" required>
@@ -78,6 +79,9 @@
                                     <option value="0" {{$member->status_hamil == 0 ? "selected" : null}}>Tidak Hamil</option>
                                 </select>
                             </div>
+                            @else
+                                <input type="hidden" name="status_hamil" class="form-control" value="{{ $member->status_hamil }}" required/>
+                            @endif
 
                             <div class="form-group row">
                                 <div class="col-7">

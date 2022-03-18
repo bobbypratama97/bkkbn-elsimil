@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Validation\Rule;
 
-class MemberController extends Controller
+class MemberHamilController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -104,7 +104,7 @@ class MemberController extends Controller
             $kelurahan = [];
             $kecamatan = [];
             $kabupaten = [];
-            $provinsi = Provinsi::whereNull('deleted_by')->orderBy('nama')->get();
+            $provinsi = Provinsi::whereNull('deleted_by')->get();
 
             if($request->provinsi != '') $kabupaten = Kabupaten::where('provinsi_kode', $request->provinsi)->whereNull('deleted_by')->orderBy('nama')->get();
             if($request->kabupaten != '') $kecamatan = Kecamatan::where('kabupaten_kode', $request->kabupaten)->whereNull('deleted_by')->orderBy('nama')->get();
@@ -113,7 +113,7 @@ class MemberController extends Controller
         else if ($role == '2') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id);
 
-            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->orderBy('nama')->get();
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
             $kabupaten = Kabupaten::where('provinsi_kode', $auth->provinsi_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = [];//Kecamatan::where('kecamatan_kode', $user->kecamatan_id)->orderBy('nama')->get();
             $kelurahan = [];
@@ -124,7 +124,7 @@ class MemberController extends Controller
         else if ($role == '3') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id);
             
-            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->orderBy('nama')->get();
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = [];
@@ -134,7 +134,7 @@ class MemberController extends Controller
         else if ($role == '4') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id);
             
-            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->orderBy('nama')->get();
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kecamatan_kode', $auth->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kecamatan_kode', $auth->kecamatan_id)->orderBy('nama')->get();
@@ -142,7 +142,7 @@ class MemberController extends Controller
         else if ($role == '5') {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id)->where('members.kelurahan_id', $auth->kelurahan_id);
 
-            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->orderBy('nama')->get();
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kecamatan_kode', $auth->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kelurahan_kode', $auth->kelurahan_id)->orderBy('nama')->get();
@@ -150,7 +150,7 @@ class MemberController extends Controller
         else {
             $self = $self->where('members.provinsi_id', $auth->provinsi_id)->where('members.kabupaten_id', $auth->kabupaten_id)->where('members.kecamatan_id', $auth->kecamatan_id)->where('members.kelurahan_id', $auth->kelurahan_id);
 
-            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->orderBy('nama')->get();
+            $provinsi = Provinsi::where('provinsi_kode', $auth->provinsi_id)->get();
             $kabupaten = Kabupaten::where('kabupaten_kode', $auth->kabupaten_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kecamatan = Kecamatan::where('kecamatan_kode', $auth->kecamatan_id)->whereNull('deleted_by')->orderBy('nama')->get();
             $kelurahan = Kelurahan::where('kelurahan_kode', $auth->kelurahan_id)->orderBy('nama')->get();
@@ -228,7 +228,7 @@ class MemberController extends Controller
 
 
         $paginate = $self->whereRaw('members.deleted_at is null')
-            ->where('status_hamil', 0)
+            ->where('members.status_hamil', 1)
             ->orderBy('id', 'asc')
             ->distinct('members.id')
             ->paginate(10);
@@ -296,7 +296,7 @@ class MemberController extends Controller
         // echo('<pre>');
         // print_r($member);die;
 
-        return view('member.index', compact('member', 'gender','status_pendamping', 'status', 'paginate', 'is_dampingi', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'roles', 'selected_region'));
+        return view('memberhamil.index', compact('member', 'gender','status_pendamping', 'status', 'paginate', 'is_dampingi', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'roles', 'selected_region'));
     }
 
     public function result($id) {
@@ -325,7 +325,7 @@ class MemberController extends Controller
         $cekdelegate = MemberDelegate::where('member_id', $id)
         ->where('user_id', Auth::user()->id)->first();
 
-        return view('member.result', compact('member', 'res','cekdelegate'));
+        return view('memberhamil.result', compact('member', 'res','cekdelegate'));
     }
 
     public function logbookUpdate (Request $request) {
@@ -458,7 +458,7 @@ class MemberController extends Controller
             array_push($members_logbooks_status, $temp);            
         }
 
-        return view('member.logbook', compact(
+        return view('memberhamil.logbook', compact(
             'member','logbook', 'histories','last_result','logbook_histories','members_logbooks_status'));
     }
 
@@ -592,7 +592,7 @@ class MemberController extends Controller
             }
         }
 
-        return view('member.show', compact('member', 'couple', 'is_dampingi'));
+        return view('memberhamil.show', compact('member', 'couple', 'is_dampingi'));
     }
 
     public function blokir(Request $request) {
@@ -617,7 +617,7 @@ class MemberController extends Controller
         }
 
         $msg = ($blokir == 0) ? 'Pembukaan blokir catin berhasil.' : 'Pemblokiran catin berhasil';
-        return redirect()->route('admin.member.index')->with('success', $msg);
+        return redirect()->route('admin.memberhamil.index')->with('success', $msg);
     }
 
     public function kelola(Request $request) {
@@ -1003,7 +1003,7 @@ class MemberController extends Controller
         ->where('members.id', $id)
         ->first();
 
-        return view('member.edit', compact('member'));   
+        return view('memberhamil.edit', compact('member'));   
     }
 
     public function update(Request $request)
@@ -1047,7 +1047,7 @@ class MemberController extends Controller
         $member_upd->status_hamil = $request->status_hamil;
 
         $member_upd->update();
-        return redirect()->route('admin.member.index')->with('success', 'Data Catin berhasil diupdate.');
+        return redirect()->route('admin.memberhamil.index')->with('success', 'Data Catin berhasil diupdate.');
     }
 
     public function delete(Request $request) {

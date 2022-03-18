@@ -79,7 +79,9 @@ class AkunController extends Controller
                 'members.rt',
                 'members.kodepos',
                 'members.rencana_pernikahan',
-                'members.profile_code as profile_id'
+                'members.profile_code as profile_id',
+                'members.status_pernikahan',
+                'members.status_hamil'
             ])
             ->where('members.id', $request->id)
             ->first();

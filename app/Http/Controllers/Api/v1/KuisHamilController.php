@@ -855,6 +855,17 @@ class KuisHamilController extends Controller
         $today = date("Y-m-d");
         $finalData = array();
 
+		//validasi status hamil
+        $user = Member::where('id', $id)->first();
+        if(!$user->status_hamil) {
+            return response()->json([
+                'code' => 401,
+                'error' => true,
+                'title' => 'Perhatian',
+                'message' => 'Tidak dapat diakses. Status user tidak sesuai.'
+            ], 401);
+        }
+
         #kontak awal
         $arrayKontakAwal = $this->_getKontakAwalResult($id);
         array_push($finalData,$arrayKontakAwal);
@@ -901,4 +912,42 @@ class KuisHamilController extends Controller
         return $finalResult;
     }
 
+    public function updatestatus(Request $request) {
+        $update = Member::where('id', $request->id)->update([
+            'status_hamil' => 1
+        ]);
+
+        if ($update) {
+            return response()->json([
+                'code' => 200,
+                'error'   => false,
+                'message' => 'Data diri Anda telah diperbaharui'
+            ], 200);
+        } else {
+            return response()->json([
+                'code' => 200,
+                'error'   => true,
+                'message' => 'Pengubahan data diri gagal. Silahkan coba beberapa saat lagi'
+            ], 200);
+        }
+    }
+
+	public function checkstatus($id) {
+		$check = Member::select('id', 'status_hamil')->where('id', $id)->first();
+		if($check->status_hamil){
+			return response()->json([
+                'code' => 200,
+                'error'   => false,
+                'message' => 'Status user sedang hamil.',
+				'data' => $check->status_hamil
+            ], 200);
+		}else {
+			return response()->json([
+                'code' => 200,
+                'error'   => true,
+                'message' => 'Saya ingin Mengikuti Program Pendampingan Ibu Hamil.',
+				'data' => $check->status_hamil
+            ], 200);
+		}
+	}
 }

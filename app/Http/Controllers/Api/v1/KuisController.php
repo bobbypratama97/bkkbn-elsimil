@@ -35,6 +35,7 @@ use App\KuisResultBobotFile;
 use App\LogbookHistory;
 
 use App\MemberDelegate;
+use App\User;
 
 class KuisController extends Controller
 {
@@ -256,6 +257,17 @@ class KuisController extends Controller
                 'error' => true,
                 'title' => 'Perhatian',
                 'message' => $validators->errors()->first(),
+            ], 401);
+        }
+
+        //validasi status hamil
+        $user = Member::where('id', $data['user_id'])->first();
+        if($user->status_pernikahan) {
+            return response()->json([
+                'code' => 401,
+                'error' => true,
+                'title' => 'Perhatian',
+                'message' => 'Tidak dapat diakses. Status user tidak sesuai.'
             ], 401);
         }
 

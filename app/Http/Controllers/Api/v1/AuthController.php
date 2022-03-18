@@ -185,6 +185,7 @@ class AuthController extends Controller
             $user->is_active = 1; //urgent auto active // $user->is_active = 4 waiting verify;
             $user->profile_code = $profile_code;
             $user->rencana_pernikahan;
+            $user->status_pernikahan = $request->status_pernikahan;
             $user->created_at = date('Y-m-d H:i:s');
 
             if ($user->save()) {

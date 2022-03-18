@@ -21,12 +21,12 @@
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
-                            <h3 class="card-label">Catin
-                            <span class="d-block text-muted pt-2 font-size-sm">Halaman ini menampilkan data catin</span></h3>
+                            <h3 class="card-label">Ibu Hamil
+                            <span class="d-block text-muted pt-2 font-size-sm">Halaman ini menampilkan data ibu hamil</span></h3>
                         </div>
                     </div>
                     <div class="card-body">
-                        <form class="mb-7" method="GET" action="{{ route('admin.member.index') }}">
+                        <form class="mb-7" method="GET" action="{{ route('admin.memberhamil.index') }}">
                             <!-- <div class="form-group mr-3">
                                 <label for="email">Cari : </label>
                                 <select name="s" class="form-control ml-3">
@@ -145,7 +145,7 @@
                                     <th>Status</th>
                                     <th>Tanggal Daftar</th>
                                     <th>Petugas Pendamping</th>
-                                    <th width="14%">Aksi</th>
+                                    <th width="5%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -172,44 +172,41 @@
                                         -
                                         @endif
                                     </td>
-                                    <td class="text-right" width="14%" style="white-space: nowrap">
-                                        <!-- @if ($row['gender'] == 2)
+                                    <td class="text-right" width="5%" style="white-space: nowrap">
+                                        @if ($row['status_hamil'] == 1 && $row['gender'] == 2)
                                             <a href="{{ route('admin.member.ibuhamil', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Tambah Kuesioner Ibu Hamil" style="background-color: #EB30EF">
                                                 <i class="flaticon2-notepad"></i>
                                             </a>
-                                        @endif -->
-                                        <a href="{{ route('admin.member.result', $row['id']) }}" class="btn btn-icon btn-sm btn-primary"  title="Lihat Hasil Kuesioner">
-                                            <i class="flaticon2-writing"></i>
-                                        </a>
+                                        @endif
                                         @can('access', [\App\Member::class, Auth::user()->role, 'show'])
-                                        <a href="{{ route('admin.member.show', $row['id']) }}" class="btn btn-icon btn-sm btn-success"   title="Detail">
+                                        <a href="{{ route('admin.memberhamil.show', $row['id']) }}" class="btn btn-icon btn-sm btn-success"   title="Detail">
                                             <i class="flaticon2-menu-1"></i>
                                         </a>
                                         @endcan
                                         @can('access', [\App\Member::class, Auth::user()->role, 'edit'])
-                                        <a href="{{ route('admin.member.edit', $row['id']) }}" class="btn btn-icon btn-sm btn-warning"   title="Edit">
+                                        <a href="{{ route('admin.memberhamil.edit', $row['id']) }}" class="btn btn-icon btn-sm btn-warning"   title="Edit">
                                             <i class="flaticon2-edit"></i>
                                         </a>
                                         @endcan
                                         @if (empty($row['petugas_id']) && $is_dampingi == true)
-                                        <button class="btn btn-icon btn-sm btn-warning kelola" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
+                                        <button class="btn btn-icon btn-sm btn-warning kelola" id="kelola"  title="Dampingi Ibu Hamil" data-id="{{ $row['id'] }}">
                                             <i class="flaticon-businesswoman"></i>
                                         </button>
-                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Chat catin" data-id="{{ $row['id'] }}">
+                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Chat Ibu Hamil" data-id="{{ $row['id'] }}">
                                                 <i class="flaticon-chat"></i>
                                         </button>
                                         @elseif ($row['petugas_id'] == Auth::user()->id)
-                                        <button class="btn btn-icon btn-sm btn-default btndisableself" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
+                                        <button class="btn btn-icon btn-sm btn-default btndisableself" id="kelola"  title="Dampingi Ibu Hamil" data-id="{{ $row['id'] }}">
                                                 <i class="flaticon-businesswoman"></i>
                                         </button>
-                                        <button class="btn btn-icon btn-sm btn-primary chatcatin" id="kelola"  title="Chat catin" data-id="{{ $row['id'] }}">
+                                        <button class="btn btn-icon btn-sm btn-primary chatcatin" id="kelola"  title="Chat Ibu Hamil" data-id="{{ $row['id'] }}">
                                                 <i class="flaticon-chat"></i>
                                         </button>
                                         @else
-                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Dampingi catin" data-id="{{ $row['id'] }}">
+                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Dampingi Ibu Hamil" data-id="{{ $row['id'] }}">
                                                 <i class="flaticon-businesswoman"></i>
                                         </button>
-                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Chat catin" data-id="{{ $row['id'] }}">
+                                        <button class="btn btn-icon btn-sm btn-default btndisable" id="kelola"  title="Chat Ibu Hamil" data-id="{{ $row['id'] }}">
                                                 <i class="flaticon-chat"></i>
                                         </button>
                                         @endif
@@ -432,7 +429,7 @@
                     });
 
                     $.ajax({
-                        url: '{{ route('admin.member.delete') }}',
+                        url: '{{ route('admin.memberhamil.delete') }}',
                         type: 'POST',
                         data: {id : id, '_token': "{{ csrf_token() }}"},
                         dataType: 'json',
@@ -448,7 +445,7 @@
                                         label: "OK",
                                         className: 'btn-info',
                                         callback: function() {
-                                            window.location.href = '{{ route('admin.member.index') }}';
+                                            window.location.href = '{{ route('admin.memberhamil.index') }}';
                                         }
                                     }
                                 }
@@ -465,7 +462,7 @@
 
         bootbox.confirm({
             title: 'Perhatian',
-            message: "<p class='text-center'>Apakah Anda akan mendampingi catin ini ?</p>",
+            message: "<p class='text-center'>Apakah Anda akan mendampingi Ibu Hamil ini ?</p>",
             centerVertical: true,
             closeButton: false,
             buttons: {
@@ -480,7 +477,7 @@
                     });
 
                     $.ajax({
-                        url: '{{ route('admin.member.kelola') }}',
+                        url: '{{ route('admin.memberhamil.kelola') }}',
                         type: 'POST',
                         data: {id : id, '_token': "{{ csrf_token() }}"},
                         dataType: 'json',
@@ -498,7 +495,7 @@
                                             label: "OK",
                                             className: 'btn-info',
                                             callback: function() {
-                                                // window.location.href = '{{ route("admin.member.show", '+id+') }}';
+                                                // window.location.href = '{{ route("admin.memberhamil.show", '+id+') }}';
                                             }
                                         }
                                     }
@@ -514,9 +511,9 @@
                                             label: "OK",
                                             className: 'btn-info',
                                             callback: function() {
-                                                let url = '{{ route("admin.member.show", ":queryId") }}';
+                                                let url = '{{ route("admin.memberhamil.show", ":queryId") }}';
                                                 url = url.replace(':queryId', id);
-                                                // window.location.href = '{{ route('admin.member.index') }}';
+                                                // window.location.href = '{{ route('admin.memberhamil.index') }}';
                                                 window.location.href = url;
                                             }
                                         }
@@ -535,7 +532,7 @@
             title: 'Perhatian',
             centerVertical: true,
             closeButton: false,
-            message: "Untuk mendampingin catin ini harap menguhubungi petugas KB di Tim anda.",
+            message: "Untuk mendampingin ibu hamil ini harap menguhubungi petugas KB di Tim anda.",
             buttons: {
                 ok: {
                     label: "OK",
@@ -553,7 +550,7 @@
             title: 'Perhatian',
             centerVertical: true,
             closeButton: false,
-            message: "Catin telah menjadi tanggung jawab anda.",
+            message: "Ibu Hamil telah menjadi tanggung jawab anda.",
             buttons: {
                 ok: {
                     label: "OK",

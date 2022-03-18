@@ -287,6 +287,22 @@
                                                             </a>
                                                         </li>
                                                         @endif
+                                                        @if (in_array('admin.memberhamil.index', Session::get('role.submenu')))
+                                                        <li class="menu-item menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                            <a href="{{ route('admin.memberhamil.index') }}" class="menu-link">
+                                                                <span class="svg-icon menu-icon">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                                                            <path d="M18,2 L20,2 C21.6568542,2 23,3.34314575 23,5 L23,19 C23,20.6568542 21.6568542,22 20,22 L18,22 L18,2 Z" fill="#000000" opacity="0.3"></path>
+                                                                            <path d="M5,2 L17,2 C18.6568542,2 20,3.34314575 20,5 L20,19 C20,20.6568542 18.6568542,22 17,22 L5,22 C4.44771525,22 4,21.5522847 4,21 L4,3 C4,2.44771525 4.44771525,2 5,2 Z M12,11 C13.1045695,11 14,10.1045695 14,9 C14,7.8954305 13.1045695,7 12,7 C10.8954305,7 10,7.8954305 10,9 C10,10.1045695 10.8954305,11 12,11 Z M7.00036205,16.4995035 C6.98863236,16.6619875 7.26484009,17 7.4041679,17 C11.463736,17 14.5228466,17 16.5815,17 C16.9988413,17 17.0053266,16.6221713 16.9988413,16.5 C16.8360465,13.4332455 14.6506758,12 11.9907452,12 C9.36772908,12 7.21569918,13.5165724 7.00036205,16.4995035 Z" fill="#000000"></path>
+                                                                        </g>
+                                                                    </svg>
+                                                                </span>
+                                                                <span class="menu-text">Ibu Hamil</span>
+                                                            </a>
+                                                        </li>
+                                                        @endif
                                                         @if (in_array('admin.user.index', Session::get('role.submenu')))
                                                         <li class="menu-item menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
                                                             <a href="{{ route('admin.user.index') }}" class="menu-link">
@@ -337,7 +353,7 @@
                                                 </a>
                                             </li>
                                             @endif
-                                            @if (in_array('Reporting', Session::get('role.menu')))
+                                            @if (in_array('Reporting', Session::get('role.menu')) || in_array('Reporting Kuis Hamil', Session::get('role.menu')))
                                             <li class="menu-item menu-item-submenu menu-item-rel {{ (\Request::route()->getName() == 'admin.repkuis.index') ? 'menu-item-active' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                                                 <a href="javascript:;" class="menu-link menu-toggle">
                                                     <span class="menu-text">Reporting</span>
@@ -365,6 +381,28 @@
                                                                     </svg>
                                                                 </span>
                                                                 <span class="menu-text">Kuesioner</span>
+                                                            </a>
+                                                        </li>
+                                                        @endif
+                                                        @if (in_array('admin.repkuishamil.index', Session::get('role.submenu')))
+                                                        <li class="menu-item menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                            <a href="{{ route('admin.rephamil.index') }}" class="menu-link">
+                                                                <span class="svg-icon menu-icon">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                                                            <path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3"></path>
+                                                                            <path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000"></path>
+                                                                            <rect fill="#000000" opacity="0.3" x="10" y="9" width="7" height="2" rx="1"></rect>
+                                                                            <rect fill="#000000" opacity="0.3" x="7" y="9" width="2" height="2" rx="1"></rect>
+                                                                            <rect fill="#000000" opacity="0.3" x="7" y="13" width="2" height="2" rx="1"></rect>
+                                                                            <rect fill="#000000" opacity="0.3" x="10" y="13" width="7" height="2" rx="1"></rect>
+                                                                            <rect fill="#000000" opacity="0.3" x="7" y="17" width="2" height="2" rx="1"></rect>
+                                                                            <rect fill="#000000" opacity="0.3" x="10" y="17" width="7" height="2" rx="1"></rect>
+                                                                        </g>
+                                                                    </svg>
+                                                                </span>
+                                                                <span class="menu-text">Kuesioner Hamil</span>
                                                             </a>
                                                         </li>
                                                         @endif

@@ -34,6 +34,7 @@ class KuisHamilController extends Controller
     public function indexKontakAwal($id)
     {
         $member = Member::where('id', $id)->first();
+        $role_child_id = Auth::user()->roleChild;
         if($member != null){
             $name = $member->name;
             $no_ktp =  Helper::decryptNik($member->no_ktp);
@@ -56,6 +57,7 @@ class KuisHamilController extends Controller
                         'alamat', 'jumlah_anak','usia_anak_terakhir',
                         'anak_stunting', 'hari_pertama_haid_terakhir','sumber_air_bersih','jamban_sehat',
                         'rumah_layak_huni', 'bansos','created_at','updated_at'])->first();
+
         return view('kuis_ibuhamil.kontakawal_create',[
             "id" => $id,
             "name" => $name,
@@ -65,7 +67,9 @@ class KuisHamilController extends Controller
             "tempat_lahir" => $tempat_lahir,
             "tanggal_lahir" => $tanggal_lahir,
             "alamat" => $alamat,
-            "data_kuesioner" => $data
+            "data_kuesioner" => $data,
+            "role_child_member" => $role_child_id,
+            "role_child_bidan" => $this->role_child_bidan
         ]);
 
     }
@@ -73,6 +77,7 @@ class KuisHamilController extends Controller
     public function indexPeriode12Minggu($id)
     {
         $member = Member::where('id', $id)->first();
+        $role_child_id = Auth::user()->roleChild;
         if($member != null){
             $name = $member->name;
             $no_ktp =  Helper::decryptNik($member->no_ktp);
@@ -102,7 +107,9 @@ class KuisHamilController extends Controller
             "tempat_lahir" => $tempat_lahir,
             "tanggal_lahir" => $tanggal_lahir,
             "alamat" => $alamat,
-            "data_kuesioner" => $data
+            "data_kuesioner" => $data,
+            "role_child_member" => $role_child_id,
+            "role_child_bidan" => $this->role_child_bidan
         ]);
 
     }
@@ -110,6 +117,7 @@ class KuisHamilController extends Controller
     public function indexPeriode16Minggu($id)
     {
         $member = Member::where('id', $id)->first();
+        $role_child_id = Auth::user()->roleChild;
         if($member != null){
             $name = $member->name;
             $no_ktp =  Helper::decryptNik($member->no_ktp);
@@ -138,7 +146,9 @@ class KuisHamilController extends Controller
             "tempat_lahir" => $tempat_lahir,
             "tanggal_lahir" => $tanggal_lahir,
             "alamat" => $alamat,
-            "data_kuesioner" => $data
+            "data_kuesioner" => $data,
+            "role_child_member" => $role_child_id,
+            "role_child_bidan" => $this->role_child_bidan
         ]);
 
     }
@@ -163,6 +173,7 @@ class KuisHamilController extends Controller
     public function indexHamilIbuJanin($id,$periode)
     {
         $member = Member::where('id', $id)->first();
+        $role_child_id = Auth::user()->roleChild;
         if($member != null){
             $name = $member->name;
             $no_ktp =  Helper::decryptNik($member->no_ktp);
@@ -195,7 +206,9 @@ class KuisHamilController extends Controller
             "tempat_lahir" => $tempat_lahir,
             "tanggal_lahir" => $tanggal_lahir,
             "alamat" => $alamat,
-            "data_kuesioner" => $data
+            "data_kuesioner" => $data,
+            "role_child_member" => $role_child_id,
+            "role_child_bidan" => $this->role_child_bidan
         ]);
 
     }
@@ -203,6 +216,7 @@ class KuisHamilController extends Controller
     public function indexPersalinan($id)
     {
         $member = Member::where('id', $id)->first();
+        $role_child_id = Auth::user()->roleChild;
         if($member != null){
             $name = $member->name;
             $no_ktp =  Helper::decryptNik($member->no_ktp);
@@ -232,7 +246,9 @@ class KuisHamilController extends Controller
             "tempat_lahir" => $tempat_lahir,
             "tanggal_lahir" => $tanggal_lahir,
             "alamat" => $alamat,
-            "data_kuesioner" => $data
+            "data_kuesioner" => $data,
+            "role_child_member" => $role_child_id,
+            "role_child_bidan" => $this->role_child_bidan
         ]);
 
     }
@@ -240,6 +256,7 @@ class KuisHamilController extends Controller
     public function indexNifas($id)
     {
         $member = Member::where('id', $id)->first();
+        $role_child_id = Auth::user()->roleChild;
         if($member != null){
             $name = $member->name;
             $no_ktp =  Helper::decryptNik($member->no_ktp);
@@ -269,7 +286,9 @@ class KuisHamilController extends Controller
             "tempat_lahir" => $tempat_lahir,
             "tanggal_lahir" => $tanggal_lahir,
             "alamat" => $alamat,
-            "data_kuesioner" => $data
+            "data_kuesioner" => $data,
+            "role_child_member" => $role_child_id,
+            "role_child_bidan" => $this->role_child_bidan
         ]);
 
     }
